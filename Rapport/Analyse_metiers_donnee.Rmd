@@ -51,6 +51,7 @@ htmltools::img(src = "https://nextcloud.datactivist.coop/s/o53wzfMNnFosQni/previ
 ```{r data}
 # Librairies
 library(tidyverse)
+library(ggwordcloud)
 
 # Données
 data <- read_csv("../data/results-survey159571-3.csv")
@@ -67,7 +68,10 @@ data_clean_names <- data |>
 ```{r}
 data_summary <- data |> select(-1)
 
-print(dfSummary(data_summary, style = "grid", graph.magnif = 1, valid.col = FALSE, varnumbers = FALSE, tmp.img.dir = "/tmp", max.distinct.values = 5, headings=FALSE, method = "render"),
+print(dfSummary(data_summary, style = "grid", graph.magnif = 1, 
+                valid.col = FALSE, varnumbers = FALSE, tmp.img.dir = "/tmp", 
+                max.distinct.values = 5, headings = FALSE, method = "render", 
+                col.widths  = c(300, 200, 100, 50, 20)),
       max.tbl.height = 600,
       method = "render")
 ``` 
@@ -95,21 +99,105 @@ donut_plot <- function(data, variable, titre){
           theme_void() +
           theme(legend.position = "right",
                 text = element_text(family = "Monsterrat", size = 12),
-                plot.title = element_text(face = "bold", size = 21),
+                plot.title = element_text(face = "bold"),
                 plot.background = element_rect(fill = "white", colour="white"),
                 panel.background = element_rect(fill = "white", colour = "white"),
                 legend.background = element_rect(fill = "white", colour = "white"))+
           guides(fill = guide_legend(title = ""))
 } 
+barplot_qs_multiples <- function(data, min, max, titre){
+    data |> 
+        select(min:max)|> mutate_all(na_if, "Non") |> 
+        summarise_all(funs(sum(!is.na(.)))) |> 
+        t()|> as.data.frame() |> 
+        rownames_to_column() |> 
+        mutate(percent = round((V1 / sum(V1))*100, 0),
+               rowname = str_extract(rowname, "(?<=\\[).*"),
+               rowname = substr(rowname, 1, nchar(rowname)-1),
+               rowname = str_extract(rowname, "^[^(]+")) |> 
+        select(rowname, V1, percent) |> 
+        mutate(rowname = fct_reorder(rowname, V1))|> 
+        ggplot(aes(x = rowname, y = V1)) +
+          geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+          coord_flip() +
+          labs(x = "", y = "Nombre de réponses", title = titre) +
+          theme_classic() +
+          theme(legend.position = "none",
+                text = element_text(family = "Monsterrat", size = 12),
+                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 50, 1, 0)),
+                axis.title.y = element_blank(),
+                axis.line.x = element_blank(),
+                axis.line.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+          geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                    color = "#333333", size = 3, check_overlap = T)
+}
+wordcloud_autre <- function(variable, titre){
+    table <- data |> select({{variable}}) |> 
+        group_by({{variable}}) |> 
+        mutate(n=n()) |> na.omit() |> distinct() |> rename(col = 1) 
+    table |> ggplot(aes(label = col, size = n)) +
+          geom_text_wordcloud(color = rep_len(c('#ffe725','#5770BE', "#169B62"), nrow(table)), family = "Montserrat") +
+          scale_size_area(max_size = 10) +
+          labs(title = paste0("\n", titre)) +
+          theme_minimal() +
+          theme(plot.title = element_text(face = "bold", size = 15, 
+                                          margin = margin(t = 0, r = 0, b = -60, l = 0)))
+}
+barplot_qs_unique <- function(data, variable, titre){
+    data |> 
+        filter({{variable}} != "Autre", 
+               !is.na({{variable}})) |> 
+        group_by({{variable}}) |> 
+        summarise(n = n()) |> rename(col = 1) |> 
+        mutate(col = fct_reorder(col, n),
+               percent = round((n / sum(n))*100, 0))|> 
+        ggplot(aes(x = col, y = n)) +
+          geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+          coord_flip() +
+          labs(x = "", y = "Nombre de répondants", title = titre) +
+          scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+          theme_classic() +
+          theme(legend.position = "none",
+                text = element_text(family = "Monsterrat", size = 12),
+                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 50, 1, 0)),
+                axis.title.y = element_blank(),
+                axis.line.x = element_blank(),
+                axis.line.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+          geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                    color = "#333333", size = 3, check_overlap = T)
+}
 ```
 
-```{r}
+```{r out.width='60%'}
 donut_plot(data, `Langue de départ`, "Langue de départ")
 
 data |> 
     filter(`Dans quel type d'établissement exercez-vous votre activité ?` != "Autre") |> 
     donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?")
+
+wordcloud_autre(`Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]")
+
+barplot_qs_multiples(data, 8, 12, "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
+
+barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?")  
 ```
+
+```{r}
+
+```
+
+```{r eval=FALSE, include=FALSE}
+colnames(data) |> as.data.frame() |> 
+    mutate(new_names = sub("\\?.*", "", `colnames(data)`)) |> 
+    distinct(new_names) |> nrow()
+```
+
+
+
 
 
 ## Classification par profil de répondants
