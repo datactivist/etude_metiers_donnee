@@ -54,48 +54,70 @@ library(tidyverse)
 
 # Données
 data <- read_csv("../data/results-survey159571-3.csv")
+data_clean_names <- data |> 
+    janitor::clean_names()
 ```
 
 # Données issues du questionnaire
 
 ## Analyse de chaque question individuellement 
 
+### Statistiques générales
+
 ```{r}
 data_summary <- data |> select(-1)
-print(dfSummary(data_summary, style = "grid", graph.magnif = 1, valid.col = FALSE, varnumbers = FALSE, tmp.img.dir = "/tmp", max.distinct.values = 5, headings=FALSE, method = "render"), max.tbl.height = 250)
+
+print(dfSummary(data_summary, style = "grid", graph.magnif = 1, valid.col = FALSE, varnumbers = FALSE, tmp.img.dir = "/tmp", max.distinct.values = 5, headings=FALSE, method = "render"),
+      max.tbl.height = 600,
+      method = "render")
 ``` 
 
-## Les petites astuces
+### Statistiques par question
 
-Quelques paramètres à changer si vous voulez un R Markdown légèrement différent : 
 
-- `<br>` saute une ligne entre 2 éléments 
-- `number_sections: true` dans l'en-tête de ce document numérote automatiquement les parties et sous-parties (retirer le `#` dans l'en-tête pour l'utiliser)
-- `toc: false` supprime la table des matières (table of contents, *toc*) qui s'affiche par défaut au début du document avec une profondeur maximale de 4 actuellement
-- `date: "1er janvier 2023"` affiche une date fixe car entrée comme un texte. Actuellement c'est la date du jour où le rapport est généré qui apparaît automatiquement dans l'en-tête du document
-- **texte en gras**, *texte en italique*, ***texte en gras italique***
-
-# Une deuxième section divisée en 3
-
-<div class = "row">
-  
-<div class = "col-md-4">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
-</div>
-  
-<div class = "col-md-4">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
-</div>
-  
-<div class = "col-md-4">
-```{r graph}
-library(tidyverse)
-ggplot( mtcars, aes(x=mpg)) + 
-  geom_histogram(fill="skyblue", alpha=0.5) + 
-  theme_minimal()
+```{r fonctions graphs}
+donut_plot <- function(data, variable, titre){
+    data |> 
+        group_by({{variable}}) |> summarise(Freq = n()) |> 
+        mutate(fraction = Freq / sum(Freq),
+               proportion = round((Freq / sum(Freq))*100),
+               ymax = cumsum(fraction),
+               ymin = c(0, head(ymax, n=-1)), 
+               labelPosition = (ymax + ymin) / 2) |> 
+        ggplot(aes(ymax = ymax, ymin = ymin, xmax = 3.3, xmin = 2, fill = {{variable}})) +
+          geom_rect(col = "white", size = 2) +
+          geom_text(x=4, aes(y=labelPosition, label = paste(proportion,"%",sep = "")), color = "#333333", size=7) +
+          geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
+          scale_fill_manual(values = c('#ffe725','#5770BE', "#169B62")) +
+          coord_polar(theta="y") +
+          labs(title = titre) +
+          xlim(c(0, 4)) +   
+          theme_void() +
+          theme(legend.position = "right",
+                text = element_text(family = "Monsterrat", size = 12),
+                plot.title = element_text(face = "bold", size = 21),
+                plot.background = element_rect(fill = "white", colour="white"),
+                panel.background = element_rect(fill = "white", colour = "white"),
+                legend.background = element_rect(fill = "white", colour = "white"))+
+          guides(fill = guide_legend(title = ""))
+} 
 ```
-</div>
-</div>
+
+```{r}
+donut_plot(data, `Langue de départ`, "Langue de départ")
+
+data |> 
+    filter(`Dans quel type d'établissement exercez-vous votre activité ?` != "Autre") |> 
+    donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?")
+```
+
+
+## Classification par profil de répondants
+
+
+# Données issues des entretiens
+
+
 
 ## Faire ressortir du texte dans une boxe
 
