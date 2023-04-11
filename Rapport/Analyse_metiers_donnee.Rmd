@@ -54,9 +54,11 @@ library(tidyverse)
 library(ggwordcloud)
 
 # Données
-data <- read_csv("../data/results-survey159571-3.csv")
+data <- read_csv("../data/results-survey159571-final.csv")
 data_clean_names <- data |> 
     janitor::clean_names()
+questions <- as.data.frame(colnames(data)) |> 
+    rename(rowname = `colnames(data)`)
 ```
 
 # Données issues du questionnaire
@@ -70,7 +72,7 @@ data_summary <- data |> select(-1)
 
 print(dfSummary(data_summary, style = "grid", graph.magnif = 1, 
                 valid.col = FALSE, varnumbers = FALSE, tmp.img.dir = "/tmp", 
-                max.distinct.values = 5, headings = FALSE, method = "render", 
+                max.distinct.values = 5, headings = TRUE, method = "render", 
                 col.widths  = c(300, 200, 100, 50, 20)),
       max.tbl.height = 600,
       method = "render")
@@ -105,7 +107,7 @@ donut_plot <- function(data, variable, titre){
                 legend.background = element_rect(fill = "white", colour = "white"))+
           guides(fill = guide_legend(title = ""))
 } 
-barplot_qs_multiples <- function(data, min, max, titre){
+barplot_qs_multiples <- function(data, min, max, n_slice, titre){
     data |> 
         select(min:max)|> mutate_all(na_if, "Non") |> 
         summarise_all(funs(sum(!is.na(.)))) |> 
@@ -115,16 +117,18 @@ barplot_qs_multiples <- function(data, min, max, titre){
                rowname = str_extract(rowname, "(?<=\\[).*"),
                rowname = substr(rowname, 1, nchar(rowname)-1),
                rowname = str_extract(rowname, "^[^(]+")) |> 
-        select(rowname, V1, percent) |> 
-        mutate(rowname = fct_reorder(rowname, V1))|> 
+        select(rowname, V1, percent) |> ungroup() |> 
+        arrange(desc(percent)) |> slice(1:n_slice) |> 
+        mutate(rowname = fct_reorder(rowname, V1)) |> 
         ggplot(aes(x = rowname, y = V1)) +
           geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
           coord_flip() +
           labs(x = "", y = "Nombre de réponses", title = titre) +
+          scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
           theme_classic() +
           theme(legend.position = "none",
                 text = element_text(family = "Monsterrat", size = 12),
-                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 50, 1, 0)),
+                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 40, 1, 0)),
                 axis.title.y = element_blank(),
                 axis.line.x = element_blank(),
                 axis.line.y = element_blank(),
@@ -133,13 +137,15 @@ barplot_qs_multiples <- function(data, min, max, titre){
           geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
-wordcloud_autre <- function(variable, titre){
+wordcloud_autre <- function(variable, titre, n_slice, n_max_size){
     table <- data |> select({{variable}}) |> 
         group_by({{variable}}) |> 
-        mutate(n=n()) |> na.omit() |> distinct() |> rename(col = 1) 
+        mutate(n=n()) |> na.omit() |> distinct() |> 
+        rename(col = 1) |> ungroup() |> 
+        arrange(desc(n)) |> slice(1:n_slice)
     table |> ggplot(aes(label = col, size = n)) +
           geom_text_wordcloud(color = rep_len(c('#ffe725','#5770BE', "#169B62"), nrow(table)), family = "Montserrat") +
-          scale_size_area(max_size = 10) +
+          scale_size_area(max_size = n_max_size) +
           labs(title = paste0("\n", titre)) +
           theme_minimal() +
           theme(plot.title = element_text(face = "bold", size = 15, 
@@ -152,7 +158,7 @@ barplot_qs_unique <- function(data, variable, titre){
         group_by({{variable}}) |> 
         summarise(n = n()) |> rename(col = 1) |> 
         mutate(col = fct_reorder(col, n),
-               percent = round((n / sum(n))*100, 0))|> 
+               percent = round((n / sum(n))*100, 0)) |> 
         ggplot(aes(x = col, y = n)) +
           geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
           coord_flip() +
@@ -161,7 +167,36 @@ barplot_qs_unique <- function(data, variable, titre){
           theme_classic() +
           theme(legend.position = "none",
                 text = element_text(family = "Monsterrat", size = 12),
-                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 50, 1, 0)),
+                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 40, 1, 0)),
+                axis.title.y = element_blank(),
+                axis.line.x = element_blank(),
+                axis.line.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+          geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                    color = "#333333", size = 3, check_overlap = T)
+}
+barplot_qs_unique_top_n <- function(data, variable, slice_n, titre){
+    table <- data |> 
+        filter({{variable}} != "Autre", 
+               !is.na({{variable}})) |> 
+        group_by({{variable}}) |> 
+        summarise(n = n()) |> rename(col = 1) |> 
+        mutate(col = fct_reorder(col, n),
+               percent = round((n / sum(n))*100, 0)) |> 
+        arrange(desc(n)) |> 
+        slice(1:slice_n) 
+    table |> 
+        ggplot(aes(x = col, y = n)) +
+          geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+          coord_flip() +
+          labs(x = "", y = "Nombre de répondants", title = titre) +
+          scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+          scale_y_discrete(limits = 1:max(table$n)) +
+          theme_classic() +
+          theme(legend.position = "none",
+                text = element_text(family = "Monsterrat", size = 12),
+                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 40, 1, 0)),
                 axis.title.y = element_blank(),
                 axis.line.x = element_blank(),
                 axis.line.y = element_blank(),
@@ -179,16 +214,107 @@ data |>
     filter(`Dans quel type d'établissement exercez-vous votre activité ?` != "Autre") |> 
     donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?")
 
-wordcloud_autre(`Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]")
+wordcloud_autre(`Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]", 40, 10)
 
-barplot_qs_multiples(data, 8, 12, "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
+barplot_qs_multiples(data, 8, 12, 11, "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
 
 barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?")  
+
+barplot_qs_multiples(data, 16, 22, 11, "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?")
+
+barplot_qs_multiples(data, 23, 37, 10, "Quelles sont les activités qu'implique votre travail sur les données ?") +
+    labs(subtitle = "Top 10")
+
+barplot_qs_multiples(data, 38, 50, 10, "Comment intervenez-vous sur ces activités ?") +
+    labs(subtitle = "Top 10")
+
+barplot_qs_multiples(data, 51, 65, 10, "Quel est le poids de chaque activité dans votre travail ?") +
+    labs(subtitle = "Top 10")
+
+barplot_qs_multiples(data, 66, 76, 11, "Sur quels types de données travaillez-vous ?")
+
+barplot_qs_unique(data, `Quel est votre niveau de diplôme ?`, "Quel est votre niveau de diplôme ?")  
+
+wordcloud_autre(`Quel est votre niveau de diplôme ? [Autre]`, "Quel est votre niveau de diplôme ? [Autre]", 40, 9)
+
+barplot_qs_unique(data, `Quel est le domaine de votre formation initiale ?`, "Quel est le domaine de votre formation initiale ?")  
+
+wordcloud_autre(`Quel est le domaine de votre formation initiale ? [Autre]`, "Quel est le domaine de votre formation initiale ? [Autre]", 40, 10)
+
+barplot_qs_multiples(data, 81, 84, 11, "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?")
+
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste le plus récent]`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+    labs(subtitle = "Top 10 des plus récents (t)")
+
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...86`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+    labs(subtitle = "Top 10 des postes précédents (t-1)")
+
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...87`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+    labs(subtitle = "Top 10 des postes précédents (t-2)")
+
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...88`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+    labs(subtitle = "Top 10 des postes précédents (t-3)")
+
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...89`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+    labs(subtitle = "Top 10 des postes précédents (t-4)")
+
+data |> 
+    filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
+    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?")
+
+barplot_qs_unique(data, `Précisez votre catégorie...91`, "Emploi actuel")  
+
+data |> 
+    filter(!is.na(`Précisez votre catégorie...92`)) |> 
+    donut_plot(`Précisez votre catégorie...92`, "Catégorie d'emploi actuel")
+
+barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Précisez votre branche d'activité.")  
+
+wordcloud_autre(`Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 6)
+
+wordcloud_autre(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 6)  
+
+barplot_qs_multiples(data, 96, 110, 10, "Sur quelles activités auriez-vous besoin d'une formation ?") +
+    labs(subtitle = "Top 10")
+
+wordcloud_autre(`Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 6)
+
+wordcloud_autre(`Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 6)
+
+data |> 
+    filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> 
+    donut_plot(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`, "Votre établissement/organisme a-t-il formalisé une \norganisation des activités ou des rôles sur les données \nà l'échelle de l'établissement ou de différentes structures ?")
+
+wordcloud_autre(`Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`, "Vous pouvez décrire ici les éléments relatifs à cette formalisation, \nfournir un lien ou indiquer toute autre information.", 5, 6)
+
+data |> 
+    mutate(consentement = case_when(is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) ~ "Non",
+                                    TRUE ~ "Oui")) |>
+    group_by(consentement) |> summarise(Freq = n()) |> 
+    mutate(fraction = Freq / sum(Freq),
+           proportion = round((Freq / sum(Freq))*100),
+           ymax = cumsum(fraction),
+           ymin = c(0, head(ymax, n=-1)), 
+           labelPosition = (ymax + ymin) / 2) |> 
+    ggplot(aes(ymax = ymax, ymin = ymin, xmax = 3.3, xmin = 2, fill = consentement)) +
+      geom_rect(col = "white", size = 2) +
+      geom_text(x=4, aes(y=labelPosition, label = paste(proportion,"%",sep = "")), color = "#333333", size=7) +
+      geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
+      scale_fill_manual(values = c('#ffe725','#5770BE', "#169B62")) +
+      coord_polar(theta="y") +
+      labs(title = "Accepteriez-vous un entretien pour approfondir cette \nenquête ?") +
+      xlim(c(0, 4)) +   
+      theme_void() +
+      theme(legend.position = "right",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"),
+            plot.background = element_rect(fill = "white", colour="white"),
+            panel.background = element_rect(fill = "white", colour = "white"),
+            legend.background = element_rect(fill = "white", colour = "white"))+
+      guides(fill = guide_legend(title = ""))
 ```
 
-```{r}
-
-```
 
 ```{r eval=FALSE, include=FALSE}
 colnames(data) |> as.data.frame() |> 
