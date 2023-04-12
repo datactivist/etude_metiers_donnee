@@ -52,9 +52,12 @@ htmltools::img(src = "https://nextcloud.datactivist.coop/s/o53wzfMNnFosQni/previ
 # Librairies
 library(tidyverse)
 library(ggwordcloud)
+library(gt)
+library(gtExtras)
+library(htmltools)
 
 # Données
-data <- read_csv("../data/results-survey159571-final.csv")
+data <- read_csv("../data/donnees_lemmatisees_cols_Autre.csv")
 data_clean_names <- data |> 
     janitor::clean_names()
 questions <- as.data.frame(colnames(data)) |> 
@@ -192,7 +195,7 @@ barplot_qs_unique_top_n <- function(data, variable, slice_n, titre){
           coord_flip() +
           labs(x = "", y = "Nombre de répondants", title = titre) +
           scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-          scale_y_discrete(limits = 1:max(table$n)) +
+          #scale_y_discrete(limits = 1:max(table$n)) +
           theme_classic() +
           theme(legend.position = "none",
                 text = element_text(family = "Monsterrat", size = 12),
@@ -208,7 +211,10 @@ barplot_qs_unique_top_n <- function(data, variable, slice_n, titre){
 ```
 
 ```{r out.width='60%'}
-donut_plot(data, `Langue de départ`, "Langue de départ")
+data |> 
+    mutate(`Langue de départ` = case_when(`Langue de départ` == "fr" ~ "français",
+                                          `Langue de départ` == "en" ~ "anglais")) |> 
+    donut_plot(`Langue de départ`, "Langue de départ")
 
 data |> 
     filter(`Dans quel type d'établissement exercez-vous votre activité ?` != "Autre") |> 
@@ -233,6 +239,8 @@ barplot_qs_multiples(data, 51, 65, 10, "Quel est le poids de chaque activité da
 
 barplot_qs_multiples(data, 66, 76, 11, "Sur quels types de données travaillez-vous ?")
 
+wordcloud_autre(`Sur quels types de données travaillez-vous ? [Autre]`, "Sur quels types de données travaillez-vous ? [Autre]", 40, 10)
+
 barplot_qs_unique(data, `Quel est votre niveau de diplôme ?`, "Quel est votre niveau de diplôme ?")  
 
 wordcloud_autre(`Quel est votre niveau de diplôme ? [Autre]`, "Quel est votre niveau de diplôme ? [Autre]", 40, 9)
@@ -246,16 +254,16 @@ barplot_qs_multiples(data, 81, 84, 11, "Vous êtes-vous formé à la gestion et 
 barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste le plus récent]`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des plus récents (t)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...86`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-1)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...87`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 2`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-2)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...88`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 3`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-3)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]...89`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 4`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-4)")
 
 data |> 
@@ -263,30 +271,28 @@ data |>
     mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?")
 
-barplot_qs_unique(data, `Précisez votre catégorie...91`, "Emploi actuel")  
+barplot_qs_unique(data, `Précisez votre catégorie`, "Emploi actuel")  
 
 data |> 
-    filter(!is.na(`Précisez votre catégorie...92`)) |> 
-    donut_plot(`Précisez votre catégorie...92`, "Catégorie d'emploi actuel")
+    filter(!is.na(`Précisez votre catégorie 2`)) |> 
+    donut_plot(`Précisez votre catégorie 2`, "Catégorie d'emploi actuel")
 
 barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Précisez votre branche d'activité.")  
 
-wordcloud_autre(`Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 6)
+wordcloud_autre(`Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 8)
 
-wordcloud_autre(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 6)  
+wordcloud_autre(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 8)  
 
 barplot_qs_multiples(data, 96, 110, 10, "Sur quelles activités auriez-vous besoin d'une formation ?") +
     labs(subtitle = "Top 10")
 
-wordcloud_autre(`Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 6)
+wordcloud_autre(`Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 5)
 
-wordcloud_autre(`Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 6)
+wordcloud_autre(`Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 7)
 
 data |> 
     filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> 
     donut_plot(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`, "Votre établissement/organisme a-t-il formalisé une \norganisation des activités ou des rôles sur les données \nà l'échelle de l'établissement ou de différentes structures ?")
-
-wordcloud_autre(`Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`, "Vous pouvez décrire ici les éléments relatifs à cette formalisation, \nfournir un lien ou indiquer toute autre information.", 5, 6)
 
 data |> 
     mutate(consentement = case_when(is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) ~ "Non",
@@ -315,6 +321,25 @@ data |>
       guides(fill = guide_legend(title = ""))
 ```
 
+```{r}
+data |> 
+    filter(!is.na(`Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`)) |> 
+    select(`ID de la réponse`, `Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`) |> 
+    sample_n(40) %>%
+    rename(`Éléments de formalisation` = `Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`) |> 
+      gt() %>%
+      gt_theme_nytimes() %>%
+      tab_header(title = "Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.",
+                 subtitle = "20 éléments de formalisation aléatoires") %>%
+      # tab_style(
+      #       style = list(cell_text(weight = "lighter")),
+      #       locations = cells_body(
+      #         columns = `Polarité`)) %>%
+      tab_options(table.font.size = 17,
+                      table.border.bottom.width = 1) %>%
+      div(style='height:700px; overflow-y: scroll')
+```
+
 
 ```{r eval=FALSE, include=FALSE}
 colnames(data) |> as.data.frame() |> 
@@ -328,24 +353,29 @@ colnames(data) |> as.data.frame() |>
 
 ## Classification par profil de répondants
 
+```{r eval=FALSE, include=FALSE}
+# Arbre de décision CART
+library(rpart)
+library(caret)
+library(rpart.plot)
+# On définit les paramètres de contrôle
+ctrl <- rpart.control(minbucket=5, cp=0.01, xval=5, maxdepth=3)
+
+# Fit Theatre
+arbre <- rpart(`Quelle est votre catégorie d'emploi actuel ?` ~ ., data = data, method  = "class", control = ctrl)
+summary(arbre)
+# Plot
+rpart.plot(arbre)
+X11()
+par(xpd=NA)
+plot(arbre,uniform=F)
+text(arbre,all=T,use.n=T,cex=0.8)
+# Voir erreur de prévision selon la taille de l'arbre
+plotcp(arbre)
+printcp(arbre)
+```
+
 
 # Données issues des entretiens
 
-
-
-## Faire ressortir du texte dans une boxe
-
-
-<br>
-
-<style>
-div.blue { background-color:#fff1eb; border-radius: 5px; padding: 20px;}
-</style>
-<div class = "blue">
-
-**Ma boxe**
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim.
-
-</div>
 
