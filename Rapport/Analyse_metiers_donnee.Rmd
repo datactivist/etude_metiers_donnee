@@ -57,7 +57,7 @@ library(gtExtras)
 library(htmltools)
 
 # Données
-data <- read_csv("../data/donnees_lemmatisees_cols_Autre.csv")
+data <- read_csv("../data/donnees_lemmatisees_cols_Autre2.csv")
 data_clean_names <- data |> 
     janitor::clean_names()
 questions <- as.data.frame(colnames(data)) |> 
@@ -97,7 +97,7 @@ donut_plot <- function(data, variable, titre){
           geom_rect(col = "white", size = 2) +
           geom_text(x=4, aes(y=labelPosition, label = paste(proportion,"%",sep = "")), color = "#333333", size=7) +
           geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
-          scale_fill_manual(values = c('#ffe725','#5770BE', "#169B62")) +
+          scale_fill_manual(values = c('#ffe725','#5770BE', "#169B62", "#666666")) +
           coord_polar(theta="y") +
           labs(title = titre) +
           xlim(c(0, 4)) +   
@@ -140,7 +140,7 @@ barplot_qs_multiples <- function(data, min, max, n_slice, titre){
           geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
-wordcloud_autre <- function(variable, titre, n_slice, n_max_size){
+wordcloud_autre <- function(data, variable, titre, n_slice, n_max_size){
     table <- data |> select({{variable}}) |> 
         group_by({{variable}}) |> 
         mutate(n=n()) |> na.omit() |> distinct() |> 
@@ -149,9 +149,12 @@ wordcloud_autre <- function(variable, titre, n_slice, n_max_size){
     table |> ggplot(aes(label = col, size = n)) +
           geom_text_wordcloud(color = rep_len(c('#ffe725','#5770BE', "#169B62"), nrow(table)), family = "Montserrat") +
           scale_size_area(max_size = n_max_size) +
-          labs(title = paste0("\n", titre)) +
+          labs(title = paste0("\n", titre),
+               subtitle = paste0(data |> filter(!is.na({{variable}})) |> nrow(), " réponses, soit ", 
+                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
           theme_minimal() +
-          theme(plot.title = element_text(face = "bold", size = 15, 
+          theme(plot.title = element_text(face = "bold", size = 15),
+                plot.subtitle = element_text(face = "italic", size = 12, 
                                           margin = margin(t = 0, r = 0, b = -60, l = 0)))
 }
 barplot_qs_unique <- function(data, variable, titre){
@@ -217,10 +220,11 @@ data |>
     donut_plot(`Langue de départ`, "Langue de départ")
 
 data |> 
-    filter(`Dans quel type d'établissement exercez-vous votre activité ?` != "Autre") |> 
+    filter(!is.na(`Dans quel type d'établissement exercez-vous votre activité ?`)) |> 
+    mutate(`Dans quel type d'établissement exercez-vous votre activité ?` = factor(`Dans quel type d'établissement exercez-vous votre activité ?`, ordered = TRUE, levels = c("Ecole", "Organisme de recherche", "Université", "Autre"))) |> 
     donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?")
 
-wordcloud_autre(`Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]", 40, 10)
+wordcloud_autre(data, `Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]", 40, 10)
 
 barplot_qs_multiples(data, 8, 12, 11, "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
 
@@ -239,15 +243,20 @@ barplot_qs_multiples(data, 51, 65, 10, "Quel est le poids de chaque activité da
 
 barplot_qs_multiples(data, 66, 76, 11, "Sur quels types de données travaillez-vous ?")
 
-wordcloud_autre(`Sur quels types de données travaillez-vous ? [Autre]`, "Sur quels types de données travaillez-vous ? [Autre]", 40, 10)
+wordcloud_autre(data, `Sur quels types de données travaillez-vous ? [Autre]`, "Sur quels types de données travaillez-vous ? [Autre]", 40, 12)
 
 barplot_qs_unique(data, `Quel est votre niveau de diplôme ?`, "Quel est votre niveau de diplôme ?")  
 
-wordcloud_autre(`Quel est votre niveau de diplôme ? [Autre]`, "Quel est votre niveau de diplôme ? [Autre]", 40, 9)
+data |> 
+    mutate(nv_diplome = case_when(`Quel est votre niveau de diplôme ? [Autre]` == "Ph.D. (Québec)" ~ "PhD", 
+                                  `Quel est votre niveau de diplôme ? [Autre]` == "PhD (USA)" ~ "PhD", 
+                                  `Quel est votre niveau de diplôme ? [Autre]` == "Médicin + MSc biostatistic + MSc data science + PhD" ~ "PhD", 
+                                  TRUE ~ `Quel est votre niveau de diplôme ? [Autre]`)) |> 
+    wordcloud_autre(nv_diplome, "Quel est votre niveau de diplôme ? [Autre]", 40, 30)
 
 barplot_qs_unique(data, `Quel est le domaine de votre formation initiale ?`, "Quel est le domaine de votre formation initiale ?")  
 
-wordcloud_autre(`Quel est le domaine de votre formation initiale ? [Autre]`, "Quel est le domaine de votre formation initiale ? [Autre]", 40, 10)
+wordcloud_autre(data, `Quel est le domaine de votre formation initiale ? [Autre]`, "Quel est le domaine de votre formation initiale ? [Autre]", 40, 10)
 
 barplot_qs_multiples(data, 81, 84, 11, "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?")
 
@@ -279,16 +288,16 @@ data |>
 
 barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Précisez votre branche d'activité.")  
 
-wordcloud_autre(`Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 8)
+wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 10)
 
-wordcloud_autre(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 8)  
+wordcloud_autre(data, `Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 10)  
 
 barplot_qs_multiples(data, 96, 110, 10, "Sur quelles activités auriez-vous besoin d'une formation ?") +
     labs(subtitle = "Top 10")
 
-wordcloud_autre(`Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 5)
+wordcloud_autre(data, `Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 13)
 
-wordcloud_autre(`Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 7)
+wordcloud_autre(data, `Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 10)
 
 data |> 
     filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> 
@@ -352,6 +361,19 @@ colnames(data) |> as.data.frame() |>
 
 
 ## Classification par profil de répondants
+
+```{r eval=FALSE, include=FALSE}
+dend <- data %>% 
+  select(90, ) %>% 
+  dist() %>% 
+  hclust() %>% 
+  as.dendrogram()
+ 
+# Plot
+par(mar=c(7,3,1,1))  # Increase bottom margin to have the complete label
+plot(dend)
+```
+
 
 ```{r eval=FALSE, include=FALSE}
 # Arbre de décision CART
