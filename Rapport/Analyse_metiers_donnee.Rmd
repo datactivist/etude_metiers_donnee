@@ -1,6 +1,6 @@
 ---
-title: "Analyse des données d'enquête"
-subtitle: "Étude sur les métiers de la donnée dans l'enseignement supérieur et la recherche"
+title: "Les métiers de la donnée dans l'enseignement supérieur et la recherche"
+subtitle: "Analyse des données d'enquête"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
     rmarkdown::html_document:
@@ -54,6 +54,8 @@ library(ggwordcloud)
 library(gt)
 library(gtExtras)
 library(htmltools)
+library(grid)
+library(gridExtra)
 
 # Données
 data <- read_csv("../data/donnees_lemmatisees_cols_Autre2.csv") |> 
@@ -112,7 +114,7 @@ donut_plot <- function(data, variable, titre){
                 legend.background = element_rect(fill = "white", colour = "white"))+
           guides(fill = guide_legend(title = ""))
 } 
-barplot_qs_multiples <- function(data, min, max, n_slice, titre){
+barplot_qs_multiples <- function(data, min, max, slice_min, slice_max, color, titre){
     table <- data |> 
         select(min:max)|> mutate_all(na_if, "Non") |> 
         summarise_all(funs(sum(!is.na(.)))) |> 
@@ -123,11 +125,11 @@ barplot_qs_multiples <- function(data, min, max, n_slice, titre){
                rowname = substr(rowname, 1, nchar(rowname)-1),
                rowname = str_extract(rowname, "^[^(]+")) |> 
         select(rowname, V1, percent) |> ungroup() |> 
-        arrange(desc(percent)) |> slice(1:n_slice) |> 
+        arrange(desc(percent)) |> slice(slice_min:slice_max) |> 
         mutate(rowname = fct_reorder(rowname, V1))
     table |> 
         ggplot(aes(x = rowname, y = V1)) +
-          geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+          geom_bar(stat = "identity", width = .6, fill = color) +
           coord_flip() +
           labs(x = "", y = "Nombre de réponses", title = titre,
                subtitle = paste(sum(table$V1), "réponses")) +
@@ -187,7 +189,7 @@ barplot_qs_unique <- function(data, variable, titre){
           geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
-barplot_qs_unique_top_n <- function(data, variable, slice_n, titre){
+barplot_qs_unique_top_n <- function(data, variable, slice_min, slice_max, titre){
     table <- data |> 
         filter({{variable}} != "Autre", 
                !is.na({{variable}})) |> 
@@ -196,7 +198,7 @@ barplot_qs_unique_top_n <- function(data, variable, slice_n, titre){
         mutate(col = fct_reorder(col, n),
                percent = round((n / sum(n))*100, 0)) |> 
         arrange(desc(n)) |> 
-        slice(1:slice_n) 
+        slice(slice_min:slice_max) 
     table |> 
         ggplot(aes(x = col, y = n)) +
           geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
@@ -233,22 +235,42 @@ data |>
 
 wordcloud_autre(data, `Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]", 40, 10)
 
-barplot_qs_multiples(data, 8, 12, 11, "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
+barplot_qs_multiples(data, 8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
 
 barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?")  
 
-barplot_qs_multiples(data, 16, 22, 11, "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?")
+barplot_qs_multiples(data, 16, 22, 1, 11, "#5770BE", "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?")
+```
 
-barplot_qs_multiples(data, 23, 37, 10, "Quelles sont les activités qu'implique votre travail sur les données ?") +
-    labs(subtitle = "Top 10")
+```{r fig.width=12}
+plot_plus <- barplot_qs_multiples(data, 23, 37, 1, 10, "#169B62", "") +
+    labs(caption = "Top 10 des catégories les plus représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+plot_moins <- barplot_qs_multiples(data, 23, 37, 11, 15, "#ffe725", "") +
+    labs(caption = "Top 5 des catégories les moins représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Quelles sont les activités qu'implique votre travail sur les données ?",gp=gpar(fontsize = 15, font = 2)))
 
-barplot_qs_multiples(data, 38, 50, 10, "Comment intervenez-vous sur ces activités ?") +
-    labs(subtitle = "Top 10")
+plot_plus <- barplot_qs_multiples(data, 38, 50, 1, 10, "#169B62", "") +
+    labs(caption = "Top 10 des catégories les plus représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+plot_moins <- barplot_qs_multiples(data, 38, 50, 11, 13, "#ffe725", "") +
+    labs(caption = "Top 3 des catégories les moins représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Comment intervenez-vous sur ces activités ?", gp = gpar(fontsize = 15, font = 2)))
 
-barplot_qs_multiples(data, 51, 65, 10, "Quel est le poids de chaque activité dans votre travail ?") +
-    labs(subtitle = "Top 10")
+plot_plus <- barplot_qs_multiples(data, 51, 65, 1, 10, "#169B62", "") +
+    labs(caption = "Top 10 des catégories les plus représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+plot_moins <- barplot_qs_multiples(data, 51, 65, 11, 15, "#ffe725", "") +
+    labs(caption = "Top 5 des catégories les moins représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Quel est le poids de chaque activité dans votre travail ?",gp=gpar(fontsize = 15, font = 2)))
+```
 
-barplot_qs_multiples(data, 66, 76, 11, "Sur quels types de données travaillez-vous ?")
+```{r out.width='60%'}
+
+barplot_qs_multiples(data, 66, 76, 1, 11, "#5770BE", "Sur quels types de données travaillez-vous ?")
 
 wordcloud_autre(data, `Sur quels types de données travaillez-vous ? [Autre]`, "Sur quels types de données travaillez-vous ? [Autre]", 40, 12)
 
@@ -265,21 +287,21 @@ barplot_qs_unique(data, `Quel est le domaine de votre formation initiale ?`, "Qu
 
 wordcloud_autre(data, `Quel est le domaine de votre formation initiale ? [Autre]`, "Quel est le domaine de votre formation initiale ? [Autre]", 40, 10)
 
-barplot_qs_multiples(data, 81, 84, 11, "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?")
+barplot_qs_multiples(data, 81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste le plus récent]`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste le plus récent]`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des plus récents (t)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-1)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 2`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 2`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-2)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 3`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 3`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-3)")
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 4`, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
+barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 4`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-4)")
 
 data |> 
@@ -298,10 +320,19 @@ barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Précisez votre
 wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 10)
 
 wordcloud_autre(data, `Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 10)  
+```
 
-barplot_qs_multiples(data, 96, 110, 10, "Sur quelles activités auriez-vous besoin d'une formation ?") +
-    labs(subtitle = "Top 10")
+```{r fig.width=12}
+plot_plus <- barplot_qs_multiples(data, 96, 110, 1, 10, "#169B62", "") +
+    labs(caption = "Top 10 des catégories les plus représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+plot_moins <- barplot_qs_multiples(data, 96, 110, 11, 15, "#ffe725", "") +
+    labs(caption = "Top 5 des catégories les moins représentées") +
+    theme(plot.caption = element_text(face = "italic"))
+grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+```
 
+```{r out.width='60%'}
 wordcloud_autre(data, `Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 13)
 
 wordcloud_autre(data, `Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 10)
@@ -367,7 +398,7 @@ colnames(data) |> as.data.frame() |>
 
 
 
-## analyse croisée, classification
+## Analyse croisée, classification
 
 
 ```{r eval=FALSE, include=FALSE}
