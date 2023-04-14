@@ -56,6 +56,7 @@ library(gtExtras)
 library(htmltools)
 library(grid)
 library(gridExtra)
+library(corrplot)
 
 # Données
 data <- read_csv("../data/donnees_lemmatisees_cols_Autre2.csv") |> 
@@ -356,7 +357,8 @@ data |>
       geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
       scale_fill_manual(values = c('#ffe725','#5770BE', "#169B62")) +
       coord_polar(theta="y") +
-      labs(title = "Accepteriez-vous un entretien pour approfondir cette \nenquête ?") +
+      labs(title = "Accepteriez-vous un entretien pour approfondir cette \nenquête ?",
+           subtitle = "Statistique calculée sur les réponses") +
       xlim(c(0, 4)) +   
       theme_void() +
       theme(legend.position = "right",
@@ -399,6 +401,152 @@ colnames(data) |> as.data.frame() |>
 
 
 ## Analyse croisée, classification
+
+
+### Cycle de vie de la donnée
+
+```{r}
+# Table
+cycle_de_vie <- data |> 
+    select(16:22) |> 
+    mutate_all(function(x) gsub("Oui", 1, x)) |> 
+    mutate_all(function(x) gsub("Non", 0, x)) |> 
+    mutate_all(as.numeric) |> 
+    rename(`Planification, PGD` = 1,
+           `Collecte, création, stockage` = 2,
+           `Analyse, traitement, calcul` = 3,
+           `Préparation du dépôt` = 4,
+           `Dépôt` = 5,
+           `Ouverture ou partage` = 6,
+           `Réutilisation` = 7)
+
+# Matrice de p-value de la corrélation
+matrix <- cor(cycle_de_vie)
+cor.mtest <- function(mat, ...) {
+    mat <- as.matrix(mat)
+    n <- ncol(mat)
+    p.mat<- matrix(NA, n, n)
+    diag(p.mat) <- 0
+    for (i in 1:(n - 1)) {
+        for (j in (i + 1):n) {
+            tmp <- cor.test(mat[, i], mat[, j], ...)
+            p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+        }
+    }
+  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+  p.mat
+}
+p.mat <- cor.mtest(cycle_de_vie)
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+corrplot(matrix, method="color", col=col(200),  
+         type="upper", order="hclust", 
+         addCoef.col = "black", # Ajout du coefficient de corrélation
+         tl.srt=45, tl.col = "black", tl.cex = .8, #Rotation des etiquettes de textes
+         # Combiner avec le niveau de significativité
+         p.mat = p.mat, sig.level = 0.01, #insig = "blank", 
+         diag = TRUE,
+         title = "Corrélation entre les différentes parties du cycle de vie de la donnée\n",
+         par = c(0, 0, 5, 0))
+
+# Cluster
+library(ggpubr)
+library(factoextra)
+
+# Calculer k-means avec k = 3
+set.seed(123)
+res.km <- kmeans(cycle_de_vie, 3, nstart = 25)
+# Clustering K-means montrant le groupe de chaque individu
+fviz_cluster(res.km, data = cycle_de_vie,
+             palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#666666"), 
+             geom = "point",
+             ellipse.type = "convex", 
+             ggtheme = theme_bw()
+             )
+
+# ACM
+library(FactoMineR)
+library(factoextra)
+res.mca <- MCA(cycle_de_vie |> mutate_all(as.logical), ncp = 5)
+eig.val <- get_eigenvalue(res.mca)
+fviz_screeplot(res.mca, addlabels = TRUE, ylim = c (0, 45))
+var <- get_mca_var(res.mca)
+fviz_mca_var (res.mca, choice = "mca.cor",
+            repel = TRUE, 
+            ggtheme = theme_minimal ())
+fviz_mca_var(res.mca, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, 
+             ggtheme = theme_minimal())
+corrplot(var$cos2, is.corr=FALSE)
+fviz_contrib(res.mca, choice = "var", axes = 1, top = 10)
+fviz_contrib(res.mca, choice = "var", axes = 2, top = 10)
+
+fviz_mca_ind(res.mca,
+             label = "none", # masquer le texte des individus
+             habillage = "Analyse, traitement, calcul", # colorer par groupes
+             palette = c ("#00AFBB", "#E7B800"),
+             addEllipses = TRUE, ellipse.type = "confidence",
+             ggtheme = theme_minimal ())
+fviz_mca_ind(res.mca, habillage = 3, addEllipses = TRUE)
+fviz_mca_ind(res.mca, habillage = cycle_de_vie$`Analyse, traitement, calcul`, addEllipses = TRUE)
+fviz_ellipses(res.mca, 1:7,
+              geom = "point", palette = "simpsons")
+
+res.desc <- dimdesc (res.mca, axes = c(1,2))
+res.desc[[1]]
+res.desc[[2]]
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+# Table
+table <- data |> 
+    mutate(is_analyst = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
+                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
+    filter(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?` != "Autre", 
+           !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
+    group_by(is_analyst, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
+    summarise(n = n()) |> rename(col = 2) |> 
+    ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0),
+           is_analyst = factor(is_analyst, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")))
+
+# Graphique croisé
+table %>% 
+  ggplot(aes(x = col, y = n, fill = is_analyst, group = is_analyst))+
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    coord_flip() +
+    labs(x = "", y = "Nombre de répondants", title = "Sur quel domaine thématique réalisez-vous votre activité sur les données ?", 
+       subtitle = paste0(sum(table$n), " réponses, soit ", 
+                         round(((sum(table$n)) / nrow(data)) * 100, 0), "% des répondants")) +
+    theme_classic() +
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+    scale_fill_manual(values = c("#ffe725", "#169B62")) +
+    theme(legend.position = "right",
+        text = element_text(family = "Montserrat", size = 12),
+        plot.title = element_text(face = "bold", size = 21),
+        plot.subtitle = element_text(face = "italic", size = 15),
+        axis.title.y = element_blank(),
+        axis.line.x = element_blank(),
+        axis.line.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = "", reverse = T), color = "none") +
+    geom_text(aes(y = n + 5, x = col, 
+                  label = paste(round(percent,0), "%", sep="")), 
+              color = "#333333", size=3, check_overlap = T,
+              position = position_dodge(width = .5))
+```
+
 
 
 ```{r eval=FALSE, include=FALSE}
