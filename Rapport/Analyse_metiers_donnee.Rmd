@@ -422,16 +422,13 @@ cycle_de_vie <- data |>
 
 # Matrice de corrélation
 #shapiro.test(cycle_de_vie$`Planification, PGD`)
-matrix <- cor(cycle_de_vie, method = c("spearman"))
+matrix <- cor(cycle_de_vie, method = c("spearman")) #Spearman car variables non normalement distribuées
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(matrix, method="color", col=col(200),  
          type="upper", order="hclust", 
          addCoef.col = "black", # Ajout du coefficient de corrélation
-         tl.srt=45, tl.col = "black", tl.cex = .8, #Rotation des etiquettes de textes
-         # Combiner avec le niveau de significativité
-         #p.mat = p.mat, sig.level = 0.01, #insig = "blank", 
-         diag = TRUE,
-         title = "\nCorrélation entre les différentes parties du cycle de vie de la donnée")
+         tl.srt = 45, tl.col = "black", tl.cex = .8, #Rotation des etiquettes de textes
+         diag = TRUE, mar=c(0,0,1.5,0), title = "Corrélation entre les différentes parties du cycle de vie de la donnée")
 ```
 Cette matrice chiffre la corrélation existante entre les différentes parties du cycle de vie de la donnée. Bornée entre -1 et 1, plus elle se rapproche de 1 et plus la corrélation est forte. 
 
