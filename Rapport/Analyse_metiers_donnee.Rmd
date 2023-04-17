@@ -358,7 +358,7 @@ data |>
       scale_fill_manual(values = c('#ffe725','#5770BE', "#169B62")) +
       coord_polar(theta="y") +
       labs(title = "Accepteriez-vous un entretien pour approfondir cette \nenquête ?",
-           subtitle = "Statistique calculée sur les réponses") +
+           subtitle = "Statistique calculée sur les réponses, vides ou remplies, à la question du prénom") +
       xlim(c(0, 4)) +   
       theme_void() +
       theme(legend.position = "right",
@@ -420,49 +420,47 @@ cycle_de_vie <- data |>
            `Ouverture ou partage` = 6,
            `Réutilisation` = 7)
 
-# Matrice de p-value de la corrélation
-matrix <- cor(cycle_de_vie)
-cor.mtest <- function(mat, ...) {
-    mat <- as.matrix(mat)
-    n <- ncol(mat)
-    p.mat<- matrix(NA, n, n)
-    diag(p.mat) <- 0
-    for (i in 1:(n - 1)) {
-        for (j in (i + 1):n) {
-            tmp <- cor.test(mat[, i], mat[, j], ...)
-            p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
-        }
-    }
-  colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
-  p.mat
-}
-p.mat <- cor.mtest(cycle_de_vie)
+# Matrice de corrélation
+#shapiro.test(cycle_de_vie$`Planification, PGD`)
+matrix <- cor(cycle_de_vie, method = c("spearman"))
 col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
 corrplot(matrix, method="color", col=col(200),  
          type="upper", order="hclust", 
          addCoef.col = "black", # Ajout du coefficient de corrélation
          tl.srt=45, tl.col = "black", tl.cex = .8, #Rotation des etiquettes de textes
          # Combiner avec le niveau de significativité
-         p.mat = p.mat, sig.level = 0.01, #insig = "blank", 
+         #p.mat = p.mat, sig.level = 0.01, #insig = "blank", 
          diag = TRUE,
-         title = "Corrélation entre les différentes parties du cycle de vie de la donnée\n",
-         par = c(0, 0, 5, 0))
+         title = "\nCorrélation entre les différentes parties du cycle de vie de la donnée")
+```
+Cette matrice chiffre la corrélation existante entre les différentes parties du cycle de vie de la donnée. Bornée entre -1 et 1, plus elle se rapproche de 1 et plus la corrélation est forte. 
 
+Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. Les parties du cycle de vie les plus liées entre elles sont donc du dépôt à l'ouverture des données.
+
+
+```{r eval=FALSE, include=FALSE}
 # Cluster
 library(ggpubr)
 library(factoextra)
 
-# Calculer k-means avec k = 3
+# Choix du nombre de clusters
+factoextra::fviz_nbclust(cycle_de_vie, FUNcluster = factoextra::hcut, method = "silhouette", hc_method = "average", hc_metric = "euclidean", stand = TRUE)
+#factoextra::fviz_nbclust(cycle_de_vie, FUNcluster =kmeans, method = "silhouette")
+# Calculer k-means avec k = 2
 set.seed(123)
-res.km <- kmeans(cycle_de_vie, 3, nstart = 25)
+res.km <- kmeans(cycle_de_vie, 2, nstart = 25)
 # Clustering K-means montrant le groupe de chaque individu
 fviz_cluster(res.km, data = cycle_de_vie,
              palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#666666"), 
              geom = "point",
              ellipse.type = "convex", 
-             ggtheme = theme_bw()
-             )
+             ggtheme = theme_bw(),
+             title = "Cluster des activités du cycle de vie de la donnée")
 
+```
+
+
+```{r eval=FALSE, include=FALSE}
 # ACM
 library(FactoMineR)
 library(factoextra)
@@ -488,7 +486,7 @@ fviz_mca_ind(res.mca,
              addEllipses = TRUE, ellipse.type = "confidence",
              ggtheme = theme_minimal ())
 fviz_mca_ind(res.mca, habillage = 3, addEllipses = TRUE)
-fviz_mca_ind(res.mca, habillage = cycle_de_vie$`Analyse, traitement, calcul`, addEllipses = TRUE)
+#fviz_mca_ind(res.mca, habillage = cycle_de_vie$`Analyse, traitement, calcul`, addEllipses = TRUE)
 fviz_ellipses(res.mca, 1:7,
               geom = "point", palette = "simpsons")
 
@@ -500,118 +498,62 @@ res.desc[[2]]
 
 
 
-
-
-
-
-
-
 ```{r}
-# Table
-table <- data |> 
-    mutate(is_analyst = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
-                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
-    filter(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?` != "Autre", 
-           !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
-    group_by(is_analyst, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
-    summarise(n = n()) |> rename(col = 2) |> 
-    ungroup() |> 
-    mutate(col = fct_reorder(col, n),
-           percent = round((n / sum(n))*100, 0),
-           is_analyst = factor(is_analyst, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")))
-
-# Graphique croisé
-table %>% 
-  ggplot(aes(x = col, y = n, fill = is_analyst, group = is_analyst))+
-    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
-    coord_flip() +
-    labs(x = "", y = "Nombre de répondants", title = "Sur quel domaine thématique réalisez-vous votre activité sur les données ?", 
-       subtitle = paste0(sum(table$n), " réponses, soit ", 
-                         round(((sum(table$n)) / nrow(data)) * 100, 0), "% des répondants")) +
-    theme_classic() +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-    scale_fill_manual(values = c("#ffe725", "#169B62")) +
-    theme(legend.position = "right",
-        text = element_text(family = "Montserrat", size = 12),
-        plot.title = element_text(face = "bold", size = 21),
-        plot.subtitle = element_text(face = "italic", size = 15),
-        axis.title.y = element_blank(),
-        axis.line.x = element_blank(),
-        axis.line.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-    guides(fill = guide_legend(title = "", reverse = T), color = "none") +
-    geom_text(aes(y = n + 5, x = col, 
-                  label = paste(round(percent,0), "%", sep="")), 
-              color = "#333333", size=3, check_overlap = T,
-              position = position_dodge(width = .5))
+barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, variable_comp, titre){
+    # Table
+    table <- data |> 
+        mutate(is_cycle = case_when({{variable_phase}} == "Oui" ~ oui_cycle,
+                                      {{variable_phase}} == "Non" ~ non_cycle)) |> 
+        filter({{variable_comp}} != "Autre", 
+               !is.na({{variable_comp}})) |> 
+        group_by(is_cycle, {{variable_comp}}) |> 
+        summarise(n = n()) |> rename(col = 2) |> 
+        ungroup() |> 
+        mutate(col = fct_reorder(col, n),
+               percent = round((n / sum(n))*100, 0),
+               is_cycle = factor(is_cycle, levels = c(non_cycle, oui_cycle)))
+    
+    # Graphique croisé
+    table %>% 
+      ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
+        geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+        coord_flip() +
+        labs(x = "", y = "Nombre de répondants", title = titre, 
+           subtitle = paste0(sum(table$n), " réponses, soit ", 
+                             round(((sum(table$n)) / nrow(data)) * 100, 0), "% des répondants")) +
+        theme_classic() +
+        scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+        scale_fill_manual(values = c("#ffe725", "#169B62")) +
+        theme(legend.position = "bottom",
+            text = element_text(family = "Montserrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1),
+            plot.subtitle = element_text(face = "italic", size = 15),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            #axis.ticks.y = element_blank(),
+            axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+            axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))
+            ) +
+        guides(fill = guide_legend(title = "", reverse = T), color = "none") +
+        geom_text(aes(y = n + 5, x = col, 
+                      label = paste(round(percent,0), "%", sep="")), 
+                  color = "#333333", size=3, check_overlap = T,
+                  position = position_dodge(width = .5))
+}
 ```
 
+### Analyse, traitement, calcul
 
-
-```{r eval=FALSE, include=FALSE}
-suppressPackageStartupMessages({
-    library(tidyverse) # data workhorse
-    library(correlationfunnel) # rapid exploratory data analysis
-    library(cluster) # calculating gower distance and PAM
-    library(Rtsne) # dimensionality reduction and visualization
-    library(plotly) # interactive graphing
-})
-
-set.seed(175) # reproducibility
-
-hr_corr_tbl <- data %>%
-    select(8:12, 16:37) %>%
-    mutate_all(function(x) gsub("Oui", TRUE, x)) |> 
-    mutate_all(function(x) gsub("Non", FALSE, x)) |> 
-    binarize(n_bins = 5, thresh_infreq = 0.01, name_infreq = "OTHER", one_hot = TRUE) %>%
-    correlate(Attrition__Yes)
-
-hr_corr_tbl %>%
-    plot_correlation_funnel() %>%
-    ggplotly()
+```{r out.width='60%'}
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée")
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
 ```
 
+### Collecte, création, stockage
 
-
-```{r eval=FALSE, include=FALSE}
-library(dendextend)
-dend <- data %>% 
-  select(7:10) %>% 
-  dist() %>% 
-  hclust() %>% 
-  as.dendrogram()
- 
-# Plot
-par(mar=c(1,1,1,70))
-dend %>%
-  set("labels_col", value = c("skyblue", "orange", "grey"), k=30) %>%
-  set("branches_k_color", value = c("skyblue", "orange", "grey"), k = 3) %>%
-  plot(horiz=TRUE, axes=FALSE)
-abline(v = 350, lty = 2)
-```
-
-
-```{r eval=FALSE, include=FALSE}
-# Arbre de décision CART
-library(rpart)
-library(caret)
-library(rpart.plot)
-# On définit les paramètres de contrôle
-ctrl <- rpart.control(minbucket=5, cp=0.01, xval=5, maxdepth=3)
-
-# Fit Theatre
-arbre <- rpart(`Quelle est votre catégorie d'emploi actuel ?` ~ ., data = data, method  = "class", control = ctrl)
-summary(arbre)
-# Plot
-rpart.plot(arbre)
-X11()
-par(xpd=NA)
-plot(arbre,uniform=F)
-text(arbre,all=T,use.n=T,cex=0.8)
-# Voir erreur de prévision selon la taille de l'arbre
-plotcp(arbre)
-printcp(arbre)
+```{r out.width='60%'}
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée")
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
 ```
 
 
