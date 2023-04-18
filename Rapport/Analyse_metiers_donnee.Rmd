@@ -506,8 +506,8 @@ data |>
 
 ### Lieux, métiers, dynamiques
 
-```{r}
-analystes <- data |> 
+```{r out.width='75%'}
+analyse <- data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -534,7 +534,21 @@ planification <- data |>
     select(rowname, V1, percent) |> ungroup() |> 
     arrange(desc(percent)) |> 
     mutate(rowname = fct_reorder(rowname, V1),
-           cycle = "Planification, plan de gestion de données")
+           cycle = "Planification, PGD")
+collecte <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Collecte, création, stockage")
 depot <- data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
@@ -591,28 +605,39 @@ reutilisation <- data |>
     arrange(desc(percent)) |> 
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Réutilisation")
-cycle_lieux <- rbind(analystes, planification, reutilisation, prepa_depot, depot, planification, ouverture) |> 
-    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) %>% ungroup()
+cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, ouverture, collecte) |> 
+    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) %>% ungroup() |> 
+    mutate(cycle = factor(cycle, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt",
+                                            "Dépôt",
+                                            "Ouverture ou partage",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
 
 cycle_lieux |> 
   ggplot(aes(y = V1)) +
-  geom_col(aes(x = rowname, color = rowname, fill = rowname), position = position_dodge(0.8), width = 0.7) +
-  scale_color_manual(values = c("white", "white", "white", "white", "white", "white"))+
+  geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
+  scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
   scale_fill_manual(values = c("#21468d", "#74a466", "#fecf5d", "#f38337", "#da4729", "#c898ae")) +
-  geom_text(aes(y = V1 + 2, x = rowname, label = paste(percent, "%", sep = "")), 
-            color = "#333333", size = 3, check_overlap = T) +
-  labs(x = "Responsabilités", y = "Nombre de réponses", title = "Contributions apportées à Vikidia selon les responsabilités",
-       subtitle = "\nQuels types de contributions faites-vous ?, Avez-vous des outils (responsabilités) ?") +
+  # geom_text(aes(y = V1 + 2, x = cycle, label = paste(percent, "%", sep = "")), 
+  #           color = "#333333", size = 3, check_overlap = T) +
+  labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", title = "Lieux d'activités selon l'intervention dans le cycle de vie de la donnée",
+           subtitle = paste0(sum(cycle_lieux$V1), " réponses")) +
   theme_classic() +
-  facet_wrap(~cycle, strip.position="bottom") +
-  theme(legend.position = "none",
+  #facet_wrap(~cycle, strip.position="bottom") +
+  theme(legend.position = "right",
+        legend.text = element_text(size = 8),
         text = element_text(family = "Montserrat", size = 12),
         plot.title = element_text(face = "bold", size = 21),
         plot.subtitle = element_text(face = "italic", size = 15),
         strip.text.x = element_text(face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0))) +
-  coord_flip()
+        axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = ""), 
+           col = "none")
+  #coord_flip()
 ```
 
 
