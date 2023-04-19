@@ -344,8 +344,8 @@ wordcloud_autre(data, `Dans le cadre de votre activité sur les données, sur qu
 ```
 
 ```{r fig.width=12}
-plot_plus <- barplot_qs_multiples(data, 96, 110, 1, 10, "#169B62", "") +
-    labs(caption = "Top 10 des catégories les plus représentées") +
+plot_plus <- barplot_qs_multiples(data, 96, 110, 1, 5, "#169B62", "") +
+    labs(caption = "Top 5 des catégories les plus représentées") +
     theme(plot.caption = element_text(face = "italic"))
 plot_moins <- barplot_qs_multiples(data, 96, 110, 11, 15, "#ffe725", "") +
     labs(caption = "Top 5 des catégories les moins représentées") +
@@ -452,6 +452,7 @@ corrplot(matrix, method="color", col=col(200),
          tl.srt = 45, tl.col = "black", tl.cex = .8, #Rotation des etiquettes de textes
          diag = TRUE, mar=c(0,0,1.5,0), title = "Corrélation entre les différentes parties du cycle de vie de la donnée")
 ```
+
 La matrice de corrélation ci-dessus quantifie le lien existant entre les différentes parties du cycle de vie de la donnée. Elle montre pour chaque partie du cycle sa **corrélation**, c'est-à-dire l'interdépendance, avec les autres parties du cycle. Celle-ci est quantifiée par un *coefficient* borné entre -1 et 1 ; plus il se rapproche de 1 ou -1 et plus la corrélation est forte. A contrario, les coefficients proches de 0 traduisent une absence de lien ou un lien très faible entre les parties du cycle concernées. Cette matrice permet ainsi de mettre en lumière les parties isolées et au contraire, les parties du cycle fortement liées entre elles. 
 
 Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondants interviennent sur plusieurs d'entre elles. 
@@ -461,7 +462,7 @@ Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce 
 
 #### Analyse, traitement, calcul
 
-```{r out.width='60%'}
+```{r}
 barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, variable_comp, titre){
     # Table
     table <- data |> 
@@ -507,17 +508,20 @@ barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, varia
 
 barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée")
 barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Quelle est votre catégorie d'emploi actuel ?`, "Catégorie d'emploi des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
 data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(-18) |> 
-    barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les analystes de données \ninterviennent (Analyse, traitement, calcul)")
+    barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les analystes de données \ninterviennent (Analyse, traitement, calcul)") +
+    labs(caption = paste("x", "répondants n'interviennent que sur la partie 'Analyse, traitement, calcul'"))
 ```
 
 #### Collecte, création, stockage
 
 ```{r out.width='60%'}
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée")
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Collecte, création, stockage' du cycle de \nvie de la donnée")
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Collecte, création, stockage' du \ncycle de vie de la donnée")
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Quelle est votre catégorie d'emploi actuel ?`, "Branche d'activité des répondants intervenant \nsur la partie 'Collecte, création, stockage' du \ncycle de vie de la donnée")
 data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
     select(-17) |> 
