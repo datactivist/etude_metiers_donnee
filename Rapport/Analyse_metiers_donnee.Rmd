@@ -59,7 +59,7 @@ library(gridExtra)
 library(corrplot)
 
 # Données
-data <- read_csv("../data/donnees_lemmatisees_cols_Autre2.csv") |> 
+data <- read_csv("../data/donnees_lemmatisees_cols_Autre3.csv") |> 
     filter(!is.na(`Date de soumission`)) # réponses complètes donc fiables
 data_clean_names <- data |> 
     janitor::clean_names()
@@ -241,9 +241,46 @@ wordcloud_autre(data, `Dans quel type d'établissement exercez-vous votre activi
 
 barplot_qs_multiples(data, 8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?")  
 
-barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?")  
+barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?")
 
-barplot_qs_multiples(data, 16, 22, 1, 11, "#5770BE", "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?")
+table <- data |> 
+    select(16:22)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+           rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt ",
+                                            "Dépôt",
+                                            "Ouverture ou partage ",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+table |> 
+    ggplot(aes(x = rowname, y = V1)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", title = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "none",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = ifelse(nchar("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?") > 40, 1, 0)),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T)
 ```
 
 ```{r fig.width=12}
@@ -458,11 +495,55 @@ La matrice de corrélation ci-dessus quantifie le lien existant entre les diffé
 Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondants interviennent sur plusieurs d'entre elles. 
 
 
+#### Catégorie d'emploi
+
+```{r fig.width=12}
+table <- data |> 
+    select(16:22, `Quelle est votre catégorie d'emploi actuel ?`) |> mutate_all(na_if, "Non") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Quelle est votre catégorie d'emploi actuel ?`), names_to = "rowname", values_to = "V1", names_prefix = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"),
+           `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    ungroup() |> 
+    mutate(rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+           rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt ",
+                                            "Dépôt",
+                                            "Ouverture ou partage ",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+table |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "none",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"), 
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
+    scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+```
 
 
 #### Analyse, traitement, calcul
 
-```{r}
+```{r out.width='60%'}
 barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, variable_comp, titre){
     # Table
     table <- data |> 
@@ -508,12 +589,13 @@ barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, varia
 
 barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée")
 barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Quelle est votre catégorie d'emploi actuel ?`, "Catégorie d'emploi des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée")
 data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(-18) |> 
     barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les analystes de données \ninterviennent (Analyse, traitement, calcul)") +
-    labs(caption = paste("x", "répondants n'interviennent que sur la partie 'Analyse, traitement, calcul'"))
+    labs(caption = paste(data |> filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Non") |> nrow(), 
+                         "répondants n'interviennent que sur la partie 'Analyse, traitement, calcul'")) +
+    theme(plot.caption = element_text(face = 'italic'))
 ```
 
 #### Collecte, création, stockage
@@ -521,17 +603,19 @@ data |>
 ```{r out.width='60%'}
 barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Collecte, création, stockage' du cycle de \nvie de la donnée")
 barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Collecte, création, stockage' du \ncycle de vie de la donnée")
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Quelle est votre catégorie d'emploi actuel ?`, "Branche d'activité des répondants intervenant \nsur la partie 'Collecte, création, stockage' du \ncycle de vie de la donnée")
 data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
     select(-17) |> 
-    barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les collecteurs de données \ninterviennent (Collecte, création, stockage)")
+    barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les collecteurs de données \ninterviennent (Collecte, création, stockage)") +
+    labs(caption = paste(data |> filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Non") |> nrow(), 
+                         "répondants n'interviennent que sur la partie 'Collecte, création, stockage'")) +
+    theme(plot.caption = element_text(face = 'italic'))
 ```
 
 
 ### Lieux, métiers, dynamiques
 
-```{r out.width='75%'}
+```{r out.width='70%'}
 analyse <- data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
@@ -644,13 +728,10 @@ cycle_lieux |>
   ggplot(aes(y = V1)) +
   geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
   scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
-  scale_fill_manual(values = c("#21468d", "#74a466", "#fecf5d", "#f38337", "#da4729", "#c898ae")) +
-  # geom_text(aes(y = V1 + 2, x = cycle, label = paste(percent, "%", sep = "")), 
-  #           color = "#333333", size = 3, check_overlap = T) +
-  labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", title = "Lieux d'activités selon l'intervention dans le cycle de vie de la donnée",
+  scale_fill_manual(values = c('#e2c44d','#5f4496', "#ffe725", "#169B62", "#5770BE")) +
+  labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", title = "Lieux d'activités selon l'intervention \ndans le cycle de vie de la donnée",
            subtitle = paste0(sum(cycle_lieux$V1), " réponses")) +
   theme_classic() +
-  #facet_wrap(~cycle, strip.position="bottom") +
   theme(legend.position = "right",
         legend.text = element_text(size = 8),
         text = element_text(family = "Montserrat", size = 12),
@@ -662,7 +743,6 @@ cycle_lieux |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
     guides(fill = guide_legend(title = ""), 
            col = "none")
-  #coord_flip()
 ```
 
 
@@ -728,4 +808,6 @@ fviz_ellipses(res.mca, 1:7,
 res.desc <- dimdesc (res.mca, axes = c(1,2))
 res.desc[[1]]
 res.desc[[2]]
+# cyan : #77f5d3
+# violet foncé : #4b317f
 ```
