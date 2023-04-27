@@ -57,6 +57,7 @@ library(htmltools)
 library(grid)
 library(gridExtra)
 library(corrplot)
+library(plotly)
 
 # Données
 data <- read_csv("../data/donnees_lemmatisees_cols_Autre3.csv") |> 
@@ -751,9 +752,8 @@ La matrice de corrélation ci-dessus quantifie le lien existant entre les diffé
 Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondants interviennent sur plusieurs d'entre elles. 
 
 
-#### Catégorie d'emploi
 
-```{r fig.width=12}
+```{r eval=FALSE, fig.width=12, include=FALSE}
 table <- data |> 
     select(16:22, `Quelle est votre catégorie d'emploi actuel ?`) |> mutate_all(na_if, "Non") |> 
     group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
@@ -774,26 +774,6 @@ table <- data |>
                                             "Ouverture ou partage ",
                                             "Réutilisation",
                                             "Planification, PGD")))
-table |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
-      geom_bar(stat = "identity", width = .6) +
-      coord_flip() +
-      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
-           subtitle = paste(sum(table$V1), "réponses")) +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-      theme_classic() +
-      theme(legend.position = "none",
-            text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold"), 
-            axis.title.y = element_blank(),
-            axis.line.x = element_blank(),
-            axis.line.y = element_blank(),
-            axis.ticks.y = element_blank(),
-            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
-                color = "#333333", size = 3, check_overlap = T) +
-      facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
-    scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
 
 
@@ -1002,6 +982,367 @@ cycle_lieux |>
 ```
 
 
+### Croisements issus de l'atelier du 21/04/2023
+
+#### Proposition 1{.tabset}
+
+##### Doubles barres 
+
+```{r prop1.1, out.width='70%'}
+# Catégorie d'emploi / parties du cycle de vie 
+table <- data |> 
+    select(16:22, 90)|> mutate_all(na_if, "Non") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Quelle est votre catégorie d'emploi actuel ?`), names_to = "rowname", values_to = "V1", names_prefix = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous") |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    ungroup() |> arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+           rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt ",
+                                            "Dépôt",
+                                            "Ouverture ou partage ",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+table |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+    #'#e2c44d','#5f4496', "#ffe725", "#169B62", "#5770BE"
+      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T,
+                position = position_dodge(width = .5)) +
+    guides(fill = guide_legend(title = ""))
+```
+
+
+##### Facettes
+
+```{r prop1.2, fig.width=12}
+table |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "none",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"), 
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+```
+
+
+#### Proposition 2
+
+```{r prop2, fig.height=8, fig.width=10}
+# Besoins de formation / activités du travail des données
+analyser <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Analyser, représenter, modéliser, prédire (statistiques, algorithmes, machine learning) ]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Analyser, représenter, modéliser, prédire")
+maj <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Assurer la mise à jour des versions de jeux de données]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Assurer la mise à jour des versions de jeux de données")
+coordonner <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Coordonner les activités de gestion et diffusion des données]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Coordonner les activités de gestion et diffusion des données")
+structurer <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Créer, structurer, décrire les jeux de données validés (ou aide à création, structuration, description)]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Créer, structurer, décrire les jeux de données validés")
+protocole_obtention <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes")
+deposer <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Déposer les jeux de données]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Déposer les jeux de données")
+standards <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Faire un état des lieux des données existantes, des vocabulaires, standards et infrastructures…]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Faire un état des lieux des données existantes, des vocabulaires, standards et infrastructures…")
+qualite <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs")
+nettoyer <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Nettoyer, affiner, convertir et décrire les données brutes (par des métadonnées scientifiques)]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Nettoyer, affiner, convertir et décrire les données brutes")
+publier <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Publier en accès ouvert ou en partage restreint]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Publier en accès ouvert ou en partage restreint")
+outils <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Structurer les données et les outils pour la collecte, le stockage et le traitement]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Structurer les données et les outils pour la collecte, le stockage et le traitement")
+superviser <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Superviser l’ensemble du cycle de vie]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Superviser l’ensemble du cycle de vie")
+metadonnees <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Renseigner les métadonnées documentaires (contributeurs, établissements, licences, financeurs projets, …)]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Renseigner les métadonnées documentaires")
+entrepot <- data |> 
+    filter(`Sur quelles activités auriez-vous besoin d'une formation ? [Choisir (ou aider au choix de) l’entrepôt]` == "Oui") |> 
+    select(23:37)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           formation = "Choisir l’entrepôt")
+
+formation_activites <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
+    group_by(formation) |> mutate(percent = round(V1/sum(V1)*100, 0)) %>% ungroup()
+
+formation_activites |> 
+    filter(formation != "Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes",
+           formation != "Déposer les jeux de données",
+           formation != "Publier en accès ouvert ou en partage restreint",
+           formation != "Nettoyer, affiner, convertir et décrire les données brutes",
+           formation != "Créer, structurer, décrire les jeux de données validés",
+           rowname != "Superviser l’ensemble du cycle de vie",
+           rowname != "Assurer la mise à jour des versions de jeux de données",
+           rowname != "Découvrir les données",
+           rowname != "Accompagner la découverte des données",
+           rowname != "Garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs",
+           rowname != "Déposer les jeux de données",
+           rowname != "Choisir") |> #retrait de certaines catégories pour une dataviz lisible 
+    mutate(rowname = str_replace_all(rowname, c("données haut débit" = "HD",
+                                                                   "de simulation" = "\nde simulation")),
+           rowname = reorder(rowname, V1, desc = TRUE)) |> 
+    ggplot(aes(y = V1)) + 
+     #text = paste("Besoin de formation :", formation, "\nTravail des données :", rowname, "\n", V1, "réponses soit", percent, "%"))) +
+      geom_col(aes(x = formation), color = "white", fill = "#5770BE", width = 0.7) +
+      labs(x = "Besoins de formation", y = "Nombre de réponses", title = "Besoins de formation selon l'activité du travail des données",
+               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      theme_classic() +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 70)) + #axis-text trop longs sur plusieurs lignes
+      coord_flip() +
+      theme(legend.position = "none", 
+            legend.text = element_text(size = 8),
+            text = element_text(family = "Montserrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1),
+            plot.subtitle = element_text(face = "italic", size = 15),
+            strip.text.x = element_text(face = "bold"),
+            #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
+            axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
+            panel.grid.major.x = element_line(size = 0.5)
+            ) +
+      facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+```
+
+
+#### Proposition 3
+
+```{r prop3}
+# Catégorie d'emploi / Activités du travail des données
+```
+
+
+#### Proposition 4
+
+```{r prop4}
+# Domaine thématique / toutes les autres
+```
+
+
+#### Proposition 5
+
+```{r prop5}
+# Activités du travail des données / type d'établissements / catégorie d'emploi
+```
+
+
+#### Proposition 6
+
+```{r prop6}
+# Besoins de formation / parties du cycle de vie
+```
+
+
+#### Proposition 7
+
+```{r prop7}
+# Catégorie d'empploi / besoins de formation
+```
+
+
+#### Proposition 8
+
+```{r prop8}
+# Formation à la gestion des données / besoins de formation
+```
 
 
 # Données issues des entretiens
