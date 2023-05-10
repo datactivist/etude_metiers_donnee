@@ -986,9 +986,9 @@ cycle_lieux |>
 
 #### Proposition 1{.tabset}
 
-##### Doubles barres 
+##### Facettes
 
-```{r prop1.1, out.width='70%'}
+```{r prop1.1, fig.width=12}
 # Catégorie d'emploi / parties du cycle de vie 
 table <- data |> 
     select(16:22, 90)|> mutate_all(na_if, "Non") |> 
@@ -1013,34 +1013,6 @@ table <- data |>
                                             "Planification, PGD")))
 table |> 
     ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
-      coord_flip() +
-      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
-    #'#e2c44d','#5f4496', "#ffe725", "#169B62", "#5770BE"
-      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
-           subtitle = paste(sum(table$V1), "réponses")) +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-      theme_classic() +
-      theme(legend.position = "bottom",
-            text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold", hjust = 1, size = 13),
-            axis.title.y = element_blank(),
-            axis.line.x = element_blank(),
-            axis.line.y = element_blank(),
-            axis.ticks.y = element_blank(),
-            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
-                color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5)) +
-    guides(fill = guide_legend(title = ""))
-```
-
-
-##### Facettes
-
-```{r prop1.2, fig.width=12}
-table |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
@@ -1060,6 +1032,35 @@ table |>
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
+
+
+##### Doubles barres 
+
+```{r prop1.2, out.width='70%'}
+table |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T,
+                position = position_dodge(width = .5)) +
+    guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
+```
+
+
 
 
 #### Proposition 2
@@ -1279,23 +1280,34 @@ formation_activites |>
            rowname != "Garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs",
            rowname != "Déposer les jeux de données",
            rowname != "Choisir") |> #retrait de certaines catégories pour une dataviz lisible 
-    mutate(rowname = str_replace_all(rowname, c("Structurer les données et les outils pour la collecte, le stockage et le traitement" = "Structurer les données et les outils pour la \ncollecte, le stockage et le traitement",
-                                                "Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes" = "Décrire et mettre en œuvre le protocole \nd’obtention des données brutes",
-                                                "Nettoyer, affiner, convertir et décrire les données brutes" = "Nettoyer, affiner, convertir et décrire les \ndonnées brutes",
-                                                "Coordonner les activités de gestion et diffusion des données" = "Coordonner les activités de gestion et \ndiffusion des données")),
+    mutate(rowname = str_replace_all(rowname, c("Structurer les données et les outils pour la collecte, le stockage et le traitement" = 
+                                                    "Structuration des données et des outils pour la \ncollecte, le stockage et le traitement",
+                                                "Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes" = 
+                                                    "Description et mise en œuvre du protocole \nd’obtention des données brutes",
+                                                "Nettoyer, affiner, convertir et décrire les données brutes" = 
+                                                    "Nettoyage, affination, conversion et description \ndes données brutes",
+                                                "Coordonner les activités de gestion et diffusion des données" = 
+                                                    "Coordination des activités de gestion et \ndiffusion des données",
+                                                "Choisir " = "Choix de l'entrepôt",
+                                                "Renseigner les métadonnées documentaires " = "Saisie des métadonnées documentaires",
+                                                "Publier en accès ouvert ou en partage restreint" = "Publication en accès ouvert ou en partage restreint",
+                                                "Créer, structurer, décrire les jeux de données validés " = 
+                                                    "Création, structuration, description des jeux \nde données validés",
+                                                "Analyser, représenter, modéliser, prédire " = "Analyse, représentation, modélisation, prédiction")),
            rowname = reorder(rowname, V1, desc = TRUE)) |> 
     ggplot(aes(y = V1)) + 
      #text = paste("Besoin de formation :", formation, "\nTravail des données :", rowname, "\n", V1, "réponses soit", percent, "%"))) +
       geom_col(aes(x = formation), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Besoins de formation", y = "Nombre de réponses", title = "Besoins de formation selon l'activité du travail des données",
-               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      labs(x = "Besoins de formation", y = "Nombre de réponses", 
+           title = "Besoins de formation des individus selon leur type d'activités du travail des données",
+           subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat", size = 8),
-            plot.title = element_text(face = "bold", hjust = 1, size = 17),
+            plot.title = element_text(face = "bold", size = 14, hjust = 1),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
@@ -1306,9 +1318,11 @@ formation_activites |>
 ```
 
 
-#### Proposition 3
+#### Proposition 3{.tabset}
 
-```{r prop3, fig.width=12}
+##### Top 5
+
+```{r prop3.1, fig.width=12}
 # Catégorie d'emploi / Activités du travail des données
 table <- data |> 
     select(23:37, 90)|> mutate_all(na_if, "Non") |> 
@@ -1323,68 +1337,66 @@ table <- data |>
            rowname = str_extract(rowname, "^[^(]+"), 
            `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     arrange(desc(percent)) 
-table_plus <- table |> 
+
+table |> 
     mutate(keep = case_when(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche" &
                                 row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1))
-table_moins <- table |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", 
+           title = "Répartition de chaque type d'activité des données selon la catégorie d'emploi",
+           caption = "Top 5 des catégories les plus représentées",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "none",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"), 
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+```
+
+##### Bottom 5
+
+```{r prop3.2, fig.width=12}
+table |> 
     mutate(keep = case_when(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche" &
                                 row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1))
-
-# graphique
-plot_plus <- table_plus |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, 
-               group = `Quelle est votre catégorie d'emploi actuel ?`)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       labs(x = "", y = "Nombre de réponses", 
-           subtitle = paste(sum(table_plus$V1), "réponses"),
-           caption = "Top 5 des catégories les plus représentées") +
+           title = "Répartition de chaque type d'activité des données selon la catégorie d'emploi",
+           caption = "Top 5 des catégories les moins représentées",
+           subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
-      theme(legend.position = "bottom",
+      theme(legend.position = "none",
             text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            plot.title = element_text(face = "bold"), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
-                color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5)) +
-      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
-plot_moins <- table_moins |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, 
-               group = `Quelle est votre catégorie d'emploi actuel ?`)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
-      coord_flip() +
-      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
-      labs(x = "", y = "Nombre de réponses", 
-           subtitle = paste(sum(table_moins$V1), "réponses"),
-           caption = "Top 5 des catégories les moins représentées") +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-      theme_classic() +
-      theme(legend.position = "bottom",
-            text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold", hjust = 1, size = 13),
-            axis.title.y = element_blank(),
-            axis.line.x = element_blank(),
-            axis.line.y = element_blank(),
-            axis.ticks.y = element_blank(),
-            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
-                color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5))  +
-      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
-grid.arrange(plot_plus, plot_moins, ncol = 2, 
-             top = textGrob("Activités du travail des données selon la catégorie d'emploi", 
-                            gp = gpar(fontsize = 15, font = 2)))
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
+
 
 #### Proposition 4{.tabset}
 
@@ -1557,23 +1569,24 @@ croisements_domaine <- function(min, max, row_num){
     assign("table", table, envir = .GlobalEnv)
 }
 croisements_domaine(96, 110, 6) |> 
-    mutate(rowname = str_wrap(rowname, width = 50)) |> 
+    mutate(rowname = str_wrap(rowname, width = 50),
+           rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepôt")) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", title = "Domaine thématique selon les besoins de formation",
-            caption = "Top 6 des catégories les plus représentées",
-               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      labs(x = "Domaine thématique", y = "Nombre de réponses", 
+           title = "Répartition des besoins de formation par domaine thématique des répondants",
+           caption = "Top 6 des catégories les plus représentées",
+           subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat", size = 8),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold", size = 14),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
-            #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
@@ -1589,18 +1602,18 @@ croisements_domaine(81, 84, 4) |>
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", title = "Domaine thématique selon la formation en gestion de données",
-               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      labs(x = "Domaine thématique", y = "Nombre de réponses", 
+           title = "Répartition des types de formation en gestion de données par domaine thématique des répondants",
+           subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat", size = 8),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold", size = 14, hjust = 1),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
-            #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
@@ -1616,18 +1629,18 @@ croisements_domaine(16, 22, 7) |>
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", title = "Domaine thématique selon l'intervention dans le cycle de vie de la donnée",
-               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      labs(x = "Domaine thématique", y = "Nombre de réponses", 
+           title = "Répartition de l'intervention dans le cycle de vie de la donnée par domaine thématique des répondants",
+           subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat", size = 8),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold", size = 14, hjust = 1),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
-            #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
@@ -1643,16 +1656,17 @@ croisements_domaine(23, 37, 6) |>
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", title = "Domaine thématique selon l'activité dans les données",
-            caption = "Top 6 des catégories les plus représentées",
-               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      labs(x = "Domaine thématique", y = "Nombre de réponses",
+           title = "Répartition du type d'activité dans les données par domaine thématique des répondants",
+           caption = "Top 6 des catégories les plus représentées",
+           subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat", size = 8),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold", size = 14),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
@@ -1671,16 +1685,17 @@ croisements_domaine(66, 76, 6) |>
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", title = "Domaine thématique selon le type de données travaillé",
-            caption = "Top 6 des catégories les plus représentées",
-               subtitle = paste0(sum(formation_activites$V1), " réponses")) +
+      labs(x = "Domaine thématique", y = "Nombre de réponses", 
+           title = "Répartition du type de données travaillé par domaine thématique des répondants",
+           caption = "Top 6 des catégories les plus représentées",
+           subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat", size = 8),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold", size = 14),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             #axis.title.x = element_text(margin = margin(t = 3, r = 0, b = 0, l = 0)),
@@ -1690,9 +1705,11 @@ croisements_domaine(66, 76, 6) |>
 ```
 
 
-#### Proposition 5
+#### Proposition 5{.tabset}
 
-```{r prop5, fig.width=12}
+##### Top 5
+
+```{r prop5.1, fig.width=12, fig.height=8}
 # Activités du travail des données / type d'établissements / catégorie d'emploi
 table <- data |> 
     select(23:37, 6)|> mutate_all(na_if, "Non") |> 
@@ -1704,69 +1721,84 @@ table <- data |>
     mutate(rowname = str_extract(rowname, "(?<=\\[).*"),
            rowname = substr(rowname, 1, nchar(rowname)-1),
            rowname = str_extract(rowname, "^[^(]+"), 
-           `Dans quel type d'établissement exercez-vous votre activité ?` = str_extract(`Dans quel type d'établissement exercez-vous votre activité ?`, "^[^(]+")) |> 
-    arrange(desc(V1)) 
-table_plus <- table |> 
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               str_extract(`Dans quel type d'établissement exercez-vous votre activité ?`, "^[^(]+"),
+           percent = round((V1 / sum(V1))*100, 0)) |> 
+    arrange(desc(V1))
+
+
+table |> 
     mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
                                 row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1))
-table_moins <- table |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               factor(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                      levels = c("Organisme de recherche","Université","Ecole","Autre"))) |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+               group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", 
+           title = "Répartition de chaque type d'activité des données selon le type d'établissement",
+           caption = "Top 5 des catégories les plus représentées",
+           subtitle = paste(sum(table$V1), "réponses")) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "none",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"), 
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`) +
+      scale_fill_manual(values = c("Ecole" = "#ffe725", 
+                                   "Organisme de recherche" = "#5770BE", 
+                                   "Université" = "#169B62", 
+                                   "Autre" = "#666666"))
+```
+
+##### Bottom 5
+
+```{r prop5.2, fig.width=12, fig.height=8}
+table |> 
     mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
                                 row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1))
-
-# graphique
-plot_plus <- table_plus |> 
+    mutate(rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepôt"),
+           rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               factor(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                      levels = c("Organisme de recherche","Université","Ecole","Autre"))) |> 
     ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
                group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      scale_fill_manual(values = c("Ecole" = "#ffe725", 
-                                   "Organisme de recherche" = "#5770BE", 
-                                   "Université" = "#169B62", 
-                                   "Autre" = "#666666")) +
       labs(x = "", y = "Nombre de réponses", 
-           subtitle = paste(sum(table_plus$V1), "réponses"),
-           caption = "Top 5 des catégories les plus représentées") +
+           title = "Répartition de chaque type d'activité des données selon le type d'établissement",
+           caption = "Top 5 des catégories les moins représentées",
+           subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
-      theme(legend.position = "bottom",
+      theme(legend.position = "none",
             text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            plot.title = element_text(face = "bold"), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
-plot_moins <- table_moins |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
-               group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
-      coord_flip() +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`) +
       scale_fill_manual(values = c("Ecole" = "#ffe725", 
                                    "Organisme de recherche" = "#5770BE", 
                                    "Université" = "#169B62", 
-                                   "Autre" = "#666666")) +
-      labs(x = "", y = "Nombre de réponses", 
-           subtitle = paste(sum(table_moins$V1), "réponses"),
-           caption = "Top 5 des catégories les moins représentées") +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-      theme_classic() +
-      theme(legend.position = "bottom",
-            text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold", hjust = 1, size = 13),
-            axis.title.y = element_blank(),
-            axis.line.x = element_blank(),
-            axis.line.y = element_blank(),
-            axis.ticks.y = element_blank(),
-            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
-grid.arrange(plot_plus, plot_moins, ncol = 2, 
-             top = textGrob("Activités du travail des données selon le type d'établissement", 
-                            gp = gpar(fontsize = 15, font = 2)))
+                                   "Autre" = "#666666"))
 ```
 
 
@@ -1973,9 +2005,10 @@ entrepot <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            formation = "Choisir l’entrepôt")
 
-formation_cycle_plus <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
+formation_cycle <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
     group_by(rowname) |> 
-    arrange(desc(V1)) |> 
+    arrange(desc(V1))
+formation_cycle_plus <- formation_cycle |> 
     mutate(keep = case_when(rowname == "Collecte, création, stockage" & row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1),
@@ -1992,16 +2025,16 @@ formation_cycle_plus |>
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Besoins de formation selon l'intervention dans le cycle de vie de la donnée",
+           title = "Répartition des besoins de formation selon l'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les plus représentées",
-           subtitle = paste0(sum(formation_cycle_plus$V1), " réponses")) +
+           subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat"),
-            plot.title = element_text(face = "bold", size = 17, hjust = 1),
+            plot.title = element_text(face = "bold", hjust = 1),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
@@ -2012,34 +2045,33 @@ formation_cycle_plus |>
 ##### Bottom 5
 
 ```{r prop6.2, fig.height=8, fig.width=10}
-formation_cycle_moins <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
-    group_by(rowname) |> 
-    arrange(desc(V1)) |> 
+formation_cycle_moins <- formation_cycle |>  
     mutate(keep = case_when(rowname == "Collecte, création, stockage" & row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1),
+           rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
            rowname = factor(rowname, levels = c("Collecte, création, stockage",
                                             "Analyse, traitement, calcul",
                                             "Préparation du dépôt ",
                                             "Dépôt",
                                             "Ouverture ou partage ",
                                             "Réutilisation",
-                                            "Planification, plan de gestion de données")))
+                                            "Planification, PGD")))
 
 formation_cycle_moins |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Besoins de formation selon l'intervention dans le cycle de vie de la donnée",
+           title = "Répartition des besoins de formation selon l'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les moins représentées",
-           subtitle = paste0(sum(formation_cycle_moins$V1), " réponses")) +
+           subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat"),
-            plot.title = element_text(face = "bold", size = 17, hjust = 1),
+            plot.title = element_text(face = "bold", hjust = 1),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
@@ -2047,10 +2079,11 @@ formation_cycle_moins |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-#### Proposition 7
+#### Proposition 7{.tabset}
 
+##### Top 5
 
-```{r prop7, fig.width=12}
+```{r prop7.1, fig.width=12}
 # Catégorie d'emploi / besoins de formation
 appui <- data |> 
     filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
@@ -2080,61 +2113,64 @@ chercheurs <- data |>
     arrange(desc(percent)) |> 
     mutate(rowname = fct_reorder(rowname, V1),
            cat = "Chercheur / Enseignant-chercheur")
-formation_emploi_plus <- rbind(appui, chercheurs) |> 
+
+table <- rbind(appui, chercheurs) |> 
     group_by(rowname) |> 
-    arrange(desc(V1)) |> ungroup() |> 
-    mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() <= 5 ~ 1, .default = 0)) |>  
+    arrange(desc(V1)) |> ungroup()
+table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() <= 6 ~ 1, .default = 0)) |>  
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1))
-formation_emploi_moins <- rbind(appui, chercheurs) |> 
-    group_by(rowname) |> 
-    arrange(desc(V1)) |> ungroup() |>
-    mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() >= 10 ~ 1, .default = 0)) |>  
-    filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1))
-    
-# graphique
-plot_plus <- formation_emploi_plus |> 
-    ggplot(aes(x = rowname, y = V1, fill = cat, 
-               group = cat)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y = V1, fill = cat, group = cat)) +
+      geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       labs(x = "", y = "Nombre de réponses", 
-           subtitle = paste(sum(formation_emploi_plus$V1), "réponses"),
-           caption = "Top 5 des catégories les plus représentées") +
+           title = "Répartition des besoins de formation selon la catégorie d'emploi",
+           caption = "Top 5 des catégories les plus représentées",
+           subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
-      theme(legend.position = "bottom",
+      theme(legend.position = "none",
             text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
-plot_moins <- formation_emploi_moins |> 
-    ggplot(aes(x = rowname, y = V1, fill = cat, 
-               group = cat)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~cat) +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+```
+
+##### Bottom 5
+
+```{r prop7.2, fig.width=12}
+table |> ungroup() |> 
+    mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() >= 18 ~ 1, .default = 0)) |> ungroup() |> 
+    filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y = V1, fill = cat, group = cat)) +
+      geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       labs(x = "", y = "Nombre de réponses", 
-           subtitle = paste(sum(formation_emploi_moins$V1), "réponses"),
-           caption = "Top 5 des catégories les moins représentées") +
+           title = "Répartition des besoins de formation selon la catégorie d'emploi",
+           caption = "Top 5 des catégories les moins représentées",
+           subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
-      theme(legend.position = "bottom",
+      theme(legend.position = "none",
             text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
-grid.arrange(plot_plus, plot_moins, ncol = 2, 
-             top = textGrob("Besoins de formation selon la catégorie d'emploi", 
-                            gp = gpar(fontsize = 15, font = 2)))
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      facet_wrap(~cat) +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
 
 
@@ -2341,28 +2377,31 @@ entrepot <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            formation = "Choisir l’entrepôt")
 
-formation_besoins_plus <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
+formation_besoins <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
     group_by(rowname) |> 
-    arrange(desc(V1)) |> 
+    arrange(desc(V1))
+formation_besoins_plus <- formation_besoins |> 
     mutate(keep = case_when(rowname == "Autoformation" & row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> ungroup() |> 
-    mutate(rowname = str_replace_all(rowname, c("Formation intra- ou inter-établissement" = "Formation intra- ou \ninter-établissement")),
-           rowname = fct_reorder(rowname, V1))
+    mutate(rowname = factor(rowname, levels = c("Autoformation", "Formation intra- ou inter-établissement ", 
+                                                "Formation certifiante non diplômante", "Formation diplômante")),
+           #rowname = str_replace_all(rowname, c("Formation intra- ou inter-établissement" = "Formation intra- ou \ninter-établissement")),
+           formation = fct_reorder(formation, V1))
 
 formation_besoins_plus |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Besoins de formation selon la formation à la gestion \net diffusion des données de recherche",
+           title = "Répartition des besoins de formation selon le type de formation à la \ngestion des données de recherche",
            caption = "Top 5 des catégories les plus représentées",
-           subtitle = paste0(sum(formation_besoins_plus$V1), " réponses")) +
+           subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat"),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold"),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
@@ -2374,28 +2413,27 @@ formation_besoins_plus |>
 ##### Bottom 5
 
 ```{r prop8.2, fig.width=10, fig.height=6}
-formation_besoins_moins <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
-    group_by(rowname) |> 
-    arrange(desc(V1)) |> 
+formation_besoins_moins <- formation_besoins |> 
     mutate(keep = case_when(rowname == "Autoformation" & row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> 
-    mutate(rowname = fct_reorder(rowname, V1),
-           rowname = str_replace_all(rowname, c("Formation intra- ou inter-établissement" = "Formation intra- ou \ninter-établissement")))
+    mutate(formation = fct_reorder(formation, V1),
+           rowname = factor(rowname, levels = c("Autoformation", "Formation intra- ou inter-établissement ", 
+                                                "Formation certifiante non diplômante", "Formation diplômante")))
 
 formation_besoins_moins |> 
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Besoins de formation selon la formation à la gestion \net diffusion des données de recherche",
+           title = "Répartition des besoins de formation selon le type de formation à la \ngestion des données de recherche",
            caption = "Top 5 des catégories les moins représentées",
-           subtitle = paste0(sum(formation_besoins_moins$V1), " réponses")) +
+           subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat"),
-            plot.title = element_text(face = "bold", size = 17),
+            plot.title = element_text(face = "bold"),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
@@ -2471,4 +2509,180 @@ res.desc[[1]]
 res.desc[[2]]
 # cyan : #77f5d3
 # violet foncé : #4b317f
+
+
+# Proposition 3
+# graphique
+plot_plus <- table_plus |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, 
+               group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      labs(x = "", y = "Nombre de réponses", 
+           subtitle = paste(sum(table_plus$V1), "réponses"),
+           caption = "Top 5 des catégories les plus représentées") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T,
+                position = position_dodge(width = .5)) +
+      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
+plot_moins <- table_moins |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, 
+               group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      labs(x = "", y = "Nombre de réponses", 
+           subtitle = paste(sum(table_moins$V1), "réponses"),
+           caption = "Top 5 des catégories les moins représentées") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T,
+                position = position_dodge(width = .5))  +
+      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
+grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Activités du travail des données selon la catégorie d'emploi", 
+                            gp = gpar(fontsize = 15, font = 2)))
+
+
+# Proposition 5
+table_plus <- table |> 
+    mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
+                                row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
+    filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
+    mutate(rowname = fct_reorder(rowname, V1))
+table_moins <- table |> 
+    mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
+                                row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
+    filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
+    mutate(rowname = fct_reorder(rowname, V1))
+
+# graphique
+plot_plus <- table_plus |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+               group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("Ecole" = "#ffe725", 
+                                   "Organisme de recherche" = "#5770BE", 
+                                   "Université" = "#169B62", 
+                                   "Autre" = "#666666")) +
+      labs(x = "", y = "Nombre de réponses", 
+           subtitle = paste(sum(table_plus$V1), "réponses"),
+           caption = "Top 5 des catégories les plus représentées") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
+plot_moins <- table_moins |> 
+    ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+               group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("Ecole" = "#ffe725", 
+                                   "Organisme de recherche" = "#5770BE", 
+                                   "Université" = "#169B62", 
+                                   "Autre" = "#666666")) +
+      labs(x = "", y = "Nombre de réponses", 
+           subtitle = paste(sum(table_moins$V1), "réponses"),
+           caption = "Top 5 des catégories les moins représentées") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
+grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Activités du travail des données selon le type d'établissement", 
+                            gp = gpar(fontsize = 15, font = 2)))
+
+
+# Proposition 7
+
+formation_emploi_plus <- rbind(appui, chercheurs) |> 
+    group_by(rowname) |> 
+    arrange(desc(V1)) |> ungroup() |> 
+    mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() <= 5 ~ 1, .default = 0)) |>  
+    filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
+    mutate(rowname = fct_reorder(rowname, V1))
+formation_emploi_moins <- rbind(appui, chercheurs) |> 
+    group_by(rowname) |> 
+    arrange(desc(V1)) |> ungroup() |>
+    mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() >= 10 ~ 1, .default = 0)) |>  
+    filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
+    mutate(rowname = fct_reorder(rowname, V1))
+    
+# graphique
+plot_plus <- formation_emploi_plus |> 
+    ggplot(aes(x = rowname, y = V1, fill = cat, 
+               group = cat)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      labs(x = "", y = "Nombre de réponses", 
+           subtitle = paste(sum(formation_emploi_plus$V1), "réponses"),
+           caption = "Top 5 des catégories les plus représentées") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
+plot_moins <- formation_emploi_moins |> 
+    ggplot(aes(x = rowname, y = V1, fill = cat, 
+               group = cat)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      labs(x = "", y = "Nombre de réponses", 
+           subtitle = paste(sum(formation_emploi_moins$V1), "réponses"),
+           caption = "Top 5 des catégories les moins représentées") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      theme(legend.position = "bottom",
+            text = element_text(family = "Monsterrat", size = 12),
+            axis.title.y = element_blank(),
+            axis.line.x = element_blank(),
+            axis.line.y = element_blank(),
+            axis.ticks.y = element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2))
+grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Besoins de formation selon la catégorie d'emploi", 
+                            gp = gpar(fontsize = 15, font = 2)))
 ```
