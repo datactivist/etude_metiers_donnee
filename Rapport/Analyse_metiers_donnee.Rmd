@@ -1015,7 +1015,7 @@ table |>
     ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
+      labs(x = "", y = "Nombre de réponses", title = "Répartition des besoins de formation des individus selon leur type d'activités dédiées aux données",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
@@ -1042,13 +1042,13 @@ table |>
       geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
       coord_flip() +
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
-      labs(x = "", y = "Nombre de réponses", title = "Intervention sur le cycle de vie de la donnée selon la catégorie d'emploi",
+      labs(x = "", y = "Nombre de réponses", title = "Répartition des besoins de formation des individus selon \nleur type d'activités dédiées aux données",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       theme(legend.position = "bottom",
             text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold", hjust = 1, size = 13),
+            plot.title = element_text(face = "bold", size = 13),
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
@@ -1347,14 +1347,14 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = "Répartition de chaque type d'activité des données selon la catégorie d'emploi",
+           title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des individus",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       theme(legend.position = "none",
             text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold"), 
+            plot.title = element_text(face = "bold", hjust = 1), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
@@ -1378,14 +1378,14 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = "Répartition de chaque type d'activité des données selon la catégorie d'emploi",
+           title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des individus",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       theme(legend.position = "none",
-            text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold"), 
+            text = element_text(family = "Monsterrat", size = 12, hjust = 1),
+            plot.title = element_text(face = "bold", hjust = 1), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
@@ -1740,7 +1740,7 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = "Répartition de chaque type d'activité des données selon le type d'établissement",
+           title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des individus",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -1760,7 +1760,16 @@ table |>
                                    "Organisme de recherche" = "#5770BE", 
                                    "Université" = "#169B62", 
                                    "Autre" = "#666666"))
+autre <- table(data$`Dans quel type d'établissement exercez-vous votre activité ? [Autre]`) |> 
+    as.data.frame() |> 
+    arrange(desc(Freq)) |> 
+    slice(1:10) |> 
+    select(Var1) |> 
+    t()
 ```
+
+Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
+
 
 ##### Bottom 5
 
@@ -1779,7 +1788,7 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = "Répartition de chaque type d'activité des données selon le type d'établissement",
+           title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des individus",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -1801,6 +1810,7 @@ table |>
                                    "Autre" = "#666666"))
 ```
 
+Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
 
 #### Proposition 6{.tabset}
 
@@ -2025,7 +2035,7 @@ formation_cycle_plus |>
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation selon l'intervention dans le cycle de vie de la donnée",
+           title = "Répartition des besoins de formation des individus selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
@@ -2034,7 +2044,7 @@ formation_cycle_plus |>
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat"),
-            plot.title = element_text(face = "bold", hjust = 1),
+            plot.title = element_text(face = "bold"),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
@@ -2062,7 +2072,7 @@ formation_cycle_moins |>
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation selon l'intervention dans le cycle de vie de la donnée",
+           title = "Répartition des besoins de formation des individus selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
@@ -2071,7 +2081,7 @@ formation_cycle_moins |>
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
             text = element_text(family = "Montserrat"),
-            plot.title = element_text(face = "bold", hjust = 1),
+            plot.title = element_text(face = "bold"),
             plot.subtitle = element_text(face = "italic", size = 15),
             strip.text.x = element_text(face = "bold"),
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
@@ -2124,7 +2134,7 @@ table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la reche
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation selon la catégorie d'emploi",
+           title = "Répartition des besoins de formation des individus selon leur catégorie d'emploi",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -2154,7 +2164,7 @@ table |> ungroup() |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation selon la catégorie d'emploi",
+           title = "Répartition des besoins de formation des individus selon leur catégorie d'emploi",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -2392,7 +2402,7 @@ formation_besoins_plus |>
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation selon le type de formation à la \ngestion des données de recherche",
+           title = "Répartition des besoins actuels de formation des individus selon le type \nde formation déjà reçu à la gestion des données de recherche",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
@@ -2424,7 +2434,7 @@ formation_besoins_moins |>
     ggplot(aes(y = V1)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
       labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation selon le type de formation à la \ngestion des données de recherche",
+           title = "Répartition des besoins actuels de formation des individus selon le type \nde formation déjà reçu à la gestion des données de recherche",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
