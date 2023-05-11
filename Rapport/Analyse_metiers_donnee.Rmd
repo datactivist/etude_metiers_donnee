@@ -7,6 +7,7 @@ output:
       #number_sections: true
       theme: paper
       toc: true
+      float: true
       toc_depth: 4
       collapsed: true
       smooth_scroll: true
@@ -435,18 +436,18 @@ data |>
 data |> 
     filter(!is.na(`Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`)) |> 
     select(`ID de la réponse`, `Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`) |> 
-    sample_n(40) %>%
+    sample_n(40) |>
     rename(`Éléments de formalisation` = `Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.`) |> 
-      gt() %>%
-      gt_theme_nytimes() %>%
+      gt() |>
+      gt_theme_nytimes() |>
       tab_header(title = "Vous pouvez décrire ici les éléments relatifs à cette formalisation, fournir un lien ou indiquer toute autre information.",
-                 subtitle = "20 éléments de formalisation aléatoires") %>%
+                 subtitle = "20 éléments de formalisation aléatoires") |>
       # tab_style(
       #       style = list(cell_text(weight = "lighter")),
       #       locations = cells_body(
-      #         columns = `Polarité`)) %>%
+      #         columns = `Polarité`)) |>
       tab_options(table.font.size = 17,
-                      table.border.bottom.width = 1) %>%
+                      table.border.bottom.width = 1) |>
       div(style='height:700px; overflow-y: scroll')
 ```
 
@@ -663,7 +664,7 @@ reutilisation <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Réutilisation")
 cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, ouverture, collecte) |> 
-    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) %>% ungroup() |> 
+    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) |> ungroup() |> 
     mutate(cycle = factor(cycle, levels = c("Collecte, création, stockage",
                                             "Analyse, traitement, calcul",
                                             "Préparation du dépôt",
@@ -795,7 +796,7 @@ barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, varia
                is_cycle = factor(is_cycle, levels = c(non_cycle, oui_cycle)))
     
     # Graphique croisé
-    table %>% 
+    table |> 
       ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
         geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
         coord_flip() +
@@ -951,7 +952,7 @@ reutilisation <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Réutilisation")
 cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, ouverture, collecte) |> 
-    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) %>% ungroup() |> 
+    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) |> ungroup() |> 
     mutate(cycle = factor(cycle, levels = c("Collecte, création, stockage",
                                             "Analyse, traitement, calcul",
                                             "Préparation du dépôt",
@@ -1012,22 +1013,23 @@ table <- data |>
                                             "Réutilisation",
                                             "Planification, PGD")))
 table |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+    ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", title = "Répartition des besoins de formation des individus selon leur type d'activités dédiées aux données",
+      labs(x = "", y = "Pourcentage", 
+           title = "Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des individus",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       theme(legend.position = "none",
             text = element_text(family = "Monsterrat", size = 12),
-            plot.title = element_text(face = "bold"), 
+            plot.title = element_text(face = "bold", hjust = 1), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
@@ -1038,11 +1040,12 @@ table |>
 
 ```{r prop1.2, out.width='70%'}
 table |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+    ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
       coord_flip() +
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
-      labs(x = "", y = "Nombre de réponses", title = "Répartition des besoins de formation des individus selon \nleur type d'activités dédiées aux données",
+      labs(x = "", y = "Nombre de réponses", 
+           title = "Répartition de l'intervention dans le cycle de vie de la \ndonnées selon la catégorie d'emploi des individus",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
@@ -1054,10 +1057,10 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T,
                 position = position_dodge(width = .5)) +
-    guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
+      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
 ```
 
 
@@ -1265,9 +1268,10 @@ entrepot <- data |>
            formation = "Choisir l’entrepôt")
 
 formation_activites <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
-    group_by(formation) |> mutate(percent = round(V1/sum(V1)*100, 0)) %>% ungroup()
+    group_by(formation) |> mutate(percent = round(V1/sum(V1)*100, 0))|> ungroup()
 
 formation_activites |> 
+    group_by(rowname) |> mutate(percent = round((V1 / sum(V1))*100, 0)) |> ungroup() |> 
     filter(formation != "Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes",
            formation != "Déposer les jeux de données",
            formation != "Publier en accès ouvert ou en partage restreint",
@@ -1295,13 +1299,14 @@ formation_activites |>
                                                     "Création, structuration, description des jeux \nde données validés",
                                                 "Analyser, représenter, modéliser, prédire " = "Analyse, représentation, modélisation, prédiction")),
            rowname = reorder(rowname, V1, desc = TRUE)) |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
      #text = paste("Besoin de formation :", formation, "\nTravail des données :", rowname, "\n", V1, "réponses soit", percent, "%"))) +
       geom_col(aes(x = formation), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Besoins de formation", y = "Nombre de réponses", 
-           title = "Besoins de formation des individus selon leur type d'activités du travail des données",
+      labs(x = "Besoins de formation", y = "Pourcentage", 
+           title = "Répartition des besoins de formation des individus selon leur type d'activités dédiées aux données",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
+      scale_y_continuous(breaks = scales::pretty_breaks()) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
@@ -1317,6 +1322,7 @@ formation_activites |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 6% des répondants ayant une activité dans le choix de l'entrepôt ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
 
 #### Proposition 3{.tabset}
 
@@ -1343,13 +1349,14 @@ table |>
                                 row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+    ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", 
+      labs(x = "", y = "Pourcentage", 
            title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des individus",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
+      scale_y_continuous(breaks = scales::pretty_breaks()) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       theme(legend.position = "none",
@@ -1360,9 +1367,11 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
-                color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondants")), 
+                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
 
@@ -1374,25 +1383,28 @@ table |>
                                 row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+    ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", 
+      labs(x = "", y = "Pourcentage", 
            title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des individus",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
+      scale_y_continuous(breaks = scales::pretty_breaks()) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       theme(legend.position = "none",
-            text = element_text(family = "Monsterrat", size = 12, hjust = 1),
+            text = element_text(family = "Monsterrat", size = 12),
             plot.title = element_text(face = "bold", hjust = 1), 
             axis.title.y = element_blank(),
             axis.line.x = element_blank(),
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondants")), 
+                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
@@ -1565,17 +1577,20 @@ croisements_domaine <- function(min, max, row_num){
         arrange(desc(V1)) |> group_by(domaine) |> 
         mutate(keep = case_when(domaine == "Sciences humaines et sociales" & row_number() <= row_num ~ 1, .default = 0)) |> ungroup() |> 
         filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-        mutate(rowname = fct_reorder(rowname, V1))
+        mutate(rowname = fct_reorder(rowname, V1)) |> 
+        ungroup() |> group_by(rowname) |> 
+        mutate(percent = round((V1 / sum(V1))*100, 0)) |> 
+        ungroup()
     assign("table", table, envir = .GlobalEnv)
 }
 croisements_domaine(96, 110, 6) |> 
     mutate(rowname = str_wrap(rowname, width = 50),
            rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepôt")) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", 
-           title = "Répartition des besoins de formation par domaine thématique des répondants",
+      labs(x = "Discipline", y = "Pourcentage", 
+           title = "Répartition des besoins de formation par discipline des répondants",
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
@@ -1592,6 +1607,7 @@ croisements_domaine(96, 110, 6) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 21% des répondants ayant un besoin de formation en '*analyse, représentation, modélisation et prédiction*' travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Formation gestion de données
 
@@ -1600,10 +1616,10 @@ croisements_domaine(96, 110, 6) |>
 croisements_domaine(81, 84, 4) |> 
     mutate(rowname = str_wrap(rowname, width = 50)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", 
-           title = "Répartition des types de formation en gestion de données par domaine thématique des répondants",
+      labs(x = "Discipline", y = "Pourcentage", 
+           title = "Répartition des types de formation en gestion de données par discipline des répondants",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
@@ -1619,6 +1635,7 @@ croisements_domaine(81, 84, 4) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 21% des répondants s'étant *autoformés* à la gestion et la diffusion de données travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Cycle de vie
 
@@ -1627,10 +1644,10 @@ croisements_domaine(81, 84, 4) |>
 croisements_domaine(16, 22, 7) |> 
     mutate(rowname = str_wrap(rowname, width = 50)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", 
-           title = "Répartition de l'intervention dans le cycle de vie de la donnée par domaine thématique des répondants",
+      labs(x = "Discipline", y = "Pourcentage", 
+           title = "Répartition de l'intervention dans le cycle de vie de la donnée par discipline des répondants",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
@@ -1646,6 +1663,7 @@ croisements_domaine(16, 22, 7) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 17% des répondants intervenant en *analyse, traitement et calcul* dans le cycle de vie travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Activités des données
 
@@ -1654,10 +1672,10 @@ croisements_domaine(16, 22, 7) |>
 croisements_domaine(23, 37, 6) |> 
     mutate(rowname = str_wrap(rowname, width = 50)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses",
-           title = "Répartition du type d'activité dans les données par domaine thématique des répondants",
+      labs(x = "Discipline", y = "Pourcentage",
+           title = "Répartition du type d'activité dans les données par discipline des répondants",
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
@@ -1675,6 +1693,7 @@ croisements_domaine(23, 37, 6) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 17% des répondants travaillant en *analyse, traitement et calcul* sur les données travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Types de données
 
@@ -1683,10 +1702,10 @@ croisements_domaine(23, 37, 6) |>
 croisements_domaine(66, 76, 6) |> 
     mutate(rowname = str_wrap(rowname, width = 50)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
-      labs(x = "Domaine thématique", y = "Nombre de réponses", 
-           title = "Répartition du type de données travaillé par domaine thématique des répondants",
+      labs(x = "Discipline", y = "Pourcentage", 
+           title = "Répartition du type de données travaillé par discipline des répondants",
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
@@ -1704,6 +1723,7 @@ croisements_domaine(66, 76, 6) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 34% des répondants travaillant des *données d'enquête et statistiques* travaillent dans la discipline des sciences humaines et sociales.
 
 #### Proposition 5{.tabset}
 
@@ -1733,13 +1753,17 @@ table |>
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1),
            `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               str_replace_all(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                               c("Autre" = "Autre (4% des établissements)",
+                                 "Ecole" = "Ecole (5% des établissements)")),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
                factor(`Dans quel type d'établissement exercez-vous votre activité ?`, 
-                      levels = c("Organisme de recherche","Université","Ecole","Autre"))) |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+                      levels = c("Organisme de recherche","Université","Ecole (5% des établissements)","Autre (4% des établissements)"))) |> 
+    ggplot(aes(x = rowname, y  = percent, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
                group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", 
+      labs(x = "", y = "Pourcentage", 
            title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des individus",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
@@ -1753,18 +1777,19 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`) +
-      scale_fill_manual(values = c("Ecole" = "#ffe725", 
+      scale_fill_manual(values = c("Ecole (5% des établissements)" = "#ffe725", 
                                    "Organisme de recherche" = "#5770BE", 
                                    "Université" = "#169B62", 
-                                   "Autre" = "#666666"))
+                                   "Autre (4% des établissements)" = "#666666"))
 autre <- table(data$`Dans quel type d'établissement exercez-vous votre activité ? [Autre]`) |> 
     as.data.frame() |> 
     arrange(desc(Freq)) |> 
+    rename(etablissement_autre = Var1, nombre_repondants = Freq) |> 
     slice(1:10) |> 
-    select(Var1) |> 
+    select(etablissement_autre) |> 
     t()
 ```
 
@@ -1778,16 +1803,20 @@ table |>
     mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
                                 row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
-    mutate(rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepôt"),
+    mutate(rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               str_replace_all(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                               c("Autre" = "Autre (4% des établissements)",
+                                 "Ecole" = "Ecole (5% des établissements)")),
            rowname = fct_reorder(rowname, V1),
            `Dans quel type d'établissement exercez-vous votre activité ?` = 
                factor(`Dans quel type d'établissement exercez-vous votre activité ?`, 
-                      levels = c("Organisme de recherche","Université","Ecole","Autre"))) |> 
-    ggplot(aes(x = rowname, y = V1, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+                      levels = c("Organisme de recherche","Université","Ecole (5% des établissements)","Autre (4% des établissements)"))) |> 
+    ggplot(aes(x = rowname, y  = percent, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
                group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", 
+      labs(x = "", y = "Pourcentage", 
            title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des individus",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
@@ -1801,13 +1830,13 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`) +
-      scale_fill_manual(values = c("Ecole" = "#ffe725", 
+      scale_fill_manual(values = c("Ecole (5% des établissements)" = "#ffe725", 
                                    "Organisme de recherche" = "#5770BE", 
                                    "Université" = "#169B62", 
-                                   "Autre" = "#666666"))
+                                   "Autre (4% des établissements)" = "#666666"))
 ```
 
 Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
@@ -2019,6 +2048,7 @@ formation_cycle <- rbind(analyser, maj, coordonner, structurer, protocole_obtent
     group_by(rowname) |> 
     arrange(desc(V1))
 formation_cycle_plus <- formation_cycle |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0)) |> 
     mutate(keep = case_when(rowname == "Collecte, création, stockage" & row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1),
@@ -2032,9 +2062,9 @@ formation_cycle_plus <- formation_cycle |>
                                             "Planification, PGD")))
 
 formation_cycle_plus |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
-      labs(x = "Besoins de formation", y = "Nombre de réponses", 
+      labs(x = "Besoins de formation", y = "Pourcentage", 
            title = "Répartition des besoins de formation des individus selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
@@ -2052,10 +2082,13 @@ formation_cycle_plus |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 9% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
+
 ##### Bottom 5
 
 ```{r prop6.2, fig.height=8, fig.width=10}
 formation_cycle_moins <- formation_cycle |>  
+    mutate(percent = round((V1 / sum(V1))*100, 0)) |> 
     mutate(keep = case_when(rowname == "Collecte, création, stockage" & row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1),
@@ -2069,9 +2102,9 @@ formation_cycle_moins <- formation_cycle |>
                                             "Planification, PGD")))
 
 formation_cycle_moins |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
-      labs(x = "Besoins de formation", y = "Nombre de réponses", 
+      labs(x = "Besoins de formation", y = "Pourcentage", 
            title = "Répartition des besoins de formation des individus selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
@@ -2088,6 +2121,8 @@ formation_cycle_moins |>
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
+
+* 6% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*nettoyage, affinement, conversion et description des données brutes*'.
 
 #### Proposition 7{.tabset}
 
@@ -2130,10 +2165,10 @@ table <- rbind(appui, chercheurs) |>
 table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() <= 6 ~ 1, .default = 0)) |>  
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
-    ggplot(aes(x = rowname, y = V1, fill = cat, group = cat)) +
+    ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", 
+      labs(x = "", y = "Pourcentage", 
            title = "Répartition des besoins de formation des individus selon leur catégorie d'emploi",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
@@ -2147,7 +2182,7 @@ table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la reche
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~cat) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
@@ -2160,10 +2195,10 @@ table |> ungroup() |>
     mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() >= 18 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
-    ggplot(aes(x = rowname, y = V1, fill = cat, group = cat)) +
+    ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", 
+      labs(x = "", y = "Pourcentage", 
            title = "Répartition des besoins de formation des individus selon leur catégorie d'emploi",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
@@ -2177,7 +2212,7 @@ table |> ungroup() |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~cat) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
@@ -2391,17 +2426,17 @@ formation_besoins <- rbind(analyser, maj, coordonner, structurer, protocole_obte
     group_by(rowname) |> 
     arrange(desc(V1))
 formation_besoins_plus <- formation_besoins |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0)) |> 
     mutate(keep = case_when(rowname == "Autoformation" & row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> ungroup() |> 
     mutate(rowname = factor(rowname, levels = c("Autoformation", "Formation intra- ou inter-établissement ", 
                                                 "Formation certifiante non diplômante", "Formation diplômante")),
-           #rowname = str_replace_all(rowname, c("Formation intra- ou inter-établissement" = "Formation intra- ou \ninter-établissement")),
            formation = fct_reorder(formation, V1))
 
 formation_besoins_plus |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
-      labs(x = "Besoins de formation", y = "Nombre de réponses", 
+      labs(x = "Besoins de formation", y = "Pourcentage", 
            title = "Répartition des besoins actuels de formation des individus selon le type \nde formation déjà reçu à la gestion des données de recherche",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
@@ -2419,11 +2454,13 @@ formation_besoins_plus |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 12% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation pour '*garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs*'.
 
 ##### Bottom 5
 
 ```{r prop8.2, fig.width=10, fig.height=6}
 formation_besoins_moins <- formation_besoins |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0)) |> 
     mutate(keep = case_when(rowname == "Autoformation" & row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = formation) |> select(-keep) |> 
     mutate(formation = fct_reorder(formation, V1),
@@ -2431,9 +2468,9 @@ formation_besoins_moins <- formation_besoins |>
                                                 "Formation certifiante non diplômante", "Formation diplômante")))
 
 formation_besoins_moins |> 
-    ggplot(aes(y = V1)) + 
+    ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
-      labs(x = "Besoins de formation", y = "Nombre de réponses", 
+      labs(x = "Besoins de formation", y = "Pourcentage", 
            title = "Répartition des besoins actuels de formation des individus selon le type \nde formation déjà reçu à la gestion des données de recherche",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
@@ -2451,6 +2488,7 @@ formation_besoins_moins |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
+* 6% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation en '*création, structuration, description des jeux de données validés*'.
 
 
 
@@ -2458,7 +2496,7 @@ formation_besoins_moins |>
 # Données issues des entretiens
 
 
-
+## Aperçu des personnes interrogées
 
 
 
