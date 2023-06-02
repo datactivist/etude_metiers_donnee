@@ -59,12 +59,11 @@ library(grid)
 library(gridExtra)
 library(corrplot)
 library(plotly)
+library(readxl)
 
 # Données
 data <- read_csv("../data/donnees_lemmatisees_cols_Autre3.csv") |> 
     filter(!is.na(`Date de soumission`)) # réponses complètes donc fiables
-data_clean_names <- data |> 
-    janitor::clean_names()
 questions <- as.data.frame(colnames(data)) |> 
     rename(rowname = `colnames(data)`)
 ```
@@ -132,7 +131,8 @@ barplot_qs_multiples <- function(data, min, max, slice_min, slice_max, color, ti
                rowname = str_extract(rowname, "^[^(]+")) |> 
         select(rowname, V1, percent) |> ungroup() |> 
         arrange(desc(percent)) |> slice(slice_min:slice_max) |> 
-        mutate(rowname = fct_reorder(rowname, V1))
+        mutate(rowname = fct_reorder(rowname, V1)) |> 
+        na.omit()
     table |> 
         ggplot(aes(x = rowname, y = V1)) +
           geom_bar(stat = "identity", width = .6, fill = color) +
@@ -237,7 +237,8 @@ barplot_cycle <- function(data){
            rowname = substr(rowname, 1, nchar(rowname)-1),
            rowname = str_extract(rowname, "^[^(]+")) |> 
     select(rowname, V1, percent) |> ungroup() |> 
-    arrange(desc(percent)) |> 
+    arrange(desc(percent)) |> na.omit() |> 
+    filter(V1 > 0) |> 
     mutate(rowname = fct_reorder(rowname, V1),
            rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
            rowname = factor(rowname, levels = c("Collecte, création, stockage",
@@ -245,7 +246,7 @@ barplot_cycle <- function(data){
                                             "Préparation du dépôt ",
                                             "Dépôt",
                                             "Ouverture ou partage ",
-                                            "Réutilisation",
+                                            "Réutilisation ",
                                             "Planification, PGD")))
 table |> 
     ggplot(aes(x = rowname, y = V1)) +
@@ -2498,6 +2499,246 @@ formation_besoins_moins |>
 
 ## Aperçu des personnes interrogées
 
+```{r out.width='60%'}
+liste_envoyee <- read_excel("../data/entretiens-Liste30-envoi1.xlsx", col_names = FALSE) |> 
+    rename(prenom = 5, nom = 6, mail = 7)
+liste_entretiens <- left_join(liste_envoyee |> mutate(nom_prenom = paste(nom, prenom)) |> select(nom_prenom),
+                              data |> mutate(nom_prenom = paste(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Nom]`, `Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`)), 
+                              by = "nom_prenom") |> 
+    select(-1)
+
+liste_entretiens |> 
+    filter(!is.na(`Dans quel type d'établissement exercez-vous votre activité ?`)) |> 
+    mutate(`Dans quel type d'établissement exercez-vous votre activité ?` = factor(`Dans quel type d'établissement exercez-vous votre activité ?`, ordered = TRUE, levels = c("Ecole", "Organisme de recherche", "Université", "Autre"))) |> 
+    donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    scale_fill_manual(values = c('#5770BE', "#169B62", "#666666"))
+
+
+liste_entretiens |> 
+    barplot_qs_multiples(8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")  
+
+liste_entretiens |> 
+    barplot_qs_unique(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+
+liste_entretiens |> 
+    barplot_cycle() +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+```
+
+```{r fig.width=12}
+plot_plus <- liste_entretiens |> 
+    rename(`Quelles sont les activités qu'implique votre travail sur les données ? [Choisir l’entrepôt]` = 32) |> 
+    barplot_qs_multiples(23, 37, 1, 5, "#169B62", "") +
+    labs(caption = "Top 5 des catégories les plus représentées",
+         subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.caption = element_text(face = "italic"),
+          plot.subtitle = element_text(hjust = 1))
+plot_moins <- liste_entretiens |> 
+    rename(`Quelles sont les activités qu'implique votre travail sur les données ? [Choisir l’entrepôt]` = 32) |> 
+    barplot_qs_multiples(23, 37, 11, 15, "#ffe725", "") +
+    labs(caption = "Top 5 des catégories les moins représentées",
+         subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.caption = element_text(face = "italic"),
+          plot.subtitle = element_text(hjust = 1))
+grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Quelles sont les activités qu'implique votre travail sur les données ?", 
+                            gp = gpar(fontsize = 15, font = 2)))
+```
+
+```{r out.width='60%'}
+liste_entretiens |> 
+    barplot_qs_multiples(66, 76, 1, 11, "#5770BE", "Sur quels types de données travaillez-vous ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+
+liste_entretiens |> 
+    barplot_qs_multiples(81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+
+liste_entretiens |> 
+    filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
+    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+```
+
+```{r fig.width=12}
+bar1 <- liste_entretiens |> 
+    barplot_qs_unique(`Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs") +
+    geom_bar(stat = "identity", width = .6, fill = '#ffe725') +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.subtitle = element_text(hjust = 1))
+bar2 <- liste_entretiens |> 
+    barplot_qs_unique(`Précisez votre catégorie 2`, "Catégorie des personnels d'appui, soutiens à la recherche") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.subtitle = element_text(hjust = 1))
+grid.arrange(bar2, bar1, ncol = 2)
+
+plot_plus <- liste_entretiens |> 
+    barplot_qs_multiples(96, 110, 1, 5, "#169B62", "") +
+    labs(caption = "Top 5 des catégories les plus représentées",
+         subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.caption = element_text(face = "italic"),
+          plot.subtitle = element_text(hjust = 1))
+plot_moins <- liste_entretiens |> 
+    barplot_qs_multiples(96, 110, 11, 15, "#ffe725", "") +
+    labs(caption = "Top 5 des catégories les moins représentées",
+         subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.caption = element_text(face = "italic"),
+          plot.subtitle = element_text(hjust = 1))
+grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+```
+
+```{r out.width='70%'}
+analyse <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Analyse, traitement, calcul")
+planification <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Planification, PGD")
+collecte <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Collecte, création, stockage")
+depot <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Dépôt")
+ouverture <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Ouverture ou partage")
+prepa_depot <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Préparation du dépôt")
+reutilisation <- liste_entretiens |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Réutilisation")
+cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, ouverture, collecte) |> 
+    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) |> ungroup() |> 
+    mutate(cycle = factor(cycle, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt",
+                                            "Dépôt",
+                                            "Ouverture ou partage",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+
+cycle_lieux |> 
+  ggplot(aes(y = V1)) +
+  geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
+  scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
+  scale_fill_manual(values = c('#e2c44d','#5f4496', "#ffe725", "#169B62", "#5770BE")) +
+  labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", title = "Lieux d'activités selon l'intervention \ndans le cycle de vie de la donnée",
+           subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+  theme_classic() +
+  theme(legend.position = "right",
+        legend.text = element_text(size = 8),
+        text = element_text(family = "Montserrat", size = 12),
+        plot.title = element_text(face = "bold"),
+        strip.text.x = element_text(face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 10))) +
+    guides(fill = guide_legend(title = ""), 
+           col = "none")
+```
+
+
+## Réponses au questionnaires des personnes interrogées 
+
+```{r}
+table <- liste_entretiens |> 
+    filter(!is.na(`ID de la réponse`)) |> 
+    select(115, 1:113) |> 
+    column_to_rownames(var = "Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Nom]") |> 
+    t() |> as.data.frame()
+DT::datatable(table, options = list(pageLength = 30, lengthMenu = c(10, 50, 100), autoWidth = TRUE, scrollX = TRUE))
+```
+
+
+## Analyse de chaque question individuellement 
+
+
+## Analyse croisée, classification
+
+
 
 
 ```{r eval=FALSE, include=FALSE}
@@ -2512,7 +2753,7 @@ factoextra::fviz_nbclust(cycle_de_vie, FUNcluster = factoextra::hcut, method = "
 set.seed(123)
 res.km <- kmeans(cycle_de_vie, 2, nstart = 25)
 # Clustering K-means montrant le groupe de chaque individu
-fviz_cluster(res.km, data = cycle_de_vie,
+fviz_cluster(res.km, liste_entretiens = cycle_de_vie,
              palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#666666"), 
              geom = "point",
              ellipse.type = "convex", 
