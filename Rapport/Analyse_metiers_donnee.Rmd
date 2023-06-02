@@ -362,14 +362,17 @@ barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités sign
 
 barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 4`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?") +
     labs(subtitle = "Top 10 des postes précédents (t-4)")
-
-data |> 
-    filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
-    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
-    donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?")
 ```
 
 ```{r fig.width=12}
+donut <- data |> 
+    filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
+    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
+    theme(legend.position = "bottom")
+bar <- barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Branche d'activité des personnels d'appui, soutiens à la recherche")
+grid.arrange(donut, bar, ncol = 2)
+
 bar1 <- barplot_qs_unique(data, `Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs") +
     geom_bar(stat = "identity", width = .6, fill = '#ffe725')
 bar2 <- barplot_qs_unique(data, `Précisez votre catégorie 2`, "Catégorie des personnels d'appui, soutiens à la recherche")
@@ -379,8 +382,6 @@ grid.arrange(bar2, bar1, ncol = 2)
 <br>
 
 ```{r out.width='60%'}
-barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Précisez votre branche d'activité.")  
-
 wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 10)
 
 wordcloud_autre(data, `Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 10)  
@@ -518,16 +519,23 @@ data |>
     filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
     barplot_qs_multiples(81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")
+```
 
-data |> 
+```{r fig.width=12}
+donut <- data |> 
     filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9,
            !is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
     mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
-    labs(subtitle = "Répartition des 452 volontaires aux entretiens")
-```
+    labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
+    theme(legend.position = "bottom")
+bar <- data |> 
+    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |>
+    barplot_qs_unique(`Précisez votre branche d'activité.`, "Branche d'activité des personnels d'appui, soutiens à la recherche") +
+    labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
+    theme(plot.subtitle = element_text(hjust = 1))
+grid.arrange(donut, bar, ncol = 2)
 
-```{r fig.width=12}
 bar1 <- data |> 
     filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |>
     barplot_qs_unique(`Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs") +
@@ -2556,15 +2564,21 @@ liste_entretiens |>
 liste_entretiens |> 
     barplot_qs_multiples(81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
-
-liste_entretiens |> 
-    filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
-    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
-    donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
-    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
 ```
 
 ```{r fig.width=12}
+donut <- liste_entretiens |> 
+    filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
+    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(legend.position = "bottom")
+bar <- liste_entretiens |> 
+    barplot_qs_unique(`Précisez votre branche d'activité.`, "Branche d'activité des personnels d'appui, soutiens à la recherche") +
+    labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
+    theme(plot.subtitle = element_text(hjust = 1))
+grid.arrange(donut, bar, ncol = 2)
+
 bar1 <- liste_entretiens |> 
     barplot_qs_unique(`Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs") +
     geom_bar(stat = "identity", width = .6, fill = '#ffe725') +
@@ -2729,7 +2743,7 @@ table <- liste_entretiens |>
     select(115, 1:113) |> 
     column_to_rownames(var = "Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Nom]") |> 
     t() |> as.data.frame()
-DT::datatable(table, options = list(pageLength = 30, lengthMenu = c(10, 50, 100), autoWidth = TRUE, scrollX = TRUE))
+DT::datatable(table, options = list(pageLength = 30, lengthMenu = c(10, 50, 100), autoWidth = TRUE, scrollX = TRUE, fixedHeader=TRUE))
 ```
 
 
