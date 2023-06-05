@@ -195,6 +195,39 @@ barplot_qs_unique <- function(data, variable, titre){
           geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
+barplot_branche_activite_emploi <- function(data, titre){
+    data |> 
+        mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+"),
+               `Précisez votre branche d'activité.` = case_when(is.na(`Précisez votre branche d'activité.`) ~ 
+                                                                `Quelle est votre catégorie d'emploi actuel ?`,
+                                                  .default = `Précisez votre branche d'activité.`)) |> 
+        filter(!is.na(`Précisez votre branche d'activité.`)) |> 
+        group_by(`Quelle est votre catégorie d'emploi actuel ?`, `Précisez votre branche d'activité.`) |> 
+        summarise(n = n()) |> rename(col = 2, group = 1) |> ungroup() |> 
+        mutate(col = fct_reorder(col, n),
+               percent = round((n / sum(n))*100, 0)) |> 
+        ggplot(aes(x = col, y = n, fill = group, group = group)) +
+          geom_bar(stat = "identity", width = .6) +
+          coord_flip() +
+          labs(x = "", y = "Nombre de répondants", title = titre,
+               subtitle = paste0(data |> filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> nrow(), " réponses, soit ", 
+                                round(((data |> filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
+          scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+          scale_fill_manual(values = c("Personnel d'appui / soutien à la recherche" = "#5770BE",
+                                       "Chercheur / Enseignant-chercheur " = "#ffe725")) +
+          theme_classic() +
+          theme(legend.position = "bottom",
+                text = element_text(family = "Monsterrat", size = 12),
+                plot.title = element_text(face = "bold", hjust = ifelse(nchar(titre) > 40, 1, 0)),
+                axis.title.y = element_blank(),
+                axis.line.x = element_blank(),
+                axis.line.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+          geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                    color = "#333333", size = 3, check_overlap = T) +
+          guides(fill = guide_legend(title = "", nrow = 2, byrow = TRUE))
+}
 barplot_qs_unique_top_n <- function(data, variable, slice_min, slice_max, titre){
     table <- data |> 
         filter({{variable}} != "Autre", 
@@ -369,8 +402,10 @@ donut <- data |>
     filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
     mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
-    theme(legend.position = "bottom")
-bar <- barplot_qs_unique(data, `Précisez votre branche d'activité.`, "Branche d'activité des personnels d'appui, soutiens à la recherche")
+    theme(legend.position = "bottom") +
+    guides(fill = guide_legend(title = "", nrow = 2, byrow = T))
+bar <- barplot_branche_activite_emploi(data, "Branche d'activité des répondants")+
+    theme(plot.title = element_text(hjust = 1))
 grid.arrange(donut, bar, ncol = 2)
 
 bar1 <- barplot_qs_unique(data, `Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs") +
@@ -528,12 +563,14 @@ donut <- data |>
     mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom") +
+    guides(fill = guide_legend(title = "", nrow = 2, byrow = T))
 bar <- data |> 
     filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |>
-    barplot_qs_unique(`Précisez votre branche d'activité.`, "Branche d'activité des personnels d'appui, soutiens à la recherche") +
+    barplot_branche_activite_emploi("Branche d'activité des répondants") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
-    theme(plot.subtitle = element_text(hjust = 1))
+    theme(plot.subtitle = element_text(hjust = 1),
+          plot.title = element_text(hjust = 1))
 grid.arrange(donut, bar, ncol = 2)
 
 bar1 <- data |> 
@@ -2572,11 +2609,13 @@ donut <- liste_entretiens |>
     mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
-    theme(legend.position = "bottom")
+    theme(legend.position = "bottom") +
+    guides(fill = guide_legend(title = "", nrow = 2, byrow = T))
 bar <- liste_entretiens |> 
-    barplot_qs_unique(`Précisez votre branche d'activité.`, "Branche d'activité des personnels d'appui, soutiens à la recherche") +
+    barplot_branche_activite_emploi("Branche d'activité des répondants") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
-    theme(plot.subtitle = element_text(hjust = 1))
+    theme(plot.subtitle = element_text(hjust = 1),
+          plot.title = element_text(hjust = 1))
 grid.arrange(donut, bar, ncol = 2)
 
 bar1 <- liste_entretiens |> 
