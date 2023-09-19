@@ -2793,13 +2793,459 @@ table <- liste_entretiens |>
 DT::datatable(table, options = list(pageLength = 30, lengthMenu = c(10, 50, 100), autoWidth = TRUE, scrollX = TRUE, fixedHeader=TRUE))
 ```
 
-
-## Analyse de chaque question individuellement 
-
-
-## Analyse croisée, classification
+## Visualisation des clusters
 
 
+# Analyse approfonondie de l'enquête
+
+```{r}
+# Thème customisé
+font <- "Helvetica"
+custom_theme <- function (){
+    font <- "Helvetica"
+    ggplot2::theme(plot.title = ggplot2::element_text(family = font,size = 21, face = "bold", color = "#222222"), 
+        plot.subtitle = ggplot2::element_text(family = font,size = 18, margin = ggplot2::margin(0, 0, 9, 0)), 
+        plot.caption = ggplot2::element_text(family = font,size = 18, hjust = 1, face = "italic", color = "#cbcbcb", margin = ggplot2::margin(9, 0, 9, 0)), 
+        legend.title = ggplot2::element_text(family = font, size = 18, color = "#222222"), 
+        legend.position = "top", 
+        legend.text.align = 0, 
+        legend.background = ggplot2::element_blank(),
+        legend.key = ggplot2::element_blank(),
+        legend.text = ggplot2::element_text(family = font, size = 18,color = "#333333"), 
+        axis.text = ggplot2::element_text(family = font, size = 15,color = "#333333"), 
+        axis.text.x = ggplot2::element_text(margin = ggplot2::margin(5,b = 10)), 
+        axis.title = ggplot2::element_text(family = font, size = 18,color = "#222222"),
+        axis.ticks = ggplot2::element_blank(),
+        axis.line = ggplot2::element_blank(), 
+        panel.grid.minor = ggplot2::element_blank(),
+        panel.grid.major.y = ggplot2::element_line(color = "#cbcbcb"),
+        panel.grid.major.x = ggplot2::element_blank(), 
+        panel.background = ggplot2::element_blank(),
+        strip.background = ggplot2::element_rect(fill = "white"),
+        strip.text = ggplot2::element_text(size = 22, hjust = 0, face = "bold"))
+}
+barplot_qs_multiples2 <- function(data, min, max, slice_min, slice_max, color, titre, soustitre, cap_nom, figure){
+    table <- data |> 
+        select(min:max)|> mutate_all(na_if, "Non") |> 
+        summarise_all(funs(sum(!is.na(.)))) |> 
+        t()|> as.data.frame() |> 
+        rownames_to_column() |> 
+        mutate(percent = round((V1 / sum(V1))*100, 0),
+               rowname = str_extract(rowname, "(?<=\\[).*"),
+               rowname = substr(rowname, 1, nchar(rowname)-1),
+               rowname = str_extract(rowname, "^[^(]+")) |> 
+        select(rowname, V1, percent) |> ungroup() |> 
+        arrange(desc(percent)) |> slice(slice_min:slice_max) |> 
+        mutate(rowname = fct_reorder(rowname, V1)) |> 
+        na.omit()
+    table |> 
+        ggplot(aes(x = rowname, y = V1)) +
+          geom_bar(stat = "identity", width = .6, fill = color) +
+          coord_flip() +
+          labs(x = "", y = "Nombre de réponses", title = stringr::str_wrap(titre, width = 50), 
+               subtitle = stringr::str_wrap(soustitre, width = 50), tag = figure, 
+               caption = stringr::str_wrap(paste(cap_nom, "-", sum(table$V1), "réponses"), width = 60)) +
+          scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+          theme_classic() +
+          custom_theme() +
+          theme(legend.position = "none",
+                panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+                panel.grid.major.y = ggplot2::element_blank()) +
+          geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                    color = "#333333", size = 5, check_overlap = T)
+}
+barplot_cycle2 <- function(data, titre, soustitre, figure){
+    table <- data |> 
+    select(16:22)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> na.omit() |> 
+    filter(V1 > 0) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+           rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt ",
+                                            "Dépôt",
+                                            "Ouverture ou partage ",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+table |> 
+    ggplot(aes(x = rowname, y = V1)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE",
+               color = ifelse(table$rowname == "Collecte, création, stockage", "orange", "white")) +
+    #geom_point(data = filter(mpg, manufacturer == "subaru"), colour = "orange", size = 3)
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", title = stringr::str_wrap(titre, width = 50), 
+           subtitle = stringr::str_wrap(soustitre, width = 50), tag = figure, 
+           caption = stringr::str_wrap(paste("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?", 
+                                             "-", sum(table$V1), "réponses"), width = 60)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T)
+}
+```
+
+## Graphiques très pertinents
+
+```{r fig.4}
+barplot_qs_multiples2(data, 8, 12, 1, 11, "#5770BE", 
+                      "Confirmation de l'ancrage 'Laboratoire' dans la question des données de la recherche", "", 
+                      "Où réalisez-vous votre activité en lien avec les données de recherche ?", "Fig. 4") +
+    theme(plot.subtitle = element_blank())
+```
+
+```{r fig.6}
+table <- data |> 
+select(16:22)|> mutate_all(na_if, "Non") |> 
+summarise_all(funs(sum(!is.na(.)))) |> 
+t()|> as.data.frame() |> 
+rownames_to_column() |> 
+mutate(percent = round((V1 / sum(V1))*100, 0),
+       rowname = str_extract(rowname, "(?<=\\[).*"),
+       rowname = substr(rowname, 1, nchar(rowname)-1),
+       rowname = str_extract(rowname, "^[^(]+")) |> 
+select(rowname, V1, percent) |> ungroup() |> 
+arrange(desc(percent)) |> na.omit() |> 
+filter(V1 > 0) |> 
+mutate(rowname = fct_reorder(rowname, V1),
+       rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+       rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                        "Analyse, traitement, calcul",
+                                        "Préparation du dépôt ",
+                                        "Dépôt",
+                                        "Ouverture ou partage ",
+                                        "Réutilisation",
+                                        "Planification, PGD")))
+table |> 
+ggplot(aes(x = rowname, y = V1)) +
+  geom_bar(stat = "identity", width = .6, alpha = .9, color = "white",
+           fill = ifelse(table$rowname == c("Collecte, création, stockage", "Analyse, traitement, calcul"), "#5770BE", "#666666")) +
+  geom_label(aes(x = 4, y = 1150), color = "#666666", size = 5, check_overlap = T, fill = "white", label.size = NA,
+             label = stringr::str_wrap("42% des activités se concentrent sur ces 2 parties du cycle", width = 20)) +
+  annotate(geom = "curve", x = 3, y = 1230, xend = 2.5, yend = 1250, color = "#666666", 
+        curvature = -.3, arrow = arrow(length = unit(2, "mm"))) +
+  coord_flip() +
+  labs(x = "", y = "Nombre de réponses", 
+       title = stringr::str_wrap("L'essentiel de l'activité porte aujourd'hui sur le traitement des données", width = 50), 
+       subtitle = stringr::str_wrap("", width = 50), tag = "Fig. 6", 
+       caption = stringr::str_wrap(paste("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?", 
+                                         "-", sum(table$V1), "réponses"), width = 60)) +
+  scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+  theme_classic() +
+  custom_theme() +
+  theme(legend.position = "none",
+        plot.subtitle = element_blank(),
+        panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+        panel.grid.major.y = ggplot2::element_blank(),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+  geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+        color = "#333333", size = 5, check_overlap = T) 
+```
+
+
+```{r}
+barplot_qs_multiples(data, 81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?", "Fig. 16")
+
+table <- data |> 
+    select(81:84)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> slice(1:11) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    na.omit()
+table |> 
+    ggplot(aes(x = rowname, y = V1)) +
+      geom_bar(stat = "identity", width = .6, 
+               fill = ifelse(table$rowname == "Autoformation", "#5770BE", "#666666")) +
+      geom_label(aes(x = 2.7, y = 1050), color = "#666666", size = 5, check_overlap = T, fill = "white", label.size = NA,
+                 label = stringr::str_wrap("55% d'autoformation", width = 20)) +
+      annotate(geom = "curve", x = 3, y = 1100, xend = 3.5, yend = 1200, color = "#666666", 
+            curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de réponses", tag = "Fig. 16",
+           title = stringr::str_wrap("Prédominance de l'autoformation", width = 50), 
+           subtitle = stringr::str_wrap("Pas de formation certifiante ou diplomante suivies", width = 50),  
+           caption = stringr::str_wrap(paste("Vous êtes-vous formé à la gestion et la diffusion des données de recherche ?", 
+                                             "-", sum(table$V1), "réponses"), width = 60)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T)
+```
+
+```{r}
+table <- data |> select(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`) |> 
+    group_by(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`) |> 
+    mutate(n=n()) |> na.omit() |> distinct() |> 
+    rename(col = 1) |> ungroup() |> 
+    arrange(desc(n)) |> slice(1:40)
+table |> ggplot(aes(label = col, size = n)) +
+      geom_text_wordcloud(color = rep_len(c('#ffe725','#5770BE', "#169B62"), nrow(table)), family = "Montserrat") +
+      scale_size_area(max_size = 10) +
+      labs(title = stringr::str_wrap("Les réseaux établissements ressortent fortement pour structurer les activités sur les données", width = 50),
+           subtitle = stringr::str_wrap("Suivent ensuite les infrastructures de recherche, dont Huma-num, Progedo et l'IFB, RDA également mentionné. Le réseau des ateliers de la donnée ressort mais de façon moins marquée.", width = 50),
+           tag = "Fig. 25", 
+           caption = stringr::str_wrap(paste0("Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ? - ", data |> filter(!is.na(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`)) |> nrow(), " réponses"), width = 60)) +
+      theme_minimal() +
+      custom_theme() +
+      theme(plot.subtitle = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))
+```
+
+```{r}
+data |> 
+    filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> 
+    group_by(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`) |> summarise(Freq = n()) |> 
+    mutate(fraction = Freq / sum(Freq),
+           proportion = round((Freq / sum(Freq))*100),
+           ymax = cumsum(fraction),
+           ymin = c(0, head(ymax, n=-1)), 
+           labelPosition = (ymax + ymin) / 2) |> 
+    ggplot(aes(ymax = ymax, ymin = ymin, xmax = 3.3, xmin = 2, fill = `Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) +
+      geom_rect(col = "white", size = 2) +
+      geom_text(x=4, aes(y=labelPosition, label = paste(proportion,"%",sep = "")), color = "#333333", size=7) +
+      geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
+      scale_fill_manual(values = c('#666666','#5770BE')) +
+      coord_polar(theta="y") +
+      labs(title = stringr::str_wrap("Politique des données dans les organismes, 57% des répondants déclarent que leur établissements ont formalisé un document de gouvernance", width = 50),
+           tag = "Fig. 29", 
+           caption = stringr::str_wrap(paste0("Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 60)) +
+      xlim(c(0, 4)) +   
+      theme_void() +
+      custom_theme() +
+      theme(legend.position = "right",
+            text = element_text(family = "Monsterrat", size = 12),
+            plot.title = element_text(face = "bold"),
+            plot.background = element_rect(fill = "white", colour="white"),
+            panel.background = element_rect(fill = "white", colour = "white"),
+            legend.background = element_rect(fill = "white", colour = "white"))+
+      guides(fill = guide_legend(title = ""))
+```
+
+```{r out.width='60%'}
+library(ggcorrplot)
+library(ggtext) 
+# Matrice de corrélation
+    # couleurs
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+bgcolors <- matrix("black", nrow(matrix), ncol(matrix),dimnames = dimnames(matrix))
+bgcolors[,2] <- "red"
+bgcolors <- bgcolors[lower.tri(bgcolors, diag=TRUE)]
+    # matrice
+ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, legend.title = "",
+           lab = TRUE, lab_col = bgcolors, colors = c("#BB4444", "white", "#4477AA")) +
+    labs(title = stringr::str_wrap("Décorrelation entre la phase <span style='color: red;'>Analyse, traitement, calcul</span> et les autres phases du cycle de vie", width = 50), 
+         subtitle = "Les phases de dépôt et de partage fortement connectées entre elles", 
+         caption = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 5642 réponses") +
+    theme(axis.text.y = element_blank(),
+          panel.grid = element_blank(),
+          plot.subtitle = element_markdown(size = 15),
+          plot.title = element_markdown(size = 18, lineheight = 2),
+          plot.caption = element_text(size = 15, face = "italic", hjust = 0, color = "#cbcbcb")) +
+    geom_label(aes(x = 6, y = 7), label = "Dépot", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 5, y = 6), label = "Préparation du dépôt", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 4, y = 5), label = "Ouverture ou partage", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 3, y = 4), label = "Planification, PGD", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 2, y = 3), label = "Réutilisation", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 1, y = 2), label = "Analyse, traitement, calcul", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 0, y = 1), label = "Collecte, création, stockage", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    coord_fixed(clip = 'off') 
+```
+
+```{r out.width='70%'}
+analyse <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Analyse, traitement, calcul")
+planification <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Planification, PGD")
+collecte <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Collecte, création, stockage")
+depot <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Dépôt")
+ouverture <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Ouverture ou partage")
+prepa_depot <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Préparation du dépôt")
+reutilisation <- data |> 
+    filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Oui") |> 
+    select(8:12)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cycle = "Réutilisation")
+cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, ouverture, collecte) |> 
+    group_by(cycle) |> mutate(percent = round(V1/sum(V1)*100, 0)) |> ungroup() |> 
+    mutate(cycle = factor(cycle, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt",
+                                            "Dépôt",
+                                            "Ouverture ou partage",
+                                            "Réutilisation",
+                                            "Planification, PGD")),
+           col_var = case_when(cycle == "Planification, PGD" & rowname == "Infrastructure de recherche" ~ "red",
+                             cycle == "Planification, PGD" & rowname == "Service central d'appui " ~ "blue",
+                             .default = "grey"))
+
+cycle_lieux |> 
+  ggplot(aes(y = V1)) +
+  geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
+  scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
+  scale_fill_manual(values = as.character(cycle_lieux$col_var)) +
+  #scale_fill_manual(values = color) +#, 
+  # scale_fill_manual(values = ifelse(cycle == "Planification, PGD", 
+  #                                   c('#e2c44d','#5f4496', "#ffe725", "#169B62", "#5770BE"), 
+  #                                   c('#161307', '#09060f', '#191703', '#020f09', '#080b13'))) +
+                                    #c('#716226', '#2f224b', '#7f7312', '#0b4d31', '#2b385f'))) +
+  labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", tag = "Fig. 48",
+       title = "Lieux d'activités selon l'intervention \ndans le cycle de vie de la donnée", 
+       subtitle = paste0(sum(cycle_lieux$V1), " réponses"),
+       caption = "") +
+  custom_theme() +
+  theme_classic() +
+  theme(legend.position = "right",
+        legend.text = element_text(size = 8),
+        text = element_text(family = "Montserrat", size = 12),
+        plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic", size = 15),
+        strip.text.x = element_text(face = "bold"),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = ""), 
+           col = "none")
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+## Graphiques pertinents
+
+```{r}
+
+```
+
+## Graphiques à retravailler
+
+```{r}
+
+```
 
 
 ```{r eval=FALSE, include=FALSE}
