@@ -3058,8 +3058,8 @@ bgcolors <- bgcolors[lower.tri(bgcolors, diag=TRUE)]
 ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, legend.title = "",
            lab = TRUE, lab_col = bgcolors, colors = c("#BB4444", "white", "#4477AA")) +
     labs(title = stringr::str_wrap("Décorrelation entre la phase <span style='color: red;'>Analyse, traitement, calcul</span> et les autres phases du cycle de vie", width = 50), 
-         subtitle = "Les phases de dépôt et de partage fortement connectées entre elles", 
-         caption = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 5642 réponses") +
+         subtitle = stringr::str_wrap("Les phases de dépôt et de partage fortement connectées entre elles", width = 50), 
+         caption = stringr::str_wrap("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 5642 réponses", width = 60)) +
     theme(axis.text.y = element_blank(),
           panel.grid = element_blank(),
           plot.subtitle = element_markdown(size = 15),
@@ -3189,25 +3189,18 @@ cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, 
                                             "Dépôt",
                                             "Ouverture ou partage",
                                             "Réutilisation",
-                                            "Planification, PGD")),
-           col_var = case_when(cycle == "Planification, PGD" & rowname == "Infrastructure de recherche" ~ "red",
-                             cycle == "Planification, PGD" & rowname == "Service central d'appui " ~ "blue",
-                             .default = "grey"))
+                                            "Planification, PGD"))) |> ungroup()
 
 cycle_lieux |> 
   ggplot(aes(y = V1)) +
-  geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
-  scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
-  scale_fill_manual(values = as.character(cycle_lieux$col_var)) +
-  #scale_fill_manual(values = color) +#, 
-  # scale_fill_manual(values = ifelse(cycle == "Planification, PGD", 
-  #                                   c('#e2c44d','#5f4496', "#ffe725", "#169B62", "#5770BE"), 
-  #                                   c('#161307', '#09060f', '#191703', '#020f09', '#080b13'))) +
-                                    #c('#716226', '#2f224b', '#7f7312', '#0b4d31', '#2b385f'))) +
+  geom_col(aes(x = cycle, fill = rowname), color = "white", position = "stack", width = 0.7) +
+  scale_fill_manual(values = ifelse(cycle_lieux$cycle == "Planification, PGD",  
+                                    c("#e2c44d", "#5f4496", "#ffe725", "#169B62", "#5770BE"),
+                                    c("#716226", "#2f224b", '#7f7312', "#0b4d31", "#2b385f"))) +
   labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", tag = "Fig. 48",
-       title = "Lieux d'activités selon l'intervention \ndans le cycle de vie de la donnée", 
-       subtitle = paste0(sum(cycle_lieux$V1), " réponses"),
-       caption = "") +
+       title = "Lieu d'activité autour du cycle de vie des données", 
+       subtitle = "Les services d'appui mieux représentés dans la planification et l'ouverture",
+       caption = "Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Où réalisez-vous votre activité en lien avec les données de recherche ? - ", sum(cycle_lieux$V1), " réponses") +
   custom_theme() +
   theme_classic() +
   theme(legend.position = "right",
@@ -3223,8 +3216,48 @@ cycle_lieux |>
            col = "none")
 ```
 
-```{r}
-
+```{r out.width='70%'}
+table <- data |> 
+    select(16:22, 90)|> mutate_all(na_if, "Non") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Quelle est votre catégorie d'emploi actuel ?`), names_to = "rowname", values_to = "V1", names_prefix = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    ungroup() |> arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+           rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt ",
+                                            "Dépôt",
+                                            "Ouverture ou partage ",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+table |> 
+    ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      labs(x = "", y = "Nombre de réponses",  tag = "Fig. 50",
+           title = stringr::str_wrap("Rôle essentiel des personnels d'appui dans l'ouverture et le partage ", width = 50),
+           subtitle = stringr::str_wrap("Désengagement des scientifiques dans les activités de partage ", width = 50),
+           caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Quelle est votre catégorie d'emploi actuel ? - ", sum(table$V1), " réponses"), width = 60),) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      custom_theme() +
+      theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_label(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T,
+                position = position_dodge(width = .5), fill = "white", label.size = NA) +
+      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE)) +
+      geom_vline(xintercept = 2.5, linetype = 2, color = "#333333")
 ```
 
 ```{r}
