@@ -2903,7 +2903,7 @@ table |>
 ```{r fig.4}
 barplot_qs_multiples2(data, 8, 12, 1, 11, "#5770BE", 
                       "Confirmation de l'ancrage 'Laboratoire' dans la question des données de la recherche", "", 
-                      "Où réalisez-vous votre activité en lien avec les données de recherche ?", "Fig. 4") +
+                      "Question posée dans le questionnaire : Où réalisez-vous votre activité en lien avec les données de recherche ?", "Fig. 4") +
     theme(plot.subtitle = element_blank())
 ```
 
@@ -2941,7 +2941,7 @@ ggplot(aes(x = rowname, y = V1)) +
   labs(x = "", y = "Nombre de réponses", 
        title = stringr::str_wrap("L'essentiel de l'activité porte aujourd'hui sur le traitement des données", width = 50), 
        subtitle = stringr::str_wrap("", width = 50), tag = "Fig. 6", 
-       caption = stringr::str_wrap(paste("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?", 
+       caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?", 
                                          "-", sum(table$V1), "réponses"), width = 60)) +
   scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
   theme_classic() +
@@ -2984,8 +2984,7 @@ table |>
       labs(x = "", y = "Nombre de réponses", tag = "Fig. 16",
            title = stringr::str_wrap("Prédominance de l'autoformation", width = 50), 
            subtitle = stringr::str_wrap("Pas de formation certifiante ou diplomante suivies", width = 50),  
-           caption = stringr::str_wrap(paste("Vous êtes-vous formé à la gestion et la diffusion des données de recherche ?", 
-                                             "-", sum(table$V1), "réponses"), width = 60)) +
+           caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Vous êtes-vous formé à la gestion et la diffusion des données de recherche ? -", sum(table$V1), "réponses"), width = 60)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       custom_theme() +
@@ -3009,7 +3008,7 @@ table |> ggplot(aes(label = col, size = n)) +
       labs(title = stringr::str_wrap("Les réseaux établissements ressortent fortement pour structurer les activités sur les données", width = 50),
            subtitle = stringr::str_wrap("Suivent ensuite les infrastructures de recherche, dont Huma-num, Progedo et l'IFB, RDA également mentionné. Le réseau des ateliers de la donnée ressort mais de façon moins marquée.", width = 50),
            tag = "Fig. 25", 
-           caption = stringr::str_wrap(paste0("Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ? - ", data |> filter(!is.na(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`)) |> nrow(), " réponses"), width = 60)) +
+           caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ? - ", data |> filter(!is.na(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`)) |> nrow(), " réponses"), width = 60)) +
       theme_minimal() +
       custom_theme() +
       theme(plot.subtitle = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))
@@ -3032,7 +3031,7 @@ data |>
       coord_polar(theta="y") +
       labs(title = stringr::str_wrap("Politique des données dans les organismes, 57% des répondants déclarent que leur établissements ont formalisé un document de gouvernance", width = 50),
            tag = "Fig. 29", 
-           caption = stringr::str_wrap(paste0("Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 60)) +
+           caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 60)) +
       xlim(c(0, 4)) +   
       theme_void() +
       custom_theme() +
@@ -3059,7 +3058,7 @@ ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, legend.title 
            lab = TRUE, lab_col = bgcolors, colors = c("#BB4444", "white", "#4477AA")) +
     labs(title = stringr::str_wrap("Décorrelation entre la phase <span style='color: red;'>Analyse, traitement, calcul</span> et les autres phases du cycle de vie", width = 50), 
          subtitle = stringr::str_wrap("Les phases de dépôt et de partage fortement connectées entre elles", width = 50), 
-         caption = stringr::str_wrap("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 5642 réponses", width = 60)) +
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 5642 réponses", width = 60)) +
     theme(axis.text.y = element_blank(),
           panel.grid = element_blank(),
           plot.subtitle = element_markdown(size = 15),
@@ -3246,7 +3245,7 @@ table |>
       labs(x = "", y = "Nombre de réponses",  tag = "Fig. 50",
            title = stringr::str_wrap("Rôle essentiel des personnels d'appui dans l'ouverture et le partage ", width = 50),
            subtitle = stringr::str_wrap("Désengagement des scientifiques dans les activités de partage ", width = 50),
-           caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Quelle est votre catégorie d'emploi actuel ? - ", sum(table$V1), " réponses"), width = 60),) +
+           caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Quelle est votre catégorie d'emploi actuel ? - ", sum(table$V1), " réponses"), width = 60)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       custom_theme() +
@@ -3260,15 +3259,195 @@ table |>
       geom_vline(xintercept = 2.5, linetype = 2, color = "#333333")
 ```
 
-```{r}
-
-```
-
-```{r}
-
-```
 
 ## Graphiques pertinents
+
+```{r}
+table <- data |> 
+    filter(`Quel est votre niveau de diplôme ?` != "Autre", 
+           !is.na(`Quel est votre niveau de diplôme ?`)) |> 
+    group_by(`Quel est votre niveau de diplôme ?`) |> 
+    summarise(n = n()) |> rename(col = 1) |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0))
+table |> 
+    ggplot(aes(x = col, y = n)) +
+      geom_bar(stat = "identity", width = .6, 
+               fill = ifelse(table$col == c("Bac+5", "Bac+8"), "#5770BE", "#666666")) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de répondants",  tag = "Fig. 12",
+       title = stringr::str_wrap("9/10 des répondants ont un niveau BAC+5 ou plus", width = 50),
+       subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 50),
+       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Quel est votre niveau de diplôme ? - ", data |> filter(!is.na(`Quel est votre niveau de diplôme ?`)) |> nrow(), " réponses"), width = 60)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      custom_theme() +
+      theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            legend.position = "none",
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T)
+```
+
+```{r}
+table <- data |> 
+    filter(`Précisez votre catégorie 2` != "Autre", 
+           !is.na(`Précisez votre catégorie 2`)) |> 
+    group_by(`Précisez votre catégorie 2`) |> 
+    summarise(n = n()) |> rename(col = 1) |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0))
+table |> 
+    ggplot(aes(x = col, y = n)) +
+      geom_bar(stat = "identity", width = .6,
+               fill = ifelse(table$col == "Catégorie A", "#5770BE", "#666666")) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de répondants",  tag = "Fig. 23.1",
+       title = stringr::str_wrap("Parmi le personnel d'appui / soutiens à la recherche, une écrasante majorité de catégorie A", width = 50),
+       subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 50),
+       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie 2`)) |> nrow(), " réponses"), width = 60)) +
+   
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      custom_theme() +
+      theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            legend.position = "none",
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T)
+
+```
+
+```{r}
+table <- data |> 
+    filter(`Précisez votre catégorie` != "Autre", 
+           !is.na(`Précisez votre catégorie`)) |> 
+    group_by(`Précisez votre catégorie`) |> 
+    summarise(n = n()) |> rename(col = 1) |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0))
+table |> 
+    ggplot(aes(x = col, y = n)) +
+      geom_bar(stat = "identity", width = .6,
+               fill = ifelse(table$col == "Maître de Conférences / Chargé(e) de recherche ou assimilé", "#5770BE", "#666666")) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de répondants",  tag = "Fig. 23.2",
+       title = stringr::str_wrap("45% des répondants de la catégorie des chercheurs et enseignants-chercheurs sont MCU ou CR", width = 50),
+       subtitle = stringr::str_wrap("Près d'un quart de ces répondants sont doctorants ou post-doctorants", width = 50),
+       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie`)) |> nrow(), " réponses"), width = 60)) +
+   
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      theme_classic() +
+      custom_theme() +
+      theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            legend.position = "none",
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T)
+```
+
+Deux propositions de titres et sous-titres pour celui-ci.
+
+```{r fig.width=12}
+plot_plus <- barplot_qs_multiples2(data, 96, 110, 1, 5, "#169B62", "", "", 
+                      "Top 5 des catégories les plus représentées", "Fig. 26")
+
+plot_moins <- barplot_qs_multiples2(data, 96, 110, 11, 15, "#ffe725", "", "", 
+                      "Top 5 des catégories les moins représentées", "")
+
+grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Un besoin de formation sur toutes les activités du cycle de vie de la donnée 
+                            La qualité de la donnée et le cadre législatif de sa diffusion ressort comme la première activité nécessitant une formation", 
+                            gp = gpar(fontsize = 15, font = 2)),
+             bottom = textGrob("Question posée dans le questionnaire : Sur quelles activités auriez-vous besoin d'une formation ?", 
+                            gp = gpar(fontsize = 12, font = 3)))
+```
+
+```{r}
+# Table
+table <- data |> 
+    mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
+                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
+    filter(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?` != "Autre", 
+           !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
+    group_by(is_cycle, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
+    summarise(n = n()) |> rename(col = 2) |> 
+    ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0),
+           is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")))
+
+# Graphique croisé
+table |> 
+  ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    coord_flip() +
+    labs(x = "", y = "Nombre de répondants", tag = "Fig. 42", 
+         title = stringr::str_wrap("Répartition disciplinaire de l'activité", width = 50),
+         subtitle = stringr::str_wrap("4 disciplines principalement impliquées dans l'analyse et le traitement ", width = 50),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 60)) + 
+    theme_classic() +
+    custom_theme() +
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+    scale_fill_manual(values = c("#ffe725", "#169B62")) +
+    theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+        panel.grid.major.y = ggplot2::element_blank(),
+        legend.position = "top",
+        axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+        axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = "", reverse = T), color = "none") +
+    geom_text(aes(y = n + 5, x = col, 
+                  label = paste(round(percent,0), "%", sep="")), 
+              color = "#333333", size=3, check_overlap = T,
+              position = position_dodge(width = .5))
+
+```
+
+Demander photo à Candice pour le prochain, titre non adéquat.
+
+```{r}
+barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée", "Fig. 43")
+
+table <- data |> 
+    mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
+                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
+    filter(`Précisez votre branche d'activité.` != "Autre", 
+           !is.na(`Précisez votre branche d'activité.`)) |> 
+    group_by(is_cycle, `Précisez votre branche d'activité.`) |> 
+    summarise(n = n()) |> rename(col = 2) |> 
+    ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0),
+           is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")))
+
+# Graphique croisé
+table |> 
+  ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    coord_flip() +
+    labs(x = "", y = "Nombre de répondants", tag = "Fig. 43", 
+         title = stringr::str_wrap("Prise en charge de l'activité 'collecte..' prédominance des BAP E", width = 50),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 60)) + 
+    theme_classic() +
+    custom_theme() +
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+    scale_fill_manual(values = c("#ffe725", "#169B62")) +
+    theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+          plot.subtitle = element_blank(),
+        panel.grid.major.y = ggplot2::element_blank(),
+        legend.position = "top",
+        axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+        axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = "", reverse = T), color = "none") +
+    geom_text(aes(y = n + 5, x = col, 
+                  label = paste(round(percent,0), "%", sep="")), 
+              color = "#333333", size=3, check_overlap = T,
+              position = position_dodge(width = .5))
+
+```
 
 ```{r}
 
