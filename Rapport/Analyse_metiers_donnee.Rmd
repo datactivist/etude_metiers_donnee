@@ -70,8 +70,7 @@ questions <- as.data.frame(colnames(data)) |>
 
 # Données issues du questionnaire
 
-
-## Analyse de chaque question individuellement 
+## Analyse de chaque question individuellement
 
 ### Statistiques générales
 
@@ -86,10 +85,9 @@ print(dfSummary(data_summary, style = "grid", graph.magnif = 1,
                 col.widths  = c(300, 200, 100, 50, 20)),
       max.tbl.height = 600,
       method = "render")
-``` 
+```
 
 ### Statistiques par question
-
 
 ```{r fonctions graphs}
 donut_plot <- function(data, variable, titre, figure){
@@ -495,13 +493,11 @@ data |>
       div(style='height:700px; overflow-y: scroll')
 ```
 
-
 ```{r eval=FALSE, include=FALSE}
 colnames(data) |> as.data.frame() |> 
     mutate(new_names = sub("\\?.*", "", `colnames(data)`)) |> 
     distinct(new_names) |> nrow()
 ```
-
 
 ### Profils des volontaires aux entretiens
 
@@ -767,9 +763,7 @@ volontaires_metiers <- data |>
 rio::export(volontaires_metiers, "../data/liste_volontaires_par_metiers.csv")
 ```
 
-
 ## Analyse croisée, classification
-
 
 ### Cycle de vie de la donnée
 
@@ -801,11 +795,9 @@ corrplot(matrix, method="color", col=col(200),
          diag = TRUE, mar=c(0,0,1.5,0), title = "Corrélation entre les différentes parties du cycle de vie de la donnée")
 ```
 
-La matrice de corrélation ci-dessus quantifie le lien existant entre les différentes parties du cycle de vie de la donnée. Elle montre pour chaque partie du cycle sa **corrélation**, c'est-à-dire l'interdépendance, avec les autres parties du cycle. Celle-ci est quantifiée par un *coefficient* borné entre -1 et 1 ; plus il se rapproche de 1 ou -1 et plus la corrélation est forte. A contrario, les coefficients proches de 0 traduisent une absence de lien ou un lien très faible entre les parties du cycle concernées. Cette matrice permet ainsi de mettre en lumière les parties isolées et au contraire, les parties du cycle fortement liées entre elles. 
+La matrice de corrélation ci-dessus quantifie le lien existant entre les différentes parties du cycle de vie de la donnée. Elle montre pour chaque partie du cycle sa **corrélation**, c'est-à-dire l'interdépendance, avec les autres parties du cycle. Celle-ci est quantifiée par un *coefficient* borné entre -1 et 1 ; plus il se rapproche de 1 ou -1 et plus la corrélation est forte. A contrario, les coefficients proches de 0 traduisent une absence de lien ou un lien très faible entre les parties du cycle concernées. Cette matrice permet ainsi de mettre en lumière les parties isolées et au contraire, les parties du cycle fortement liées entre elles.
 
-Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondants interviennent sur plusieurs d'entre elles. 
-
-
+Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondants interviennent sur plusieurs d'entre elles.
 
 ```{r eval=FALSE, fig.width=12, include=FALSE}
 table <- data |> 
@@ -829,7 +821,6 @@ table <- data |>
                                             "Réutilisation",
                                             "Planification, PGD")))
 ```
-
 
 #### Analyse, traitement, calcul
 
@@ -902,7 +893,6 @@ data |>
                          "répondants n'interviennent que sur la partie 'Collecte, création, stockage'")) +
     theme(plot.caption = element_text(face = 'italic'))
 ```
-
 
 ### Lieux, métiers, dynamiques
 
@@ -1036,10 +1026,9 @@ cycle_lieux |>
            col = "none")
 ```
 
-
 ### Croisements issus de l'atelier du 21/04/2023
 
-#### Proposition 1{.tabset}
+#### Proposition 1 {.tabset}
 
 ##### Facettes
 
@@ -1089,8 +1078,7 @@ table |>
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
 
-
-##### Doubles barres 
+##### Doubles barres
 
 ```{r prop1.2, out.width='70%'}
 table |> 
@@ -1116,9 +1104,6 @@ table |>
                 position = position_dodge(width = .5)) +
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
 ```
-
-
-
 
 #### Proposition 2
 
@@ -1376,9 +1361,9 @@ formation_activites |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 6% des répondants ayant une activité dans le choix de l'entrepôt ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
+-   6% des répondants ayant une activité dans le choix de l'entrepôt ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
 
-#### Proposition 3{.tabset}
+#### Proposition 3 {.tabset}
 
 ##### Top 5
 
@@ -1463,8 +1448,7 @@ table |>
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
 
-
-#### Proposition 4{.tabset}
+#### Proposition 4 {.tabset}
 
 ##### Besoins de formation
 
@@ -1661,7 +1645,7 @@ croisements_domaine(96, 110, 6) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 21% des répondants ayant un besoin de formation en '*analyse, représentation, modélisation et prédiction*' travaillent dans la discipline des sciences humaines et sociales.
+-   21% des répondants ayant un besoin de formation en '*analyse, représentation, modélisation et prédiction*' travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Formation gestion de données
 
@@ -1689,7 +1673,7 @@ croisements_domaine(81, 84, 4) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 21% des répondants s'étant *autoformés* à la gestion et la diffusion de données travaillent dans la discipline des sciences humaines et sociales.
+-   21% des répondants s'étant *autoformés* à la gestion et la diffusion de données travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Cycle de vie
 
@@ -1717,7 +1701,7 @@ croisements_domaine(16, 22, 7) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 17% des répondants intervenant en *analyse, traitement et calcul* dans le cycle de vie travaillent dans la discipline des sciences humaines et sociales.
+-   17% des répondants intervenant en *analyse, traitement et calcul* dans le cycle de vie travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Activités des données
 
@@ -1747,7 +1731,7 @@ croisements_domaine(23, 37, 6) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 17% des répondants travaillant en *analyse, traitement et calcul* sur les données travaillent dans la discipline des sciences humaines et sociales.
+-   17% des répondants travaillant en *analyse, traitement et calcul* sur les données travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Types de données
 
@@ -1777,9 +1761,9 @@ croisements_domaine(66, 76, 6) |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 34% des répondants travaillant des *données d'enquête et statistiques* travaillent dans la discipline des sciences humaines et sociales.
+-   34% des répondants travaillant des *données d'enquête et statistiques* travaillent dans la discipline des sciences humaines et sociales.
 
-#### Proposition 5{.tabset}
+#### Proposition 5 {.tabset}
 
 ##### Top 5
 
@@ -1849,7 +1833,6 @@ autre <- table(data$`Dans quel type d'établissement exercez-vous votre activit�
 
 Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
 
-
 ##### Bottom 5
 
 ```{r prop5.2, fig.width=12, fig.height=8}
@@ -1895,7 +1878,7 @@ table |>
 
 Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
 
-#### Proposition 6{.tabset}
+#### Proposition 6 {.tabset}
 
 ##### Top 5
 
@@ -2136,7 +2119,7 @@ formation_cycle_plus |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 9% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
+-   9% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
 
 ##### Bottom 5
 
@@ -2176,9 +2159,9 @@ formation_cycle_moins |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 6% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*nettoyage, affinement, conversion et description des données brutes*'.
+-   6% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*nettoyage, affinement, conversion et description des données brutes*'.
 
-#### Proposition 7{.tabset}
+#### Proposition 7 {.tabset}
 
 ##### Top 5
 
@@ -2272,8 +2255,7 @@ table |> ungroup() |>
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 ```
 
-
-#### Proposition 8{.tabset}
+#### Proposition 8 {.tabset}
 
 ##### Top 5
 
@@ -2508,7 +2490,7 @@ formation_besoins_plus |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 12% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation pour '*garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs*'.
+-   12% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation pour '*garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs*'.
 
 ##### Bottom 5
 
@@ -2542,13 +2524,9 @@ formation_besoins_moins |>
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
 ```
 
-* 6% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation en '*création, structuration, description des jeux de données validés*'.
-
-
-
+-   6% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation en '*création, structuration, description des jeux de données validés*'.
 
 # Données issues des entretiens
-
 
 ## Aperçu des personnes interrogées
 
@@ -2781,8 +2759,7 @@ cycle_lieux |>
            col = "none")
 ```
 
-
-## Réponses au questionnaires des personnes interrogées 
+## Réponses au questionnaires des personnes interrogées
 
 ```{r}
 table <- liste_entretiens |> 
@@ -2794,7 +2771,6 @@ DT::datatable(table, options = list(pageLength = 30, lengthMenu = c(10, 50, 100)
 ```
 
 ## Visualisation des clusters
-
 
 # Analyse approfonondie de l'enquête
 
@@ -2955,10 +2931,7 @@ ggplot(aes(x = rowname, y = V1)) +
         color = "#333333", size = 5, check_overlap = T) 
 ```
 
-
 ```{r}
-barplot_qs_multiples(data, 81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?", "Fig. 16")
-
 table <- data |> 
     select(81:84)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -3034,10 +3007,11 @@ data |>
            caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 60)) +
       xlim(c(0, 4)) +   
       theme_void() +
-      custom_theme() +
       theme(legend.position = "right",
             text = element_text(family = "Monsterrat", size = 12),
             plot.title = element_text(face = "bold"),
+            plot.caption = ggplot2::element_text(family = font,size = 12, hjust = 0, face = "italic", 
+                                                 color = "#cbcbcb", margin = ggplot2::margin(9, 0, 9, 0)), 
             plot.background = element_rect(fill = "white", colour="white"),
             panel.background = element_rect(fill = "white", colour = "white"),
             legend.background = element_rect(fill = "white", colour = "white"))+
@@ -3192,17 +3166,16 @@ cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, 
 
 cycle_lieux |> 
   ggplot(aes(y = V1)) +
-  geom_col(aes(x = cycle, fill = rowname), color = "white", position = "stack", width = 0.7) +
-  scale_fill_manual(values = ifelse(cycle_lieux$cycle == "Planification, PGD",  
-                                    c("#e2c44d", "#5f4496", "#ffe725", "#169B62", "#5770BE"),
-                                    c("#716226", "#2f224b", '#7f7312', "#0b4d31", "#2b385f"))) +
+  geom_col(aes(x = cycle, fill = rowname, alpha = cycle != "Planification, PGD"), color = "white", position = "stack", width = 0.7) +
+  scale_alpha_manual(values=c(1, .4)) + 
+  scale_fill_manual(values = c("#e2c44d", "#5f4496", "#ffe725", "#169B62", "#5770BE")) +
   labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", tag = "Fig. 48",
-       title = "Lieu d'activité autour du cycle de vie des données", 
-       subtitle = "Les services d'appui mieux représentés dans la planification et l'ouverture",
-       caption = "Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Où réalisez-vous votre activité en lien avec les données de recherche ? - ", sum(cycle_lieux$V1), " réponses") +
-  custom_theme() +
+       title = stringr::str_wrap("Lieux d'activité autour du cycle de vie des données", width = 50), 
+       subtitle = stringr::str_wrap("Les services d'appui mieux représentés dans la planification et l'ouverture", width = 50),
+       caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Où réalisez-vous votre activité en lien avec les données de recherche ? - ", sum(cycle_lieux$V1), " réponses"), width = 60)) +
   theme_classic() +
-  theme(legend.position = "right",
+  custom_theme() +
+  theme(legend.position = "top",
         legend.text = element_text(size = 8),
         text = element_text(family = "Montserrat", size = 12),
         plot.title = element_text(face = "bold"),
@@ -3211,8 +3184,7 @@ cycle_lieux |>
         axis.text.x = element_text(angle = 45, hjust = 1),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
-    guides(fill = guide_legend(title = ""), 
-           col = "none")
+  guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2), col = "none", alpha = "none")
 ```
 
 ```{r out.width='70%'}
@@ -3258,7 +3230,6 @@ table |>
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE)) +
       geom_vline(xintercept = 2.5, linetype = 2, color = "#333333")
 ```
-
 
 ## Graphiques pertinents
 
@@ -3406,11 +3377,8 @@ table |>
 
 ```
 
-Demander photo à Candice pour le prochain, titre non adéquat.
-
 ```{r}
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée", "Fig. 43")
-
+# Tableau
 table <- data |> 
     mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
                                   `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
@@ -3429,8 +3397,59 @@ table |>
     geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
     coord_flip() +
     labs(x = "", y = "Nombre de répondants", tag = "Fig. 43", 
-         title = stringr::str_wrap("Prise en charge de l'activité 'collecte..' prédominance des BAP E", width = 50),
+         title = stringr::str_wrap("Prise en charge de l'activité 'Analyse, traitement, calcul'", width = 50),
+         subtitle = stringr::str_wrap("Prédominance des BAP E", width = 50),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 60)) + 
+    theme_classic() +
+    custom_theme() +
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+    scale_fill_manual(values = c("#ffe725", "#169B62")) +
+    theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+          panel.grid.major.y = ggplot2::element_blank(),
+          legend.position = "top",
+          axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+          axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
+    geom_text(aes(y = n + 5, x = col, 
+                  label = paste(round(percent,0), "%", sep="")), 
+              color = "#333333", size=3, check_overlap = T,
+              position = position_dodge(width = .5))
+```
+
+Titre à revoir.
+
+```{r}
+# Tableau
+table <- data |> 
+    mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
+                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
+    filter(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?` != "Autre", 
+           !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
+    group_by(is_cycle, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
+    summarise(n = n()) |> rename(col = 2) |> 
+    ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0),
+           is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")),
+           barre_grise = case_when(is_cycle == "Analyse, traitement, calcul" & 
+                                       (col == "Chimie et procédés" | 
+                                            col == "Droit, économie, gestion" | 
+                                            col == "Energie" | 
+                                            col == "Environnement, agronomie, écologie" | 
+                                            col == "Physique" | 
+                                            col == "Plusieurs/tous les domaines" | 
+                                            col == "Science du numérique et mathématiques" | 
+                                            col == "Sciences et technologies de l’information et de la communication") ~ n, .default = NA_real_))
+
+# Graphique croisé
+table |> 
+  ggplot()+
+    geom_bar(aes(x = col, y = n, fill = is_cycle, group = is_cycle), 
+             stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    coord_flip() +
+    labs(x = "", y = "Nombre de répondants", tag = "Fig. 45", 
+         title = stringr::str_wrap("Répartition de l'activité sur 4 disciplines principalement, pour les personnes impliquées dans la collecte, la création, le stockage", width = 50),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 60)) + 
     theme_classic() +
     custom_theme() +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -3441,24 +3460,174 @@ table |>
         legend.position = "top",
         axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
         axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-    guides(fill = guide_legend(title = "", reverse = T), color = "none") +
+    guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
+    geom_text(aes(y = n + 5, x = col, 
+                  label = paste(round(percent,0), "%", sep="")), 
+              color = "#333333", size=3, check_overlap = T,
+              position = position_dodge(width = .5)) +
+    geom_bar(aes(x = col, y = barre_grise, group = is_cycle), fill = "#666666",
+             stat="identity", position = "dodge", width=.9, col = "white", size = 2) 
+```
+
+```{r}
+# Tableau
+table <- data |> 
+    mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui" ~ "Collecte, création, stockage",
+                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Non" ~ "Autres parties du cycle")) |> 
+    filter(`Précisez votre branche d'activité.` != "Autre", 
+           !is.na(`Précisez votre branche d'activité.`)) |> 
+    group_by(is_cycle, `Précisez votre branche d'activité.`) |> 
+    summarise(n = n()) |> rename(col = 2) |> 
+    ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0),
+           is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Collecte, création, stockage")))
+
+# Graphique croisé
+table |> 
+  ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    coord_flip() +
+    labs(x = "", y = "Nombre de répondants", tag = "Fig. 46", 
+         title = stringr::str_wrap("Prise en charge de l'activité 'Collecte, création, stockage'", width = 50),
+         subtitle = stringr::str_wrap("Prédominance des BAP E", width = 50),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 60)) + 
+    theme_classic() +
+    custom_theme() +
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+    scale_fill_manual(values = c("#ffe725", "#169B62")) +
+    theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+          panel.grid.major.y = ggplot2::element_blank(),
+          legend.position = "top",
+          axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+          axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+    guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
     geom_text(aes(y = n + 5, x = col, 
                   label = paste(round(percent,0), "%", sep="")), 
               color = "#333333", size=3, check_overlap = T,
               position = position_dodge(width = .5))
-
-```
-
-```{r}
-
 ```
 
 ## Graphiques à retravailler
 
+Le graphique suivant compare la répartition des enseignants-chercheurs de l'échantillon dans les disciplines, avec la répartition nationale.
+
+Les données à échelle nationale ont été récupérées du tableau des enseignants-chercheurs de l'enseignement supérieur public, disponible sur le [site de l'ESR](https://data.esr.gouv.fr/FR/T525/P378/tableau_des_enseignants_chercheurs_de_l_enseignement_superieur_public_niveau_national_-_enseignement_superieur#TDB).
+
+![Données extraites de l'ESR](images/domaines_CNU_nat.png)
+
+Les correspondances entre les domaines du questionnaire et ceux des données de l'ESR sont les suivantes : 
+
+- '*Droit et science politique*' et '*Sciences économiques et de gestion*' deviennent '**Droit, économie, gestion**' ;
+- '*Sciences humaines*' devient '**Sciences humaines et sociales**' ;
+- '*Sciences de la terre*' devient '**Sciences du système Terre et de l'univers**' ;
+- '*Mathématiques et informatique*' devient '**Science du numérique et mathématiques**' ;
+- '*Physique*' devient '**Physique**' ;
+- '*Pluridisciplinaire*' devient '**Plusieurs/tous les domaines**' ;
+- '*Langues et littératures*' et '*Théologie*' deviennent '**Autre**' ;
+- '*Médecine*', '*Odontologie*', '*Pharmacies*', '*Biologie et biochimie, neurosciences*', '*Autre santé*',  deviennent '**Biologie, santé, chimie et procédés**'.
+
+Certains domaines du questionnaire sont à leur tour regroupés entre eux pour correspondre aux données de l'ESR : 
+
+- '*Energie*' et '*Environnement, agronomie, écologie*' sont inclus dans '**Autre**' ;
+- '*Sciences et technologies de l information et de la communication*' est inclus dans '**Plusieurs/tous les domaines**' (puisque cette section CNU fait partie du groupe CNU '*Pluridisciplinaire*') ;
+- '**Biologie et santé**' et '**Chimie et procédés**' sont regroupées car certains groupes du CNU sont difficilement classables dans l'un ou l'autre.
+
+
+```{r}
+ref_disciplines_fr <- data.frame(domaine = c("Sciences humaines et sociales",
+                                             "Sciences du système Terre et de l'univers",
+                                             "Science du numérique et mathématiques",
+                                             "Physique",
+                                             "Plusieurs/tous les domaines",
+                                             "Biologie, santé, chimie et procédés",
+                                             "Autre",
+                                             "Droit, économie, gestion"),
+                                 part = c(0.12, 0.2, 0.12, 0.4, 0.4, 0.22, 0.10, 0.14))
+disciplines_qs <- data.frame(domaine = c("Sciences humaines et sociales",
+                                         "Sciences du système Terre et de l'univers",
+                                         "Science du numérique et mathématiques",
+                                         "Physique",
+                                         "Plusieurs/tous les domaines",
+                                         "Biologie, santé, chimie et procédés",
+                                         "Autre",
+                                         "Droit, économie, gestion"),
+                                 part = c(0.16, 0.17, 0.5, 0.5, 0.12, 0.22, 0.19, 0.5))
+table_disciplines <- rbind(ref_disciplines_fr |> mutate(group = "national"),
+                           disciplines_qs |> mutate(group = "questionnaire"))
+# table <- data |> 
+#     filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur (y compris doctorant et contractuel)",
+#            !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
+#     group_by(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
+#     summarise(n = n()) |> rename(col = 1) |> 
+#     mutate(col = fct_reorder(col, n),
+#            percent = round((n / sum(n))*100, 0))
+table_disciplines |> 
+    ggplot(aes(x = domaine, y = part, group = group, fill = group, alpha = domaine != "Science du numérique et mathématiques")) +
+      geom_bar(stat = "identity", position = "dodge", width = .6) +
+      scale_fill_manual(values = c("#cbcbcb", "#5770BE")) +
+      scale_alpha_manual(values = c(1, .4)) +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des enseignants-chercheurs", tag = "Fig. 5.1", 
+         title = stringr::str_wrap("Les sciences du numérique et mathématiques sur-représentées parmi les enseignants-chercheurs ayant répondu au questionnaire", width = 50),
+         subtitle = stringr::str_wrap("Comparaison de la répartition des enseignants-chercheurs dans les disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <span style='color: #5770BE;'>les répondants</span>", width = 50),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 710 réponses", width = 60)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.55)) +
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_markdown(),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank())
+```
+
+```{r}
+data |>
+    filter(!is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |>
+    group_by(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, `Quelle est votre catégorie d'emploi actuel ?`) |>
+    summarise(n = n()) |> rename(col = 1) |> ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n)), 2), .by = "Quelle est votre catégorie d'emploi actuel ?") |> 
+    ggplot(aes(x = col, y = percent, group = `Quelle est votre catégorie d'emploi actuel ?`, 
+               fill = `Quelle est votre catégorie d'emploi actuel ?`, alpha = col != "Plusieurs/tous les domaines")) +
+      geom_bar(stat = "identity", position = "dodge", width = .6) +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      scale_alpha_manual(values = c(1, .6)) +
+      coord_flip() +
+      labs(x = "", y = "", tag = "Fig. 5.2", 
+         title = stringr::str_wrap("Des personnels d'appui / soutiens à la recherche pluridisciplinaires", width = 50),
+         subtitle = stringr::str_wrap("Répartition des <span style='color: #5770BE;'>personnel d'appui / soutien à la recherche</span> et <span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> dans les disciplines", width = 50),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 710 réponses", width = 60)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) +
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_markdown(),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank())
+```
+
 ```{r}
 
 ```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ```{r eval=FALSE, include=FALSE}
 # Cluster
@@ -3480,7 +3649,6 @@ fviz_cluster(res.km, liste_entretiens = cycle_de_vie,
              title = "Cluster des activités du cycle de vie de la donnée")
 
 ```
-
 
 ```{r eval=FALSE, include=FALSE}
 # ACM
