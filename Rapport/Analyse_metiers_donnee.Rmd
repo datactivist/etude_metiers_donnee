@@ -60,12 +60,20 @@ library(gridExtra)
 library(corrplot)
 library(plotly)
 library(readxl)
+library(cowplot)
+library(glue)
 
 # Données
 data <- read_csv("../data/donnees_lemmatisees_cols_Autre3.csv") |> 
     filter(!is.na(`Date de soumission`)) # réponses complètes donc fiables
 questions <- as.data.frame(colnames(data)) |> 
     rename(rowname = `colnames(data)`)
+
+# Export des graphes, fonction
+saving_plot <- function(graph, name, width, height) {
+  ggsave(file = glue("Graphiques/SVG/Figure_{name}.svg"), plot = graph, width = width, height = height)
+  ggsave(file = glue("Graphiques/PNG/Figure_{name}.png"), plot = graph, width = width, height = height)
+}
 ```
 
 # Données issues du questionnaire
@@ -88,6 +96,8 @@ print(dfSummary(data_summary, style = "grid", graph.magnif = 1,
 ```
 
 ### Statistiques par question
+
+Les pourcentages affichés sur les graphiques de ce rapport sont arrondis à l'unité, expliquant des sommes pas toujours égales exactement à 100%.
 
 ```{r fonctions graphs}
 donut_plot <- function(data, variable, titre, figure){
@@ -149,7 +159,7 @@ barplot_qs_multiples <- function(data, min, max, slice_min, slice_max, color, ti
                 axis.line.y = element_blank(),
                 axis.ticks.y = element_blank(),
                 axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-          geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+          geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
 wordcloud_autre <- function(data, variable, titre, n_slice, n_max_size, figure){
@@ -194,7 +204,7 @@ barplot_qs_unique <- function(data, variable, titre, figure){
                 axis.line.y = element_blank(),
                 axis.ticks.y = element_blank(),
                 axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-          geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+          geom_text(aes(y = n + 0.13*max(n), x = col, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
 barplot_branche_activite_emploi <- function(data, titre, figure){
@@ -227,7 +237,7 @@ barplot_branche_activite_emploi <- function(data, titre, figure){
                 axis.line.y = element_blank(),
                 axis.ticks.y = element_blank(),
                 axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-          geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+          geom_text(aes(y = n + 0.13*max(n), x = col, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T) +
           guides(fill = guide_legend(title = "", nrow = 2, byrow = TRUE))
 }
@@ -260,7 +270,7 @@ barplot_qs_unique_top_n <- function(data, variable, slice_min, slice_max, titre,
                 axis.line.y = element_blank(),
                 axis.ticks.y = element_blank(),
                 axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-          geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+          geom_text(aes(y = n + 0.13*max(n), x = col, label = paste(percent, "%", sep = "")), 
                     color = "#333333", size = 3, check_overlap = T)
 }
 barplot_cycle <- function(data, figure){
@@ -302,7 +312,7 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T)
 }
 ```
@@ -865,7 +875,7 @@ barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, varia
         geom_text(aes(y = n + 5, x = col, 
                       label = paste(round(percent,0), "%", sep="")), 
                   color = "#333333", size=3, check_overlap = T,
-                  position = position_dodge(width = .5))
+                  position = position_dodge(width = .9))
 }
 
 
@@ -1072,7 +1082,7 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
@@ -1099,9 +1109,9 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5)) +
+                position = position_dodge(width = .9)) +
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
 ```
 
@@ -1346,7 +1356,7 @@ formation_activites |>
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_y_continuous(breaks = scales::pretty_breaks()) +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -1407,7 +1417,7 @@ table |>
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondants")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0) +
@@ -1440,7 +1450,7 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondants")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0) +
@@ -1622,7 +1632,7 @@ croisements_domaine <- function(min, max, row_num){
     assign("table", table, envir = .GlobalEnv)
 }
 croisements_domaine(96, 110, 6) |> 
-    mutate(rowname = str_wrap(rowname, width = 50),
+    mutate(rowname = str_wrap(rowname, width = 55),
            rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepôt")) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
@@ -1632,7 +1642,7 @@ croisements_domaine(96, 110, 6) |>
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -1652,7 +1662,7 @@ croisements_domaine(96, 110, 6) |>
 ```{r prop4.2, fig.width=12, fig.height=8}
 # Domaine thématique / Formation gestion de données
 croisements_domaine(81, 84, 4) |> 
-    mutate(rowname = str_wrap(rowname, width = 50)) |> 
+    mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
@@ -1660,7 +1670,7 @@ croisements_domaine(81, 84, 4) |>
            title = "Répartition des types de formation en gestion de données par discipline des répondants",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -1680,7 +1690,7 @@ croisements_domaine(81, 84, 4) |>
 ```{r prop4.3, fig.width=12, fig.height=8}
 # Domaine thématique / Cycle de vie
 croisements_domaine(16, 22, 7) |> 
-    mutate(rowname = str_wrap(rowname, width = 50)) |> 
+    mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
@@ -1688,7 +1698,7 @@ croisements_domaine(16, 22, 7) |>
            title = "Répartition de l'intervention dans le cycle de vie de la donnée par discipline des répondants",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -1708,7 +1718,7 @@ croisements_domaine(16, 22, 7) |>
 ```{r prop4.4, fig.width=12, fig.height=8}
 # Domaine thématique / Activités des données
 croisements_domaine(23, 37, 6) |> 
-    mutate(rowname = str_wrap(rowname, width = 50)) |> 
+    mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
@@ -1717,7 +1727,7 @@ croisements_domaine(23, 37, 6) |>
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -1738,7 +1748,7 @@ croisements_domaine(23, 37, 6) |>
 ```{r prop4.5, fig.width=12, fig.height=8}
 # Domaine thématique / Types de données
 croisements_domaine(66, 76, 6) |> 
-    mutate(rowname = str_wrap(rowname, width = 50)) |> 
+    mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
@@ -1747,7 +1757,7 @@ croisements_domaine(66, 76, 6) |>
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -1815,7 +1825,7 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`) +
       scale_fill_manual(values = c("Ecole (5% des établissements)" = "#ffe725", 
@@ -1867,7 +1877,7 @@ table |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`) +
       scale_fill_manual(values = c("Ecole (5% des établissements)" = "#ffe725", 
@@ -2106,7 +2116,7 @@ formation_cycle_plus |>
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -2146,7 +2156,7 @@ formation_cycle_moins |>
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -2219,7 +2229,7 @@ table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la reche
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~cat) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
@@ -2249,7 +2259,7 @@ table |> ungroup() |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~cat) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
@@ -2477,7 +2487,7 @@ formation_besoins_plus |>
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -2511,7 +2521,7 @@ formation_besoins_moins |>
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) + #axis-text trop longs sur plusieurs lignes
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
       coord_flip() +
       theme(legend.position = "none", 
             legend.text = element_text(size = 8),
@@ -2772,7 +2782,7 @@ DT::datatable(table, options = list(pageLength = 30, lengthMenu = c(10, 50, 100)
 
 ## Visualisation des clusters
 
-# Analyse approfonondie de l'enquête
+# Analyse approfondie de l'enquête
 
 ```{r}
 library(ggtext)
@@ -2781,18 +2791,20 @@ library(ggtext)
 font <- "Helvetica"
 custom_theme <- function (){
     font <- "Helvetica"
-    ggplot2::theme(plot.title = ggplot2::element_text(family = font,size = 21, face = "bold", color = "#222222"), 
-        plot.subtitle = ggplot2::element_text(family = font,size = 18, margin = ggplot2::margin(0, 0, 9, 0)), 
-        plot.caption = ggplot2::element_text(family = font,size = 18, hjust = 1, face = "italic", color = "#cbcbcb", margin = ggplot2::margin(9, 0, 9, 0)), 
-        legend.title = ggplot2::element_text(family = font, size = 18, color = "#222222"), 
+    ggplot2::theme(plot.title = ggplot2::element_text(family = font,size = 17, face = "bold", color = "#222222"), 
+        plot.subtitle = ggplot2::element_text(family = font,size = 15, margin = ggplot2::margin(0, 0, 9, 0)), 
+        plot.caption = ggplot2::element_text(family = font,size = 15, hjust = 1, face = "italic", color = "#cbcbcb", margin = ggplot2::margin(9, 0, 9, 0)), 
+        plot.title.position = "plot",
+        plot.caption.position = "plot",
+        legend.title = ggplot2::element_text(family = font, size = 15, color = "#222222"), 
         legend.position = "top", 
         legend.text.align = 0, 
         legend.background = ggplot2::element_blank(),
         legend.key = ggplot2::element_blank(),
-        legend.text = ggplot2::element_text(family = font, size = 18,color = "#333333"), 
-        axis.text = ggplot2::element_text(family = font, size = 15,color = "#333333"), 
+        legend.text = ggplot2::element_text(family = font, size = 15,color = "#333333"), 
+        axis.text = ggplot2::element_text(family = font, size = 14,color = "#333333"), 
         axis.text.x = ggplot2::element_text(margin = ggplot2::margin(5,b = 10)), 
-        axis.title = ggplot2::element_text(family = font, size = 18,color = "#222222"),
+        axis.title = ggplot2::element_text(family = font, size = 15,color = "#222222"),
         axis.ticks = ggplot2::element_blank(),
         axis.line = ggplot2::element_blank(), 
         panel.grid.minor = ggplot2::element_blank(),
@@ -2800,9 +2812,39 @@ custom_theme <- function (){
         panel.grid.major.x = ggplot2::element_blank(), 
         panel.background = ggplot2::element_blank(),
         strip.background = ggplot2::element_rect(fill = "white"),
-        strip.text = ggplot2::element_text(size = 22, hjust = 0, face = "bold"))
+        strip.text = ggplot2::element_text(size = 16, hjust = 0, face = "bold"))
 }
-
+barplot_qs_multiples2 <- function(data, min, max, slice_min, slice_max, color, titre, soustitre, cap_nom, figure){
+    table <- data |> 
+        select(min:max)|> mutate_all(na_if, "Non") |> 
+        summarise_all(funs(sum(!is.na(.)))) |> 
+        t()|> as.data.frame() |> 
+        rownames_to_column() |> 
+        mutate(percent = round((V1 / sum(V1))*100, 0),
+               rowname = str_extract(rowname, "(?<=\\[).*"),
+               rowname = substr(rowname, 1, nchar(rowname)-1),
+               rowname = str_extract(rowname, "^[^(]+")) |> 
+        select(rowname, V1, percent) |> ungroup() |> 
+        arrange(desc(percent)) |> slice(slice_min:slice_max) |> 
+        mutate(rowname = fct_reorder(rowname, V1)) |> 
+        na.omit()
+    table |> 
+        ggplot(aes(x = rowname, y = V1)) +
+          geom_bar(stat = "identity", width = .6, fill = color) +
+          coord_flip() +
+          labs(x = "", y = "Nombre de réponses", title = stringr::str_wrap(titre, width = 55), 
+               subtitle = stringr::str_wrap(soustitre, width = 55), tag = figure, 
+               caption = stringr::str_wrap(paste(cap_nom, "-", sum(table$V1), "réponses"), width = 65)) +
+          scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+          theme_classic() +
+          custom_theme() +
+          theme(legend.position = "none",
+                axis.text = element_text(size = 11),
+                panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+                panel.grid.major.y = ggplot2::element_blank()) +
+          geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+                    color = "#333333", size = 4, check_overlap = T)
+}
 barplot_cycle2 <- function(data, titre, soustitre, figure){
     table <- data |> 
     select(16:22)|> mutate_all(na_if, "Non") |> 
@@ -2831,10 +2873,10 @@ table |>
                color = ifelse(table$rowname == "Collecte, création, stockage", "orange", "white")) +
     #geom_point(data = filter(mpg, manufacturer == "subaru"), colour = "orange", size = 3)
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", title = stringr::str_wrap(titre, width = 50), 
-           subtitle = stringr::str_wrap(soustitre, width = 50), tag = figure, 
+      labs(x = "", y = "Nombre de réponses", title = stringr::str_wrap(titre, width = 55), 
+           subtitle = stringr::str_wrap(soustitre, width = 55), tag = figure, 
            caption = stringr::str_wrap(paste("Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?", 
-                                             "-", sum(table$V1), "réponses"), width = 60)) +
+                                             "-", sum(table$V1), "réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       custom_theme() +
@@ -2842,7 +2884,7 @@ table |>
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T)
 }
 ```
@@ -2863,24 +2905,27 @@ table <- data |>
     arrange(desc(percent)) |> slice(1:11) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
     na.omit()
-table |> 
+graph <- table |> 
     ggplot(aes(x = rowname, y = V1)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE", aes(alpha = rowname != "Laboratoire / unité / équipe de recherche")) +
       scale_alpha_manual(values = c(1, .4)) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", 
-           title = stringr::str_wrap("Confirmation de l'ancrage 'Laboratoire' dans la question des données de la recherche"), 
+           title = stringr::str_wrap("Confirmation de l'ancrage 'Laboratoire' dans la question des données de la recherche", width = 55), 
            tag = "Fig. 4", 
-           caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Où réalisez-vous votre activité en lien avec les données de recherche ?", "-", sum(table$V1), "réponses"), width = 60)) +
+           caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Où réalisez-vous votre activité en lien avec les données de recherche ?", "-", sum(table$V1), "réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      ylim(0, 1400) +
       theme_classic() +
       custom_theme() +
       theme(legend.position = "none",
             plot.subtitle = element_blank(),
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank()) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T)
+graph
+saving_plot(graph, "4", 7, 5)
 ```
 
 ```{r fig.6}
@@ -2905,21 +2950,22 @@ table <- data |>
                                             "Ouverture ou partage ",
                                             "Réutilisation",
                                             "Planification, PGD")))
-table |> 
+graph <- table |> 
 ggplot(aes(x = rowname, y = V1)) +
   geom_bar(stat = "identity", width = .6, alpha = .9, color = "white",
            fill = ifelse(table$rowname == c("Collecte, création, stockage", "Analyse, traitement, calcul"), "#5770BE", "#bbc5e5")) +
-  geom_label(aes(x = 4, y = 1150), color = "#666666", size = 5, check_overlap = T, fill = "white", label.size = NA,
+  geom_label(aes(x = 4.5, y = 1250), color = "#666666", size = 4, check_overlap = T, fill = "white", label.size = NA,
              label = stringr::str_wrap("42% des activités se concentrent sur ces 2 parties du cycle", width = 20)) +
   annotate(geom = "curve", x = 3, y = 1230, xend = 2.5, yend = 1250, color = "#666666", 
         curvature = -.3, arrow = arrow(length = unit(2, "mm"))) +
   coord_flip() +
   labs(x = "", y = "Nombre de réponses", 
-       title = stringr::str_wrap("L'essentiel de l'activité porte aujourd'hui sur le traitement des données", width = 50), 
-       subtitle = stringr::str_wrap("", width = 50), tag = "Fig. 6", 
+       title = stringr::str_wrap("L'essentiel de l'activité porte aujourd'hui sur le traitement des données", width = 55), 
+       subtitle = stringr::str_wrap("", width = 55), tag = "Fig. 6", 
        caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?", 
-                                         "-", sum(table$V1), "réponses"), width = 60)) +
+                                         "-", sum(table$V1), "réponses"), width = 65)) +
   scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+  ylim(0, 1550) +
   theme_classic() +
   custom_theme() +
   theme(legend.position = "none",
@@ -2927,8 +2973,10 @@ ggplot(aes(x = rowname, y = V1)) +
         panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
         panel.grid.major.y = ggplot2::element_blank(),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-  geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+  geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
         color = "#333333", size = 5, check_overlap = T) 
+graph
+saving_plot(graph, "6", 7, 5)
 ```
 
 ```{r}
@@ -2945,28 +2993,31 @@ table <- data |>
     arrange(desc(percent)) |> slice(1:11) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
     na.omit()
-table |> 
+graph <- table |> 
     ggplot(aes(x = rowname, y = V1)) +
       geom_bar(stat = "identity", width = .6, 
                fill = ifelse(table$rowname == "Autoformation", "#5770BE", "#bbc5e5")) +
-      geom_label(aes(x = 2.7, y = 1050), color = "#666666", size = 5, check_overlap = T, fill = "white", label.size = NA,
-                 label = stringr::str_wrap("55% d'autoformation", width = 20)) +
-      annotate(geom = "curve", x = 3, y = 1100, xend = 3.5, yend = 1200, color = "#666666", 
-            curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
+      # geom_label(aes(x = 2.7, y = 1050), color = "#666666", size = 5, check_overlap = T, fill = "white", label.size = NA,
+      #            label = stringr::str_wrap("55% d'autoformation", width = 20)) +
+      # annotate(geom = "curve", x = 3, y = 1100, xend = 3.5, yend = 1200, color = "#666666", 
+      #       curvature = .3, arrow = arrow(length = unit(2, "mm"))) +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", tag = "Fig. 16",
-           title = stringr::str_wrap("Prédominance de l'autoformation", width = 50), 
-           subtitle = stringr::str_wrap("Pas de formation certifiante ou diplomante suivies", width = 50),  
-           caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Vous êtes-vous formé à la gestion et la diffusion des données de recherche ? -", sum(table$V1), "réponses"), width = 60)) +
+           title = stringr::str_wrap("Prédominance de l'autoformation", width = 55), 
+           subtitle = stringr::str_wrap("Pas de formation certifiante ou diplomante suivies", width = 55),  
+           caption = stringr::str_wrap(paste("Question posée dans le questionnaire : Vous êtes-vous formé à la gestion et la diffusion des données de recherche ? -", sum(table$V1), "réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      ylim(0, 1550) +
       theme_classic() +
       custom_theme() +
       theme(legend.position = "none",
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T)
+graph
+saving_plot(graph, "16", 7, 5)
 ```
 
 ```{r}
@@ -2975,20 +3026,22 @@ table <- data |> select(`Dans le cadre de votre activité sur les données, sur 
     mutate(n=n()) |> na.omit() |> distinct() |> 
     rename(col = 1) |> ungroup() |> 
     arrange(desc(n)) |> slice(1:40)
-table |> ggplot(aes(label = col, size = n)) +
+graph <- table |> ggplot(aes(label = col, size = n)) +
       geom_text_wordcloud(color = rep_len(c('#ffe725','#5770BE', "#169B62"), nrow(table)), family = "Montserrat") +
       scale_size_area(max_size = 10) +
-      labs(title = stringr::str_wrap("Les réseaux établissements ressortent fortement pour structurer les activités sur les données", width = 50),
-           subtitle = stringr::str_wrap("Suivent ensuite les infrastructures de recherche, dont Huma-num, Progedo et l'IFB, RDA également mentionné. Le réseau des ateliers de la donnée ressort mais de façon moins marquée.", width = 50),
+      labs(title = stringr::str_wrap("Les réseaux établissements ressortent fortement pour structurer les activités sur les données", width = 55),
+           subtitle = stringr::str_wrap("Suivent ensuite les infrastructures de recherche, dont Huma-num, Progedo et l'IFB, RDA également mentionné. Le réseau des ateliers de la donnée ressort mais de façon moins marquée.", width = 60),
            tag = "Fig. 25", 
-           caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ? - ", data |> filter(!is.na(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`)) |> nrow(), " réponses"), width = 60)) +
+           caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ? - ", data |> filter(!is.na(`Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`)) |> nrow(), " réponses"), width = 65)) +
       theme_minimal() +
       custom_theme() +
       theme(plot.subtitle = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))
+graph
+saving_plot(graph, "25", 7, 5)
 ```
 
 ```{r}
-data |> 
+graph <- data |> 
     filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> 
     group_by(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`) |> summarise(Freq = n()) |> 
     mutate(fraction = Freq / sum(Freq),
@@ -2998,27 +3051,29 @@ data |>
            labelPosition = (ymax + ymin) / 2) |> 
     ggplot(aes(ymax = ymax, ymin = ymin, xmax = 3.3, xmin = 2, fill = `Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) +
       geom_rect(col = "white", size = 2) +
-      geom_text(x=4, aes(y=labelPosition, label = paste(proportion,"%",sep = "")), color = "#333333", size=7) +
+      geom_text(x=4, aes(y=labelPosition, label = paste(proportion,"%",sep = "")), color = "#333333", size=5) +
       geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
       scale_fill_manual(values = c('#bbc5e5','#5770BE')) +
       coord_polar(theta="y") +
-      labs(title = stringr::str_wrap("Politique des données dans les organismes, 57% des répondants déclarent que leur établissements ont formalisé un document de gouvernance", width = 50),
+      labs(title = stringr::str_wrap("Politique des données dans les établissements / organismes, 57% des répondants déclarent que leur structure a formalisé un document de gouvernance", width = 45),
            tag = "Fig. 29", 
-           caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 60)) +
+           caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 65)) +
       xlim(c(0, 4)) +   
       theme_void() +
       theme(legend.position = "right",
             text = element_text(family = "Monsterrat", size = 12),
             plot.title = element_text(face = "bold"),
             plot.caption = ggplot2::element_text(family = font,size = 12, hjust = 0, face = "italic", 
-                                                 color = "#cbcbcb", margin = ggplot2::margin(9, 0, 9, 0)), 
+                                                 color = "#cbcbcb", margin = ggplot2::margin(7, 0, 9, 0)), 
             plot.background = element_rect(fill = "white", colour="white"),
             panel.background = element_rect(fill = "white", colour = "white"),
             legend.background = element_rect(fill = "white", colour = "white"))+
       guides(fill = guide_legend(title = ""))
+graph
+saving_plot(graph, "29", 7, 5)
 ```
 
-```{r out.width='60%'}
+```{r fig.width=15, fig.height=8}
 library(ggcorrplot)
 # Matrice de corrélation
     # couleurs
@@ -3027,15 +3082,17 @@ bgcolors <- matrix("black", nrow(matrix), ncol(matrix),dimnames = dimnames(matri
 bgcolors[,2] <- "red"
 bgcolors <- bgcolors[lower.tri(bgcolors, diag=TRUE)]
     # matrice
-ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, legend.title = "",
-           lab = TRUE, lab_col = bgcolors, colors = c("#BB4444", "white", "#4477AA")) +
-    labs(title = stringr::str_wrap("Décorrelation entre la phase <span style='color: red;'>Analyse, traitement, calcul</span> et les autres phases du cycle de vie", width = 50), 
-         subtitle = stringr::str_wrap("Les phases de dépôt et de partage fortement connectées entre elles", width = 50), 
-         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 5642 réponses", width = 60)) +
+graph <- ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, legend.title = "",
+           lab = TRUE, lab_size = 5, lab_col = bgcolors, colors = c("#BB4444", "white", "#4477AA")) +
+    labs(title = "Décorrelation entre la phase <span style='color: red;'>Analyse, traitement, calcul</span> et les autres phases du cycle de vie", 
+         subtitle = stringr::str_wrap("Les phases de dépôt et de partage fortement connectées entre elles", width = 55), 
+         caption = "Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - \n5642 réponses") +
     theme(axis.text.y = element_blank(),
           panel.grid = element_blank(),
-          plot.subtitle = element_markdown(size = 15),
-          plot.title = element_markdown(size = 18, lineheight = 2),
+          plot.subtitle = element_markdown(size = 14),
+          plot.title = element_markdown(size = 15, lineheight = 1.2),
+          plot.title.position = "plot",
+          plot.caption.position = "plot",
           plot.caption = element_text(size = 15, face = "italic", hjust = 0, color = "#cbcbcb")) +
     geom_label(aes(x = 6, y = 7), label = "Dépot", family = font, vjust = .4, hjust = "right", 
                fill = "white", label.size = NA) +
@@ -3051,10 +3108,14 @@ ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, legend.title 
                fill = "white", label.size = NA) +
     geom_label(aes(x = 0, y = 1), label = "Collecte, création, stockage", family = font, vjust = .4, hjust = "right", 
                fill = "white", label.size = NA) +
-    coord_fixed(clip = 'off') 
+    coord_fixed(clip = 'off')   
+graph
+saving_plot(graph, "matrice_generale", 15, 8)
 ```
 
-```{r out.width='70%'}
+<br>
+
+```{r fig.height=8, out.width='70%'}
 analyse <- data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
@@ -3163,19 +3224,19 @@ cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, 
                                             "Réutilisation",
                                             "Planification, PGD"))) |> ungroup()
 
-cycle_lieux |> 
+graph <- cycle_lieux |> 
   ggplot(aes(y = V1)) +
   geom_col(aes(x = cycle, fill = rowname, alpha = cycle != "Planification, PGD"), color = "white", position = "stack", width = 0.7) +
   scale_alpha_manual(values=c(1, .4)) + 
   scale_fill_manual(values = c("#e2c44d", "#5f4496", "#ffe725", "#169B62", "#5770BE")) +
   labs(x = "Cycle de vie de la donnée", y = "Nombre de réponses", tag = "Fig. 48",
-       title = stringr::str_wrap("Lieux d'activité autour du cycle de vie des données", width = 50), 
-       subtitle = stringr::str_wrap("Les services d'appui mieux représentés dans la planification et l'ouverture", width = 50),
-       caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Où réalisez-vous votre activité en lien avec les données de recherche ? - ", sum(cycle_lieux$V1), " réponses"), width = 60)) +
+       title = stringr::str_wrap("Lieux d'activité autour du cycle de vie des données", width = 55), 
+       subtitle = stringr::str_wrap("Les services d'appui mieux représentés dans la planification et l'ouverture", width = 55),
+       caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Où réalisez-vous votre activité en lien avec les données de recherche ? - ", sum(cycle_lieux$V1), " réponses"), width = 70)) +
   theme_classic() +
   custom_theme() +
   theme(legend.position = "top",
-        legend.text = element_text(size = 8),
+        legend.text = element_text(size = 9),
         text = element_text(family = "Montserrat", size = 12),
         plot.title = element_text(face = "bold"),
         plot.subtitle = element_text(face = "italic", size = 15),
@@ -3183,10 +3244,14 @@ cycle_lieux |>
         axis.text.x = element_text(angle = 45, hjust = 1),
         axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
-  guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2), col = "none", alpha = "none")
+  guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 3), col = "none", alpha = "none")
+graph
+saving_plot(graph, "48_A", 12, 9)
 ```
 
-```{r out.width='70%'}
+
+
+```{r fig.height=8}
 table <- data |> 
     select(16:22, 90)|> mutate_all(na_if, "Non") |> 
     group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
@@ -3208,26 +3273,30 @@ table <- data |>
                                             "Ouverture ou partage ",
                                             "Réutilisation",
                                             "Planification, PGD")))
-table |> 
+graph <- table |> 
     ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
-      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = .5) +
       coord_flip() +
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       labs(x = "", y = "Nombre de réponses",  tag = "Fig. 50",
-           title = stringr::str_wrap("Rôle essentiel des personnels d'appui dans l'ouverture et le partage ", width = 50),
-           subtitle = stringr::str_wrap("Désengagement des scientifiques dans les activités de partage ", width = 50),
-           caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Quelle est votre catégorie d'emploi actuel ? - ", sum(table$V1), " réponses"), width = 60)) +
+           title = stringr::str_wrap("Rôle essentiel des personnels d'appui dans l'ouverture et le partage ", width = 55),
+           subtitle = stringr::str_wrap("Désengagement des scientifiques dans les activités de partage ", width = 55),
+           caption = stringr::str_wrap(paste0("Questions posées dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ?, Quelle est votre catégorie d'emploi actuel ? - ", sum(table$V1), " réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       custom_theme() +
       theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank(),
+            legend.text = ggplot2::element_text(family = font, size = 12,color = "#333333"), 
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_label(aes(y  = percent + 0.05*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_label(aes(y  = percent + 0.13*max(percent), group = `Quelle est votre catégorie d'emploi actuel ?`, 
+                     x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5), fill = "white", label.size = NA) +
+                position = position_dodge(width = .9), fill = "white", label.size = NA) + # width=.5 avant et trop centré
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE)) +
       geom_vline(xintercept = 2.5, linetype = 2, color = "#333333")
+graph
+saving_plot(graph, "50_A", 8, 8)
 ```
 
 ## Graphiques pertinents
@@ -3240,15 +3309,15 @@ table <- data |>
     summarise(n = n()) |> rename(col = 1) |> 
     mutate(col = fct_reorder(col, n),
            percent = round((n / sum(n))*100, 0))
-table |> 
+graph <- table |> 
     ggplot(aes(x = col, y = n)) +
       geom_bar(stat = "identity", width = .6, 
                fill = ifelse(table$col == c("Bac+5", "Bac+8"), "#5770BE", "#bbc5e5")) +
       coord_flip() +
-      labs(x = "", y = "Nombre de répondants",  tag = "Fig. 12",
-       title = stringr::str_wrap("9/10 des répondants ont un niveau BAC+5 ou plus", width = 50),
-       subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 50),
-       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Quel est votre niveau de diplôme ? - ", data |> filter(!is.na(`Quel est votre niveau de diplôme ?`)) |> nrow(), " réponses"), width = 60)) +
+      labs(x = "", y = "Nombre de personnes",  tag = "Fig. 12",
+       title = stringr::str_wrap("9/10 des personnes ont un niveau BAC+5 ou plus", width = 55),
+       subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 55),
+       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Quel est votre niveau de diplôme ? - ", data |> filter(!is.na(`Quel est votre niveau de diplôme ?`)) |> nrow(), " réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       custom_theme() +
@@ -3256,8 +3325,10 @@ table |>
             panel.grid.major.y = ggplot2::element_blank(),
             legend.position = "none",
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = n + 0.1*max(n), x = col, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T)
+graph
+saving_plot(graph, "12", 7, 5)
 ```
 
 ```{r}
@@ -3268,15 +3339,15 @@ table <- data |>
     summarise(n = n()) |> rename(col = 1) |> 
     mutate(col = fct_reorder(col, n),
            percent = round((n / sum(n))*100, 0))
-table |> 
+graph <- table |> 
     ggplot(aes(x = col, y = n)) +
       geom_bar(stat = "identity", width = .6,
                fill = ifelse(table$col == "Catégorie A", "#5770BE", "#bbc5e5")) +
       coord_flip() +
-      labs(x = "", y = "Nombre de répondants",  tag = "Fig. 23.1",
-       title = stringr::str_wrap("Parmi le personnel d'appui / soutiens à la recherche, une écrasante majorité de catégorie A", width = 50),
-       subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 50),
-       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie 2`)) |> nrow(), " réponses"), width = 60)) +
+      labs(x = "", y = "Nombre de personnes",  tag = "Fig. 23.1",
+       title = stringr::str_wrap("Parmi le personnel d'appui / soutiens à la recherche, une écrasante majorité de catégorie A", width = 55),
+       subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 55),
+       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie 2`)) |> nrow(), " réponses"), width = 65)) +
    
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
@@ -3285,9 +3356,11 @@ table |>
             panel.grid.major.y = ggplot2::element_blank(),
             legend.position = "none",
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = n + 0.1*max(n), x = col, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T)
 
+graph
+saving_plot(graph, "23.1", 7, 5)
 ```
 
 ```{r}
@@ -3298,15 +3371,15 @@ table <- data |>
     summarise(n = n()) |> rename(col = 1) |> 
     mutate(col = fct_reorder(col, n),
            percent = round((n / sum(n))*100, 0))
-table |> 
+graph <- table |> 
     ggplot(aes(x = col, y = n)) +
       geom_bar(stat = "identity", width = .6,
                fill = ifelse(table$col == "Maître de Conférences / Chargé(e) de recherche ou assimilé", "#5770BE", "#bbc5e5")) +
       coord_flip() +
-      labs(x = "", y = "Nombre de répondants",  tag = "Fig. 23.2",
-       title = stringr::str_wrap("45% des répondants de la catégorie des chercheurs et enseignants-chercheurs sont MCU ou CR", width = 50),
-       subtitle = stringr::str_wrap("Près d'un quart de ces répondants sont doctorants ou post-doctorants", width = 50),
-       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie`)) |> nrow(), " réponses"), width = 60)) +
+      labs(x = "", y = "Nombre de personnes",  tag = "Fig. 23.2",
+       title = stringr::str_wrap("45% des personnes de la catégorie des chercheurs et enseignants-chercheurs sont MCU ou CR", width = 55),
+       subtitle = stringr::str_wrap("Près d'un quart de ces personnes sont doctorants ou post-doctorants", width = 55),
+       caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie`)) |> nrow(), " réponses"), width = 65)) +
    
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
@@ -3315,28 +3388,32 @@ table |>
             panel.grid.major.y = ggplot2::element_blank(),
             legend.position = "none",
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = n + 0.05*max(n), x = col, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = n + 0.13*max(n), x = col, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T)
+graph
+saving_plot(graph, "23.2", 7, 5)
 ```
 
-Deux propositions de titres et sous-titres pour celui-ci.
 
-```{r fig.width=12}
+```{r fig.width = 12, fig.height=7}
 plot_plus <- barplot_qs_multiples2(data, 96, 110, 1, 5, "#169B62", "", "", 
-                      "Top 5 des catégories les plus représentées", "Fig. 26")
+                      "Top 5 des besoins de formation", "Fig. 26") +
+    ylim(0, 650)
 
 plot_moins <- barplot_qs_multiples2(data, 96, 110, 11, 15, "#ffe725", "", "", 
-                      "Top 5 des catégories les moins représentées", "")
+                      "Bottom 5 des besoins de formation", "")
 
-grid.arrange(plot_plus, plot_moins, ncol = 2, 
-             top = textGrob("Un besoin de formation sur toutes les activités du cycle de vie de la donnée 
-                            La qualité de la donnée et le cadre législatif de sa diffusion ressort comme la première activité nécessitant une formation", 
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Les besoins de formation les plus fortement exprimés couvrent un large spectre du cycle de vie de la donnée", 
                             gp = gpar(fontsize = 15, font = 2)),
              bottom = textGrob("Question posée dans le questionnaire : Sur quelles activités auriez-vous besoin d'une formation ?", 
-                            gp = gpar(fontsize = 12, font = 3)))
+                            gp = gpar(fontsize = 11, font = 3)))
+saving_plot(graph, "26", 12, 7)
 ```
 
-```{r}
+<br>
+
+```{r fig.height=7, fg.width=8}
 # Table
 table <- data |> 
     mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
@@ -3351,32 +3428,36 @@ table <- data |>
            is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")))
 
 # Graphique croisé
-table |> 
+graph <- table |> 
   ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
-    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de répondants", tag = "Fig. 42", 
-         title = stringr::str_wrap("Répartition disciplinaire de l'activité", width = 50),
-         subtitle = stringr::str_wrap("4 disciplines principalement impliquées dans l'analyse et le traitement ", width = 50),
-         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 60)) + 
+    labs(x = "", y = "Nombre de personnes", tag = "Fig. 42", 
+         title = stringr::str_wrap("Répartition disciplinaire de l'activité", width = 55),
+         subtitle = stringr::str_wrap("Quatre disciplines principalement impliquées dans l'analyse et le traitement ", width = 65),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 65)) + 
     theme_classic() +
     custom_theme() +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
     scale_fill_manual(values = c("#ffe725", "#169B62")) +
     theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
         panel.grid.major.y = ggplot2::element_blank(),
+        legend.text = ggplot2::element_text(family = font, size = 12,color = "#333333"), 
         legend.position = "top",
         axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+        axis.text.y = element_text(size = 8),
         axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-    guides(fill = guide_legend(title = "", reverse = T), color = "none") +
-    geom_text(aes(y = n + 5, x = col, 
+    guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
+    geom_text(aes(y = n + 7, x = col, 
                   label = paste(round(percent,0), "%", sep="")), 
               color = "#333333", size=3, check_overlap = T,
-              position = position_dodge(width = .5))
+              position = position_dodge(width = .9))
 
+graph
+saving_plot(graph, "42", 8, 7)
 ```
 
-```{r}
+```{r fig.height=6}
 # Tableau
 table <- data |> 
     mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
@@ -3391,84 +3472,102 @@ table <- data |>
            is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")))
 
 # Graphique croisé
-table |> 
+graph <- table |> 
   ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
-    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de répondants", tag = "Fig. 43", 
-         title = stringr::str_wrap("Prise en charge de l'activité 'Analyse, traitement, calcul'", width = 50),
-         subtitle = stringr::str_wrap("Prédominance des BAP E", width = 50),
-         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 60)) + 
+    labs(x = "", y = "Nombre de personnes", tag = "Fig. 43", 
+         title = stringr::str_wrap("Prise en charge de l'activité 'Analyse, traitement, calcul'", width = 59),
+         subtitle = stringr::str_wrap("Prédominance des BAP E", width = 55),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 65)) + 
     theme_classic() +
     custom_theme() +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
     scale_fill_manual(values = c("#ffe725", "#169B62")) +
     theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
           panel.grid.major.y = ggplot2::element_blank(),
+          legend.text = ggplot2::element_text(family = font, size = 12,color = "#333333"), 
           legend.position = "top",
           axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
           axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
     guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
-    geom_text(aes(y = n + 5, x = col, 
+    geom_label(aes(y = n + 17, x = col, 
                   label = paste(round(percent,0), "%", sep="")), 
-              color = "#333333", size=3, check_overlap = T,
-              position = position_dodge(width = .5))
+              color = "#333333", size=3, check_overlap = T, fill = "white", label.size = NA,
+              position = position_dodge(width = .9))
+
+graph
+saving_plot(graph, "43", 7, 6)
 ```
 
-Titre à revoir.
 
-```{r}
+```{r fig.height=7}
 # Tableau
 table <- data |> 
-    mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" ~ "Analyse, traitement, calcul",
-                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" ~ "Autres parties du cycle")) |> 
+    mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui" ~ "Collecte, création, stockage",
+                                  `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Non" ~ "Autres parties du cycle")) |> 
     filter(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?` != "Autre", 
            !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
     group_by(is_cycle, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
     summarise(n = n()) |> rename(col = 2) |> 
     ungroup() |> 
-    mutate(col = fct_reorder(col, n),
-           percent = round((n / sum(n))*100, 0),
-           is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Analyse, traitement, calcul")),
-           barre_grise = case_when(is_cycle == "Analyse, traitement, calcul" & 
+    mutate(percent = round((n / sum(n))*100, 0),
+           is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Collecte, création, stockage")),
+           col = factor(col, levels = c("Energie",
+                                        "Chimie et procédés",
+                                        "Physique",
+                                        "Science du numérique et mathématiques",
+                                        "Droit, économie, gestion",
+                                        "Sciences et technologies de l’information et de la communication",
+                                        "Plusieurs/tous les domaines",
+                                        "Environnement, agronomie, écologie",
+                                        "Sciences du système Terre et de l'univers",
+                                        "Biologie et santé",
+                                        "Sciences humaines et sociales")),
+           barre_grise = case_when(is_cycle == "Collecte, création, stockage" & 
                                        (col == "Chimie et procédés" | 
                                             col == "Droit, économie, gestion" | 
                                             col == "Energie" | 
-                                            col == "Environnement, agronomie, écologie" | 
                                             col == "Physique" | 
                                             col == "Plusieurs/tous les domaines" | 
                                             col == "Science du numérique et mathématiques" | 
                                             col == "Sciences et technologies de l’information et de la communication") ~ n, .default = NA_real_))
 
 # Graphique croisé
-table |> 
+graph <- table |> 
+    #mutate(col = fct_reorder(col, n), .by = is_cycle) |> 
   ggplot()+
     geom_bar(aes(x = col, y = n, fill = is_cycle, group = is_cycle), 
-             stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+             stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de répondants", tag = "Fig. 45", 
-         title = stringr::str_wrap("Répartition de l'activité sur 4 disciplines principalement, pour les personnes impliquées dans la collecte, la création, le stockage", width = 50),
-         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 60)) + 
+    labs(x = "", y = "Nombre de personnes", tag = "Fig. 45", 
+         title = stringr::str_wrap("Quatre disciplines concentrent 52% des personnes impliquées dans la collecte, la création, le stockage", width = 55),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 65)) + 
     theme_classic() +
     custom_theme() +
+    ylim(0, 260) +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
     scale_fill_manual(values = c("#ffe725", "#169B62")) +
     theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
           plot.subtitle = element_blank(),
-        panel.grid.major.y = ggplot2::element_blank(),
-        legend.position = "top",
-        axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
-        axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+          panel.grid.major.y = ggplot2::element_blank(),
+          legend.position = "top",
+          legend.text = ggplot2::element_text(family = font, size = 12,color = "#333333"), 
+          axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
+          axis.text.y = element_text(size = 10),
+          axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
     guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
-    geom_text(aes(y = n + 5, x = col, 
+    geom_label(aes(y = n + 6, x = col, group = is_cycle, hjust = 0,
                   label = paste(round(percent,0), "%", sep="")), 
-              color = "#333333", size=3, check_overlap = T,
-              position = position_dodge(width = .5)) +
+              color = "#333333", size=3, check_overlap = T, fill = "white", label.size = NA,
+              position = position_dodge(width = .95)) +
     geom_bar(aes(x = col, y = barre_grise, group = is_cycle), fill = "#666666",
-             stat="identity", position = "dodge", width=.9, col = "white", size = 2) 
+             stat="identity", position = "dodge", width=.9, col = "white", size = .5) 
+graph
+saving_plot(graph, "45", 8, 7)
 ```
 
-```{r}
+```{r fig.height=7, fig.width=10}
 # Tableau
 table <- data |> 
     mutate(is_cycle = case_when(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui" ~ "Collecte, création, stockage",
@@ -3483,28 +3582,32 @@ table <- data |>
            is_cycle = factor(is_cycle, levels = c("Autres parties du cycle", "Collecte, création, stockage")))
 
 # Graphique croisé
-table |> 
+graph <- table |> 
   ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
-    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
+    geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de répondants", tag = "Fig. 46", 
-         title = stringr::str_wrap("Prise en charge de l'activité 'Collecte, création, stockage'", width = 50),
-         subtitle = stringr::str_wrap("Prédominance des BAP E", width = 50),
-         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 60)) + 
+    labs(x = "", y = "Nombre de personnes", tag = "Fig. 46", 
+         title = stringr::str_wrap("Prise en charge de l'activité 'Collecte, création, stockage'", width = 60),
+         subtitle = stringr::str_wrap("Prédominance des BAP E", width = 55),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 65)) + 
     theme_classic() +
     custom_theme() +
+    #ylim(1, 225) +
     scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
     scale_fill_manual(values = c("#ffe725", "#169B62")) +
     theme(panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+          plot.title = element_text(size = 16),
           panel.grid.major.y = ggplot2::element_blank(),
+          legend.text = ggplot2::element_text(family = font, size = 12,color = "#333333"), 
           legend.position = "top",
           axis.text.x = element_text(margin = margin(t = 0, r = -100, b = 0, l = 0)),
           axis.title.y = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
     guides(fill = guide_legend(title = "", reverse = T, nrow = 2), color = "none") +
-    geom_text(aes(y = n + 5, x = col, 
-                  label = paste(round(percent,0), "%", sep="")), 
-              color = "#333333", size=3, check_overlap = T,
-              position = position_dodge(width = .5))
+    geom_text(aes(y = n + 9, x = col, label = paste(round(percent,0), "%", sep="")), 
+              color = "#333333", size=3, check_overlap = T, hjust = 0,
+              position = position_dodge(width = .9))
+graph
+saving_plot(graph, "46", 10, 7)
 ```
 
 ## Graphiques à retravailler
@@ -3513,7 +3616,10 @@ Le graphique suivant compare la répartition des enseignants-chercheurs de l'éc
 
 Les données à échelle nationale ont été récupérées du tableau des enseignants-chercheurs de l'enseignement supérieur public, disponible sur le [site de l'ESR](https://data.esr.gouv.fr/FR/T525/P378/tableau_des_enseignants_chercheurs_de_l_enseignement_superieur_public_niveau_national_-_enseignement_superieur#TDB).
 
-![Données extraites de l'ESR](images/domaines_CNU_nat.png)
+<p align="center">
+  <img src="images/domaines_CNU_nat.png" />
+</p>
+
 
 Les correspondances entre les domaines du questionnaire et ceux des données de l'ESR sont les suivantes : 
 
@@ -3532,8 +3638,9 @@ Certains domaines du questionnaire sont à leur tour regroupés entre eux pour c
 - '*Sciences et technologies de l information et de la communication*' est inclus dans '**Plusieurs/tous les domaines**' (puisque cette section CNU fait partie du groupe CNU '*Pluridisciplinaire*') ;
 - '**Biologie et santé**' et '**Chimie et procédés**' sont regroupées car certains groupes du CNU sont difficilement classables dans l'un ou l'autre.
 
+mettre en avant pluridisciplinaires
 
-```{r}
+```{r fig.height=7}
 ref_disciplines_fr <- data.frame(domaine = c("Sciences humaines et sociales",
                                              "Sciences du système Terre et de l'univers",
                                              "Science du numérique et mathématiques",
@@ -3542,7 +3649,7 @@ ref_disciplines_fr <- data.frame(domaine = c("Sciences humaines et sociales",
                                              "Biologie, santé, chimie et procédés",
                                              "Autre",
                                              "Droit, économie, gestion"),
-                                 part = c(0.12, 0.2, 0.12, 0.4, 0.4, 0.22, 0.10, 0.14))
+                                 part = c(0.12, 0.02, 0.12, 0.04, 0.04, 0.22, 0.10, 0.14))
 disciplines_qs <- data.frame(domaine = c("Sciences humaines et sociales",
                                          "Sciences du système Terre et de l'univers",
                                          "Science du numérique et mathématiques",
@@ -3551,38 +3658,45 @@ disciplines_qs <- data.frame(domaine = c("Sciences humaines et sociales",
                                          "Biologie, santé, chimie et procédés",
                                          "Autre",
                                          "Droit, économie, gestion"),
-                                 part = c(0.16, 0.17, 0.5, 0.5, 0.12, 0.22, 0.19, 0.5))
+                                 part = c(0.16, 0.17, 0.05, 0.05, 0.12, 0.22, 0.19, 0.05))
 table_disciplines <- rbind(ref_disciplines_fr |> mutate(group = "national"),
                            disciplines_qs |> mutate(group = "questionnaire"))
-# table <- data |> 
-#     filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur (y compris doctorant et contractuel)",
-#            !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |> 
-#     group_by(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |> 
-#     summarise(n = n()) |> rename(col = 1) |> 
-#     mutate(col = fct_reorder(col, n),
-#            percent = round((n / sum(n))*100, 0))
-table_disciplines |> 
-    ggplot(aes(x = domaine, y = part, group = group, fill = group, alpha = domaine != "Science du numérique et mathématiques")) +
+table <- data |>
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur (y compris doctorant et contractuel)",
+           !is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |>
+    group_by(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`) |>
+    summarise(n = n()) |> rename(col = 1) |>
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0))
+graph <- table_disciplines |> 
+    ggplot(aes(x = domaine, y = part, group = group, fill = group, alpha = domaine != "Plusieurs/tous les domaines")) +
       geom_bar(stat = "identity", position = "dodge", width = .6) +
       scale_fill_manual(values = c("#cbcbcb", "#5770BE")) +
       scale_alpha_manual(values = c(1, .4)) +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des enseignants-chercheurs", tag = "Fig. 5.1", 
-         title = stringr::str_wrap("Les sciences du numérique et mathématiques sur-représentées parmi les enseignants-chercheurs ayant répondu au questionnaire", width = 50),
-         subtitle = stringr::str_wrap("Comparaison de la répartition des enseignants-chercheurs dans les disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <span style='color: #5770BE;'>les répondants</span>", width = 50),
-         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 710 réponses", width = 60)) +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
-      scale_y_continuous(labels = scales::percent, limits = c(0,.55)) +
+      labs(x = "", y = "Pourcentage des enseignants-chercheurs\net chercheurs", tag = "Fig. 5.1", 
+         title = stringr::str_wrap("", width = 50),
+         # Les spécialistes de la donnée. La façon de se déclarer pluridisciplinaire dépend 
+         subtitle = stringr::str_wrap("Comparaison de la répartition des enseignants-chercheurs et <br>chercheurs dans les 
+                                      disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <br><span style='color: #5770BE;'>les personnes</span> ayant répondu au questionnaire", width = 55),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 710 réponses", width = 70)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 30)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.22)) +
       theme_classic() +
       custom_theme() +
       theme(legend.position = "none",
+            axis.title = ggplot2::element_text(family = font, size = 12,color = "#222222"),
             plot.subtitle = element_markdown(),
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank())
+graph
+#title : Les sciences du numérique et mathématiques sur-représentées parmi les enseignants-chercheurs ayant répondu au questionnaire
+#subtitle : Comparaison de la répartition des enseignants-chercheurs dans les <br>disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <span style='color: #5770BE;'>les répondants</span>
+saving_plot(graph, "5.1", 8, 7)
 ```
 
-```{r}
-data |>
+```{r fig.height=8.5}
+graph <- data |>
     filter(!is.na(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`)) |>
     group_by(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, `Quelle est votre catégorie d'emploi actuel ?`) |>
     summarise(n = n()) |> rename(col = 1) |> ungroup() |> 
@@ -3594,11 +3708,11 @@ data |>
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       scale_alpha_manual(values = c(1, .6)) +
       coord_flip() +
-      labs(x = "", y = "", tag = "Fig. 5.2", 
-         title = stringr::str_wrap("Des personnels d'appui / soutiens à la recherche pluridisciplinaires", width = 50),
-         subtitle = stringr::str_wrap("Répartition des <span style='color: #5770BE;'>personnel d'appui / soutien à la recherche</span> et <span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> dans les disciplines", width = 50),
-         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 710 réponses", width = 60)) +
-      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      labs(x = "", y = "Pourcentage des personnes", tag = "Fig. 5.2", 
+         title = stringr::str_wrap("Des personnels d'appui / soutiens à la recherche pluridisciplinaires", width = 55),
+         subtitle = stringr::str_wrap("Répartition des <span style='color: #5770BE;'>personnel d'appui / soutien à la recherche</span> et <br><span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> dans les disciplines", width = 55),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 1565 réponses", width = 65)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 30)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.25)) +
       theme_classic() +
       custom_theme() +
@@ -3606,20 +3720,18 @@ data |>
             plot.subtitle = element_markdown(),
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank())
+graph
+saving_plot(graph, "5.2", 8, 8.5)
 ```
 
 
-Remarque : non relié à la figure 5 car pas de regroupement des disciplines. 
-
-Deux décimales pas très lisible. 
-
-```{r}
+```{r fig.width=8}
 table <- data |> 
     select(66:76)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
     t()|> as.data.frame() |> 
     rownames_to_column() |> 
-    mutate(percent = round((V1 / sum(V1))*100, 2),
+    mutate(percent = round((V1 / sum(V1))*100, 0),
            rowname = str_extract(rowname, "(?<=\\[).*"),
            rowname = substr(rowname, 1, nchar(rowname)-1),
            rowname = str_extract(rowname, "^[^(]+")) |> 
@@ -3627,51 +3739,1330 @@ table <- data |>
     arrange(desc(percent)) |> slice(1:11) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
     na.omit()
-table |> 
+graph <- table |> 
     ggplot(aes(x = rowname, y = V1)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Nombre de réponses", tag = "Fig. 10", 
-           title = stringr::str_wrap("Données avec lesquelles les répondants travaillent", width = 50),
-         subtitle = stringr::str_wrap("", width = 50),
-         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quels types de données travaillez-vous ? - ", sum(table$V1), "réponses pour 1565 répondants", width = 60)) +
+      labs(x = "", y = "Nombre de réponses", tag = "Fig. 10.1", 
+           title = stringr::str_wrap("Données avec lesquelles les personnes travaillent", width = 55),
+         subtitle = stringr::str_wrap("", width = 55),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quels types de données travaillez-vous ? - ", sum(table$V1), " réponses pour 1565 personnes"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
+      ylim(0, 1300) +
       custom_theme() +
       theme(legend.position = "none",
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank(),
             plot.subtitle = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
-                color = "#333333", size = 3, check_overlap = T)
+      geom_text(aes(y = V1 + 0.07*max(V1), x = rowname, hjust = 0, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T)
+graph
+saving_plot(graph, "10.1", 8, 5)
 ```
+
+```{r fig.width=12, fig.height=10}
+# Fig 10 croisé avec les disciplines regroupées
+# Données
+data <- data |> 
+    mutate(domaines = case_match(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`,
+                                 "Droit, économie, gestion" ~ "SHS et droit",
+                                 "Sciences humaines et sociales" ~ "SHS et droit",
+                                 "Sciences du système Terre et de l'univers" ~ "Biologie, terre, environnement et énergie",
+                                 "Biologie et santé" ~ "Biologie, terre, environnement et énergie",
+                                 "Environnement, agronomie, écologie" ~ "Biologie, terre, environnement et énergie",
+                                 "Energie" ~ "Biologie, terre, environnement et énergie",
+                                 "Chimie et procédés" ~ "Maths, informatique, physique, chimie",
+                                 "Science du numérique et mathématiques" ~ "Maths, informatique, physique, chimie",
+                                 "Sciences et technologies de l’information et de la communication" ~ "Maths, informatique, physique, chimie",
+                                 "Physique" ~ "Maths, informatique, physique, chimie",
+                                 "Plusieurs/tous les domaines" ~ "Pluridisciplinaire"))
+
+shs <- data |> 
+    filter(domaines == "SHS et droit") |> 
+    select(66:76)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           domaines = "SHS et droit")
+bio <- data |> 
+    filter(domaines == "Biologie, terre, environnement et énergie") |> 
+    select(66:76)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           domaines = "Biologie, terre, environnement et énergie")
+maths <- data |> 
+    filter(domaines == "Maths, informatique, physique, chimie") |> 
+    select(66:76)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           domaines = "Maths, informatique, physique, chimie")
+pluri <- data |> 
+    filter(domaines == "Pluridisciplinaire") |> 
+    select(66:76)|> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1))*100, 0),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           domaines = "Pluridisciplinaire")
+domaine_donnees <- rbind(shs, bio, maths, pluri) |> 
+    group_by(domaines) |> mutate(percent = round(V1/sum(V1), 2)) |> ungroup() |> 
+    mutate(domaines = factor(domaines, levels = c("SHS et droit", 
+                                                  "Biologie, terre, environnement et énergie",
+                                                  "Maths, informatique, physique, chimie",
+                                                  "Pluridisciplinaire")),
+           rowname = factor(rowname, levels = c("Autre",
+                                                "Son",
+                                                "Données du Web ",
+                                                "Vidéo",
+                                                "Texte ",
+                                                "Image ",
+                                                "Données d'enquête, statistiques…",
+                                                "Données de capteurs, données haut débit",
+                                                "Données de modélisation, de simulation",
+                                                "Données expérimentales",
+                                                "Données d'observation"))) |> ungroup()
+# Graphique
+graph <- domaine_donnees |> 
+  ggplot(aes(y = percent)) +
+  geom_col(aes(x = rowname, fill = domaines, alpha = rowname != "Données d'observation"), color = "white", position = "stack", width = 0.7) +
+  scale_alpha_manual(values=c(1, .4)) + 
+  coord_flip() +
+  facet_wrap(~domaines) +
+  scale_fill_manual(values = c("#e2c44d", "#ffe725", "#5f4496", "#169B62", "#5770BE")) +
+  scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+  scale_y_continuous(labels = scales::percent, limits = c(0,.3)) + # pourcentages
+  labs(x = "", y = "Pourcentage des réponses", tag = "Fig. 10.2",
+       title = "Les données d'observation utilisées par au moins 10% des personnes dans les 4 familles \nde disciplines", 
+       subtitle = "Part de données utilisées dans le travail des personnes selon leur discipline regroupée en 4 grandes familles",
+       caption = paste0("Question posée dans le questionnaire : Sur quels types de données travaillez-vous ? - ", 
+                                          sum(domaine_donnees$V1), " réponses")) +
+  theme_classic() +
+  custom_theme() +
+  theme(legend.position = "none",
+        panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+        panel.grid.major.y = ggplot2::element_blank(),
+        strip.text = ggplot2::element_text(size = 12, hjust = 0, face = "bold"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
+  guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2), col = "none", alpha = "none")
+graph
+saving_plot(graph, "10.2", 13, 10)
+```
+
+
+```{r fig.width=20, fig.height=8}
+# Données
+library(ggcorrplot)
+
+cycle_chercheurs <- data |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur (y compris doctorant et contractuel)") |> 
+    select(16:22) |> 
+    mutate_all(function(x) gsub("Oui", 1, x)) |> 
+    mutate_all(function(x) gsub("Non", 0, x)) |> 
+    mutate_all(as.numeric) |> 
+    rename(`Planification, PGD` = 1,
+           `Collecte, création, stockage` = 2,
+           `Analyse, traitement, calcul` = 3,
+           `Préparation du dépôt` = 4,
+           `Dépôt` = 5,
+           `Ouverture ou partage` = 6,
+           `Réutilisation` = 7)
+cycle_personnel <- data |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
+    select(16:22) |> 
+    mutate_all(function(x) gsub("Oui", 1, x)) |> 
+    mutate_all(function(x) gsub("Non", 0, x)) |> 
+    mutate_all(as.numeric) |> 
+    rename(`Planification, PGD` = 1,
+           `Collecte, création, stockage` = 2,
+           `Analyse, traitement, calcul` = 3,
+           `Préparation du dépôt` = 4,
+           `Dépôt` = 5,
+           `Ouverture ou partage` = 6,
+           `Réutilisation` = 7)
+matrix_chercheurs <- cor(cycle_chercheurs, method = c("spearman"))
+matrix_personnel <- cor(cycle_personnel, method = c("spearman"))
+
+# Matrice de corrélation
+    # couleurs
+col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+    # matrice
+mat1 <- ggcorrplot(matrix_chercheurs, hc.order = T, type = "lower", show.diag = TRUE, legend.title = "",
+           lab = TRUE, lab_size = 5,#lab_col = bgcolors, 
+           colors = c("#BB4444", "white", "#4477AA")) +
+    labs(title = stringr::str_wrap("Chercheurs / Enseignants-chercheurs", width = 55), 
+         subtitle = stringr::str_wrap("Décorrelation entre la phase 'Collecte, création, stockage' et les autres phases du cycle de vie", width = 55),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 710 personnes", width = 65)) +
+    theme(axis.text.y = element_blank(),
+          panel.grid = element_blank(),
+          plot.subtitle = element_text(size = 15),
+          plot.title = element_text(size = 18, lineheight = 2),
+          plot.caption = element_text(size = 15, face = "italic", hjust = 0, color = "#cbcbcb")) +
+    geom_label(aes(x = 6, y = 7), label = "Dépot", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 5, y = 6), label = "Préparation du dépôt", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 4, y = 5), label = "Ouverture ou partage", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 3, y = 4), label = "Planification, PGD", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 2, y = 3), label = "Réutilisation", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 1, y = 2), label = "Analyse, traitement, calcul", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 0, y = 1), label = "Collecte, création, stockage", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    coord_fixed(clip = 'off') 
+mat2 <- ggcorrplot(matrix_personnel, hc.order = T, type = "lower", show.diag = TRUE, legend.title = "",
+           lab = TRUE, lab_size = 5, #lab_col = bgcolors, 
+           colors = c("#BB4444", "white", "#4477AA")) +
+    labs(title = stringr::str_wrap("Personnels d'appui / soutiens à la recherche", width = 55), 
+         subtitle = stringr::str_wrap("Décorrelation entre les phases de collecte et d'analyse, et les autres phases du cycle de vie", width = 55),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 855 personnes", width = 65)) +
+    theme(axis.text.y = element_blank(),
+          panel.grid = element_blank(),
+          plot.subtitle = element_text(size = 15, hjust = 0),
+          plot.title = element_text(size = 18, lineheight = 2),
+          plot.caption = element_text(size = 15, face = "italic", hjust = 0, color = "#cbcbcb")) +
+    geom_label(aes(x = 6, y = 7), label = "Dépot", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 5, y = 6), label = "Préparation du dépôt", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 4, y = 5), label = "Ouverture ou partage", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 3, y = 4), label = "Planification, PGD", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 2, y = 3), label = "Réutilisation", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 1, y = 2), label = "Analyse, traitement, calcul", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    geom_label(aes(x = 0, y = 1), label = "Collecte, création, stockage", family = font, vjust = .4, hjust = "right", 
+               fill = "white", label.size = NA) +
+    coord_fixed(clip = 'off') 
+graph <- grid.arrange(mat1, mat2, nrow = 1, 
+             top = grid::textGrob("Corrélation entre les différentes phases du cycle de vie de la donnée selon la catégorie d'emploi\n", 
+                                  gp = grid::gpar(fontsize = 18, font = 2)))
+saving_plot(graph, "matrice_categorie-emploi", 20, 8)
+```
+
+
+
+```{r fig.height=6}
+# Catégorie d'emploi / parties du cycle de vie 
+table <- data |> 
+    select(16:22, 90)|> mutate_all(na_if, "Non") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Quelle est votre catégorie d'emploi actuel ?`), names_to = "rowname", values_to = "V1", names_prefix = "Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    ungroup() |> arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           rowname = str_replace_all(rowname, "plan de gestion de données", "PGD"),
+           rowname = factor(rowname, levels = c("Collecte, création, stockage",
+                                            "Analyse, traitement, calcul",
+                                            "Préparation du dépôt ",
+                                            "Dépôt",
+                                            "Ouverture ou partage ",
+                                            "Réutilisation",
+                                            "Planification, PGD")))
+graph <- table |> 
+    ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
+      geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1, aes(alpha = rowname != "Analyse, traitement, calcul")) +
+      coord_flip() +
+      scale_fill_manual(values = c("#ffe725", "#5770BE")) +
+      scale_alpha_manual(values = c(1, .4)) +
+      labs(x = "", y = "Pourcentage de réponses",  tag = "Fig. 50",
+           title = stringr::str_wrap("Les <span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> davantage <br>dans l'analyse \nque les <span style='color: #5770BE;'>personnels d'appui / <br>soutiens à la recherches</span>", width = 55), 
+         subtitle = stringr::str_wrap("Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des individus", width = 55),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - ", sum(table$V1), " réponses"), width = 65)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.3)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.title = element_markdown(face = "plain", size = 19),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.07*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 3, check_overlap = T,
+                position = position_dodge(width = .85)) +
+      guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
+graph
+saving_plot(graph, "50_B", 7, 6)
+```
+
+
+```{r fig.height=6}
+graph <- data |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche",
+           !is.na(`Précisez votre branche d'activité.`)) |> 
+    group_by(`Précisez votre branche d'activité.`) |> 
+    summarise(n = n()) |> rename(col = 1) |> ungroup() |> 
+    mutate(col = fct_reorder(col, n),
+           percent = round((n / sum(n))*100, 0)) |> 
+    ggplot(aes(x = col, y = n, fill = col), fill = "#5770BE") +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Nombre de personnes", tag = "Fig. 22.2", 
+           title = stringr::str_wrap("Parmi les personnels d'appui à la recherche qui ont répondu à l'enquête, plus d'1/3 travaille dans la branche informatique, calcul scientifique et statistique", width = 65), 
+         subtitle = stringr::str_wrap("Environ 1/4 de ces personnels sont dans le domaine de la documentation, information, médiation, édition et bibliothèque ", width = 65),
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", 
+                                            data |> filter(!is.na(`Précisez votre branche d'activité.`)) |> nrow(), " réponses"), 
+                                     width = 65)) +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_fill_manual(values = c("Autre" = "#bbc5e5",
+                                   "Gestion et pilotage, Partenariat, Affaires juridiques" = "#bbc5e5",
+                                   "Information, Documentation, Médiation, Edition" = "#5770BE",
+                                   "Informatique, Statistiques et Calcul Scientifique" = "#5770BE",
+                                   "Personnels des bibliothèques" = "#5770BE",
+                                   "Sciences humaines et sociales" = "#bbc5e5")) +
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.title = element_text(size = 14),
+            plot.subtitle = element_text(size = 13),
+            axis.text = ggplot2::element_text(family = font, size = 11,color = "#333333"), 
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y = n + 0.13*max(n), x = col, label = paste(percent, "%", sep = "")), 
+                color = "#333333", size = 4, check_overlap = T) +
+      guides(fill = guide_legend(title = "", nrow = 2, byrow = TRUE))
+graph
+saving_plot(graph, "22.2", 7, 6)
+```
+
 
 ```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
+graph <- wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 30, 10, "Fig. 24") +
+    labs(title = stringr::str_wrap("La biologie, l'instrumentation et les archives sont les principales branche d'activité déclarées parmi les personnes exerçant des fonctions supports", width = 55),
+         subtitle = stringr::str_wrap("La catégorie 'Archives' était à priori attendue dans les catégories proposées ('Documentation et personnels des bibliothèques'). Une centaine d'autres branches ressortent dans une moindre mesure, telle que les sciences du vivant. ", width = 60),
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Précisez votre branche d'activité. [Autre] - 154 réponses", width = 70)) +
+    custom_theme()
+graph
+saving_plot(graph, "24", 7, 5)
 ```
 
 
+```{r fig.width=15, fig.height=7}
+# Catégorie d'emploi / Activités du travail des données
+table <- data |> 
+    select(23:37, 90)|> mutate_all(na_if, "Non") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Quelle est votre catégorie d'emploi actuel ?`), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    arrange(desc(percent)) 
+
+p1 <- table |> ungroup() |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur ") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#ffe725") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 52.1",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
+           subtitle = "Chercheur / Enseignant-chercheur",
+           caption = "Top 5 des activités - 3862 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.2)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.15*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 4, check_overlap = T) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
+p2 <- table |> ungroup() |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Personnel d'appui / soutien à la recherche",
+           caption = "Top 5 des activités - 5113 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.2)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
+#plot_grid(p1, p2, align = 'vh', nrow = 1, label_y = 1, rel_heights = c(.65,.35), 
+ #         labels = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes")
+graph <- grid.arrange(p1, p2, nrow = 1, 
+             top = grid::textGrob("Répartition des activités les plus courantes selon la catégorie d'emploi des personnes", 
+                                  gp = grid::gpar(fontsize = 18, font = 2)), 
+             bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nQuelle est votre catégorie d'emploi actuel ?", 
+                                  gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
+saving_plot(graph, "52.1", 15, 7)
+```
+
+
+```{r fig.width=15, fig.height=15}
+# Branche d'activité / Activités du travail des données
+table <- data |> 
+    select(23:37, 93)|> mutate_all(na_if, "Non") |> 
+    group_by(`Précisez votre branche d'activité.`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Précisez votre branche d'activité.`), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    group_by(`Précisez votre branche d'activité.`) |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Précisez votre branche d'activité.` = str_extract(`Précisez votre branche d'activité.`, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    na.omit()
+
+shs <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Sciences humaines et sociales") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 52.2",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
+           subtitle = "Sciences humaines et sociales",
+           caption = "Top 5 des activités - 980 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold"),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.2*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+biblio <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Personnels des bibliothèques") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Personnels des bibliothèques",
+           caption = "Top 5 des activités - 350 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+info <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Informatique, Statistiques et Calcul Scientifique") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Informatique, Statistiques et Calcul Scientifique",
+           caption = "Top 5 des activités - 1946 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.16*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+edition <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Information, Documentation, Médiation, Edition") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Information, Documentation, Médiation, Edition",
+           caption = "Top 5 des activités - 745 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+gestion <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Gestion et pilotage, Partenariat, Affaires juridiques") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Gestion et pilotage, Partenariat, Affaires juridiques",
+           caption = "Top 5 des activités - 142 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.09*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+autre <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Autre") |> 
+    arrange(desc(V1)) |> filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Autre",
+           caption = "Top 5 des activités - 950 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.25)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.16*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+# Tout ensemble
+test <- plot_grid(shs, biblio, edition, info, gestion, autre, ncol = 2, align = 'vh')
+graph <- grid.arrange(test, ncol = 1, 
+             top = grid::textGrob("Répartition des activités les plus courantes selon la branche d'activité des personnes", 
+                                  gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
+             bottom = grid::textGrob("Question posée dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nPrécisez votre branche d'activité.", 
+                                  gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font, hjust = 1)))
+saving_plot(graph, "52.2", 15, 15)
+```
+
+
+
+```{r fig.width=15, fig.height=15}
+# Lieu d'activité / Activités du travail des données
+labo <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Laboratoire / unité / équipe de recherche]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", tag = "Fig. 52.3",
+           subtitle = "Laboratoire / unité / équipe de recherche",
+           caption = "Top 5 des activités - 7144 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.09*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+infra <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Infrastructure de recherche]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Infrastructure de recherche",
+           caption = "Top 5 des activités - 1621 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+central <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Service central d'appui (par exemple Direction de la recherche, DSI, SCD, …)]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Service central d'appui",
+           caption = "Top 5 des activités - 1199 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+decon <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Service déconcentré d'appui (par exemple une cellule décentralisée d’une direction centrale dans une délégation ou un centre)]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Service déconcentré d'appui",
+           caption = "Top 5 des activités - 142 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+dir <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Direction de l'établissement (par exemple DGS, Vice-Président.e, Chargé.e de mission, …)]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Direction de l'établissement",
+           caption = "Top 5 des activités - 249 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.09*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+
+
+# Tout ensemble
+test <- plot_grid(labo, infra, central, decon, dir, ncol = 2, align = 'vh')
+graph <- grid.arrange(test, ncol = 1, 
+             top = grid::textGrob("Répartition des activités les plus courantes selon le lieu d'activité des personnes", 
+                                  gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
+             bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nOù réalisez-vous votre activité en lien avec les données de recherche ?", 
+                                  gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
+
+saving_plot(graph, "52.3", 15, 15)
+```
+
+
+
+```{r fig.width=15, fig.height=7}
+# Catégorie d'emploi / Activités du travail des données
+table <- data |> 
+    select(23:37, 90)|> mutate_all(na_if, "Non") |> 
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Quelle est votre catégorie d'emploi actuel ?`), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    group_by(`Quelle est votre catégorie d'emploi actuel ?`) |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    arrange(desc(percent)) 
+
+p1 <- table |> ungroup() |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur ") |> 
+    arrange(desc(V1)) |> filter(row_number() >= 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#ffe725") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 53.1",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
+           subtitle = "Chercheur / Enseignant-chercheur",
+           caption = "Bottom 5  des activités - 3862 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.16*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
+p2 <- table |> ungroup() |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
+    arrange(desc(V1)) |> filter(row_number() >= 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Personnel d'appui / soutien à la recherche",
+           caption = "Bottom 5  des activités - 5113 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
+#plot_grid(p1, p2, align = 'vh', nrow = 1, label_y = 1, rel_heights = c(.65,.35), 
+ #         labels = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes")
+graph <- grid.arrange(p1, p2, nrow = 1, 
+             top = grid::textGrob("Répartition des activités les moins courantes selon la catégorie d'emploi des personnes", 
+                                  gp = grid::gpar(fontsize = 18, font = 2)), 
+             bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nQuelle est votre catégorie d'emploi actuel ?", 
+                                  gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
+saving_plot(graph, "53.1", 15, 7)
+```
+
+
+
+```{r fig.width=15, fig.height=15}
+# Branche d'activité / Activités du travail des données
+table <- data |> 
+    select(23:37, 93)|> mutate_all(na_if, "Non") |> 
+    group_by(`Précisez votre branche d'activité.`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Précisez votre branche d'activité.`), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    group_by(`Précisez votre branche d'activité.`) |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           `Précisez votre branche d'activité.` = str_extract(`Précisez votre branche d'activité.`, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    na.omit()
+
+shs <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Sciences humaines et sociales") |> 
+    arrange(desc(V1)) |> filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 53.2",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
+           subtitle = "Sciences humaines et sociales",
+           caption = "Bottom 5 des activités - 980 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold"),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.2*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+biblio <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Personnels des bibliothèques") |> 
+    arrange(desc(V1)) |> filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Personnels des bibliothèques",
+           caption = "Bottom 5 des activités - 350 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+info <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Informatique, Statistiques et Calcul Scientifique") |> 
+    arrange(desc(V1)) |> filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Informatique, Statistiques et Calcul Scientifique",
+           caption = "Bottom 5 des activités - 1946 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.16*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+edition <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Information, Documentation, Médiation, Edition") |> 
+    arrange(desc(V1)) |> filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Information, Documentation, Médiation, Edition",
+           caption = "Bottom 5 des activités - 745 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+gestion <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Gestion et pilotage, Partenariat, Affaires juridiques") |> 
+    arrange(desc(V1)) |> filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Gestion et pilotage, Partenariat, Affaires juridiques",
+           caption = "Bottom 5 des activités - 142 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.09*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+autre <- table |> ungroup() |> 
+    filter(`Précisez votre branche d'activité.` == "Autre") |> 
+    arrange(desc(V1)) |> filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Autre",
+           caption = "Bottom 5 des activités - 950 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.16*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+# Tout ensemble
+test <- plot_grid(shs, biblio, edition, info, gestion, autre, ncol = 2, align = 'vh')
+graph <- grid.arrange(test, ncol = 1, 
+             top = grid::textGrob("Répartition des activités les moins courantes selon la branche d'activité des personnes", 
+                                  gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
+             bottom = grid::textGrob("Question posée dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nPrécisez votre branche d'activité.", 
+                                  gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font, hjust = 1)))
+saving_plot(graph, "53.2", 15, 15)
+```
+
+
+
+```{r fig.width=15, fig.height=15}
+# Lieu d'activité / Activités du travail des données
+labo <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Laboratoire / unité / équipe de recherche]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", tag = "Fig. 53.3",
+           subtitle = "Laboratoire / unité / équipe de recherche",
+           caption = "Bottom 5 des activités - 7144 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.09*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+infra <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Infrastructure de recherche]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Infrastructure de recherche",
+           caption = "Bottom 5 des activités - 1621 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+central <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Service central d'appui (par exemple Direction de la recherche, DSI, SCD, …)]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Service central d'appui",
+           caption = "Bottom 5 des activités - 1199 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+decon <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Service déconcentré d'appui (par exemple une cellule décentralisée d’une direction centrale dans une délégation ou un centre)]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Service déconcentré d'appui",
+           caption = "Bottom 5 des activités - 142 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+dir <- data |>
+    filter(`Où réalisez-vous votre activité en lien avec les données de recherche ? [Direction de l'établissement (par exemple DGS, Vice-Président.e, Chargé.e de mission, …)]` == "Oui") |> 
+    select(23:37) |> mutate_all(na_if, "Non") |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = everything(), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    arrange(desc(percent)) |> 
+    filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent)) +
+      geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes", 
+           subtitle = "Direction de l'établissement",
+           caption = "Bottom 5 des activités - 249 réponses") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            plot.subtitle = element_text(face = "bold", hjust = .5),
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.09*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T, hjust = 0)
+
+
+# Tout ensemble
+test <- plot_grid(labo, infra, central, decon, dir, ncol = 2, align = 'vh')
+graph <- grid.arrange(test, ncol = 1, 
+             top = grid::textGrob("Répartition des activités les moins courantes selon le lieu d'activité des personnes", 
+                                  gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
+             bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nOù réalisez-vous votre activité en lien avec les données de recherche ?", 
+                                  gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
+
+saving_plot(graph, "53.3", 15, 15)
+```
 
 
 
 
 
+```{r fig.width=15, fig.height=10}
+table <- data |> 
+    select(23:37, 6) |> mutate_all(na_if, "Non") |> 
+    group_by(`Dans quel type d'établissement exercez-vous votre activité ?`) |> 
+    summarise_all(list(~sum(!is.na(.)))) |> 
+    pivot_longer(cols = -c(`Dans quel type d'établissement exercez-vous votre activité ?`), names_to = "rowname", values_to = "V1", 
+                 names_prefix = "Quelles sont les activités qu'implique votre travail sur les données ?") |>
+    group_by(`Dans quel type d'établissement exercez-vous votre activité ?`) |> 
+    mutate(rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+"), 
+           rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepot"),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               str_extract(`Dans quel type d'établissement exercez-vous votre activité ?`, "^[^(]+"),
+           percent = round((V1 / sum(V1)), 2)) |> 
+    arrange(desc(V1))
+graph <- table |> 
+    filter(row_number() <= 5) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               str_replace_all(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                               c("Autre" = "Autre \n(4% des établissements)",
+                                 "Ecole" = "Ecole \n(5% des établissements)",
+                                 "Organisme de recherche" = "Organisme de recherche \n(52% des établissements)",
+                                 "Université" = "Université \n(39% des établissements)")),
+           rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               factor(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                      levels = c("Organisme de recherche \n(52% des établissements)",
+                                 "Université \n(39% des établissements)",
+                                 "Ecole \n(5% des établissements)",
+                                 "Autre \n(4% des établissements)"))) |> 
+    ggplot(aes(x = rowname, y  = percent, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+               group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage de personnes",  tag = "Fig. 59",
+           title = "Répartition des activités les plus courantes selon le type d'établissement d'affiliation des personnes",
+           caption = "Top 5 des activités - 8975 réponses \nQuestions posées dans le questionnaire : Dans quel type d'établissement exercez-vous votre activité ?,\nQuelles sont les activités qu'implique votre travail sur les données ?") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`, scales = 'free') +
+      scale_fill_manual(values = c("Ecole \n(5% des établissements)" = "#ffe725", 
+                                   "Organisme de recherche \n(52% des établissements)" = "#5770BE", 
+                                   "Université \n(39% des établissements)" = "#169B62", 
+                                   "Autre \n(4% des établissements)" = "#666666"))
+graph
+saving_plot(graph, "59", 15, 10)
+```
+
+
+```{r fig.width=15, fig.height=10}
+graph <- table |> 
+    filter(row_number() > 10) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               str_replace_all(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                               c("Autre" = "Autre \n(4% des établissements)",
+                                 "Ecole" = "Ecole \n(5% des établissements)",
+                                 "Organisme de recherche" = "Organisme de recherche \n(52% des établissements)",
+                                 "Université" = "Université \n(39% des établissements)")),
+           rowname = fct_reorder(rowname, V1),
+           `Dans quel type d'établissement exercez-vous votre activité ?` = 
+               factor(`Dans quel type d'établissement exercez-vous votre activité ?`, 
+                      levels = c("Organisme de recherche \n(52% des établissements)",
+                                 "Université \n(39% des établissements)",
+                                 "Ecole \n(5% des établissements)",
+                                 "Autre \n(4% des établissements)"))) |> 
+    ggplot(aes(x = rowname, y  = percent, fill = `Dans quel type d'établissement exercez-vous votre activité ?`, 
+               group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage de personnes",  tag = "Fig. 60",
+           title = "Répartition des activités les moins courantes selon le type d'établissement d'affiliation des personnes",
+           caption = "Bottom 5 des activités - 8975 réponses \nQuestions posées dans le questionnaire : Dans quel type d'établissement exercez-vous votre activité ?,\nQuelles sont les activités qu'implique votre travail sur les données ?") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      facet_wrap(~`Dans quel type d'établissement exercez-vous votre activité ?`, scales = 'free') +
+      scale_fill_manual(values = c("Ecole \n(5% des établissements)" = "#ffe725", 
+                                   "Organisme de recherche \n(52% des établissements)" = "#5770BE", 
+                                   "Université \n(39% des établissements)" = "#169B62", 
+                                   "Autre \n(4% des établissements)" = "#666666"))
+graph
+saving_plot(graph, "60", 15, 10)
+```
 
 
 
+```{r fig.width=15, fig.height=8}
+# Catégorie d'emploi / besoins de formation
+appui <- data |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
+    select(96:110) |> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cat = "Personnel d'appui / \nsoutien à la recherche")
+chercheurs <- data |> 
+    filter(`Quelle est votre catégorie d'emploi actuel ?` == "Chercheur / Enseignant-chercheur (y compris doctorant et contractuel)") |> 
+    select(96:110) |> mutate_all(na_if, "Non") |> 
+    summarise_all(funs(sum(!is.na(.)))) |> 
+    t()|> as.data.frame() |> 
+    rownames_to_column() |> 
+    mutate(percent = round((V1 / sum(V1)), 2),
+           rowname = str_extract(rowname, "(?<=\\[).*"),
+           rowname = substr(rowname, 1, nchar(rowname)-1),
+           rowname = str_extract(rowname, "^[^(]+")) |> 
+    select(rowname, V1, percent) |> ungroup() |> 
+    arrange(desc(percent)) |> 
+    mutate(rowname = fct_reorder(rowname, V1),
+           cat = "Chercheur / \nEnseignant-chercheur")
+table <- rbind(appui, chercheurs) |> 
+    group_by(cat) |> 
+    arrange(desc(V1)) |> ungroup()
+
+graph <- table |> 
+    filter(row_number() <= 5, .by = cat) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 63",
+           title = "Répartition des besoins de formation les plus courants selon la catégorie d'emploi des personnes",
+           caption = "Top 5 des besoins de formation - 4820 réponses\nQuestions posées dans le questionnaire : Quelle est votre catégorie d'emploi actuel ?, Sur quelles activités auriez-vous besoin d'une formation ?") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      facet_wrap(~cat, scales = "free") +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "63", 15, 10)
+```
+
+
+```{r fig.width=15, fig.height=8}
+graph <- table |> 
+    filter(row_number() > 10, .by = cat) |> 
+    mutate(rowname = fct_reorder(rowname, V1)) |> 
+    ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
+      geom_bar(stat = "identity", width = .6) +
+      coord_flip() +
+      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 64",
+           title = "Répartition des besoins de formation les moins courants selon la catégorie d'emploi des personnes",
+           caption = "Bottom 5 des besoins de formation - 4820 réponses\nQuestions posées dans le questionnaire : Quelle est votre catégorie d'emploi actuel ?, Sur quelles activités auriez-vous besoin d'une formation ?") +
+      scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
+      scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
+      theme_classic() +
+      custom_theme() +
+      theme(legend.position = "none",
+            panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
+            panel.grid.major.y = ggplot2::element_blank(),
+            axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
+      geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
+                color = "#333333", size = 5, check_overlap = T) +
+      facet_wrap(~cat, scales = "free") +
+      scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "64", 15, 8)
+```
 
 
 
@@ -3767,9 +5158,9 @@ plot_plus <- table_plus |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5)) +
+                position = position_dodge(width = .9)) +
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
 plot_moins <- table_moins |> 
     ggplot(aes(x = rowname, y = V1, fill = `Quelle est votre catégorie d'emploi actuel ?`, 
@@ -3790,9 +5181,9 @@ plot_moins <- table_moins |>
             axis.line.y = element_blank(),
             axis.ticks.y = element_blank(),
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
-      geom_text(aes(y = V1 + 0.05*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
+      geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T,
-                position = position_dodge(width = .5))  +
+                position = position_dodge(width = .9))  +
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
 grid.arrange(plot_plus, plot_moins, ncol = 2, 
              top = textGrob("Activités du travail des données selon la catégorie d'emploi", 

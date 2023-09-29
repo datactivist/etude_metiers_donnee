@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='0.00' y='0.00' width='504.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMjQ2LjI3fDQ5OC41Mnw1OC4wMXwyNTguMjg='>
+    <rect x='246.27' y='58.01' width='252.26' height='200.27' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMjQ2LjI3fDQ5OC41Mnw1OC4wMXwyNTguMjg=)'>
+<polyline points='257.73,258.28 257.73,58.01 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='339.63,258.28 339.63,58.01 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='421.53,258.28 421.53,58.01 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<rect x='257.73' y='69.56' width='197.55' height='23.11' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='257.73' y='146.59' width='38.17' height='23.11' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE; fill-opacity: 0.40;' />
+<rect x='257.73' y='108.08' width='38.49' height='23.11' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE; fill-opacity: 0.40;' />
+<rect x='257.73' y='185.10' width='7.21' height='23.11' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE; fill-opacity: 0.40;' />
+<rect x='257.73' y='223.62' width='3.93' height='23.11' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE; fill-opacity: 0.40;' />
+<text x='480.96' y='86.20' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>69%</text>
+<text x='321.58' y='163.22' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>13%</text>
+<text x='321.91' y='124.71' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>13%</text>
+<text x='290.62' y='201.74' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='19.95px' lengthAdjust='spacingAndGlyphs'>3%</text>
+<text x='287.34' y='240.25' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='19.95px' lengthAdjust='spacingAndGlyphs'>1%</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='241.33' y='240.27' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='176.21px' lengthAdjust='spacingAndGlyphs'>Service déconcentré d'appui</text>
+<text x='241.33' y='201.76' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='170.75px' lengthAdjust='spacingAndGlyphs'>Direction de l'établissement</text>
+<text x='241.33' y='163.24' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='168.09px' lengthAdjust='spacingAndGlyphs'>Infrastructure de recherche</text>
+<text x='241.33' y='124.73' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='141.18px' lengthAdjust='spacingAndGlyphs'>Service central d'appui</text>
+<text x='241.33' y='78.66' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='186.03px' lengthAdjust='spacingAndGlyphs'>Laboratoire / unité / équipe de</text>
+<text x='241.33' y='93.78' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='62.24px' lengthAdjust='spacingAndGlyphs'>recherche</text>
+<text x='257.73' y='276.20' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='7.78px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='339.63' y='276.20' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>500</text>
+<text x='421.53' y='276.20' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='31.13px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='372.39' y='302.90' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='140.03px' lengthAdjust='spacingAndGlyphs'>Nombre de réponses</text>
+<text x='38.35' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='378.68px' lengthAdjust='spacingAndGlyphs'>Confirmation de l'ancrage 'Laboratoire' dans la</text>
+<text x='38.35' y='48.82' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='308.97px' lengthAdjust='spacingAndGlyphs'>question des données de la recherche</text>
+<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='414.33px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Où réalisez-vous votre</text>
+<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='432.68px' lengthAdjust='spacingAndGlyphs'>activité en lien avec les données de recherche ? - 1742 réponses</text>
+<text x='21.91' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='32.87px' lengthAdjust='spacingAndGlyphs'>Fig. 4</text>
+</g>
+</svg>

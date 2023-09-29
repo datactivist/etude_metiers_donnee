@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='0.00' y='0.00' width='504.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMTUzLjU2fDQ5OC41Mnw5Ny4zOXwyNTEuMDU='>
+    <rect x='153.56' y='97.39' width='344.96' height='153.66' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMTUzLjU2fDQ5OC41Mnw5Ny4zOXwyNTEuMDU=)'>
+<polyline points='169.24,251.05 169.24,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='244.56,251.05 244.56,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='319.88,251.05 319.88,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='395.20,251.05 395.20,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='470.53,251.05 470.53,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<rect x='169.24' y='111.80' width='285.09' height='28.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='169.24' y='159.82' width='28.25' height='28.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<rect x='169.24' y='207.84' width='8.66' height='28.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<text x='482.84' y='129.25' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>89%</text>
+<text x='225.99' y='177.27' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>9%</text>
+<text x='206.41' y='225.29' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>3%</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='148.63' y='227.34' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='74.70px' lengthAdjust='spacingAndGlyphs'>Catégorie C</text>
+<text x='148.63' y='179.32' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='73.93px' lengthAdjust='spacingAndGlyphs'>Catégorie B</text>
+<text x='148.63' y='131.30' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='73.93px' lengthAdjust='spacingAndGlyphs'>Catégorie A</text>
+<text x='169.24' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='7.78px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='244.56' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='319.88' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>400</text>
+<text x='395.20' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>600</text>
+<text x='470.53' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>800</text>
+<text x='326.04' y='302.90' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='148.37px' lengthAdjust='spacingAndGlyphs'>Nombre de personnes</text>
+<text x='56.97' y='68.95' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='376.83px' lengthAdjust='spacingAndGlyphs'>La gestion des données de recherche est investie par du</text>
+<text x='56.97' y='85.15' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='197.56px' lengthAdjust='spacingAndGlyphs'>personnel hautement diplômé</text>
+<text x='56.97' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='424.49px' lengthAdjust='spacingAndGlyphs'>Parmi le personnel d'appui / soutiens à la recherche,</text>
+<text x='56.97' y='48.82' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='307.06px' lengthAdjust='spacingAndGlyphs'>une écrasante majorité de catégorie A</text>
+<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='434.34px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Précisez votre catégorie -</text>
+<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='90.87px' lengthAdjust='spacingAndGlyphs'>855 réponses</text>
+<text x='31.23' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='51.49px' lengthAdjust='spacingAndGlyphs'>Fig. 23.1</text>
+</g>
+</svg>
