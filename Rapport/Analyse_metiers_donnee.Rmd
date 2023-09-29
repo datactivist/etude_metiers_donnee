@@ -4009,7 +4009,7 @@ graph <- table |>
       scale_alpha_manual(values = c(1, .4)) +
       labs(x = "", y = "Pourcentage de réponses",  tag = "Fig. 50",
            title = stringr::str_wrap("Les <span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> davantage <br>dans l'analyse \nque les <span style='color: #5770BE;'>personnels d'appui / <br>soutiens à la recherches</span>", width = 55), 
-         subtitle = stringr::str_wrap("Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des individus", width = 55),
+         subtitle = stringr::str_wrap("Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des personnes", width = 55),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - ", sum(table$V1), " réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.3)) + # pourcentages
