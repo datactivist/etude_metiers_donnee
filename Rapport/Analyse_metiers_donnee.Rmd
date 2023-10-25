@@ -3246,7 +3246,7 @@ graph <- cycle_lieux |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
   guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 3), col = "none", alpha = "none")
 graph
-saving_plot(graph, "48_A", 12, 9)
+saving_plot(graph, "48", 12, 9)
 ```
 
 
