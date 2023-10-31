@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='0.00' y='0.00' width='504.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMzE1LjQ0fDQ5OC41MnwxMTUuNzV8MjUxLjA1'>
+    <rect x='315.44' y='115.75' width='183.09' height='135.30' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzE1LjQ0fDQ5OC41MnwxMTUuNzV8MjUxLjA1)'>
+<polyline points='323.76,251.05 323.76,115.75 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='370.37,251.05 370.37,115.75 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='416.98,251.05 416.98,115.75 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='463.59,251.05 463.59,115.75 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<rect x='323.76' y='213.00' width='75.51' height='25.37' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<rect x='323.76' y='128.43' width='147.29' height='25.37' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='323.76' y='170.72' width='108.14' height='25.37' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<text x='418.42' y='228.73' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>23%</text>
+<text x='490.20' y='144.17' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>45%</text>
+<text x='451.04' y='186.45' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>33%</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='310.50' y='230.79' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='197.66px' lengthAdjust='spacingAndGlyphs'>Doctorant(e) / Post-doctorant(e)</text>
+<text x='310.50' y='180.94' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='208.53px' lengthAdjust='spacingAndGlyphs'>Professeur(e) / Directeur(trice) de</text>
+<text x='310.50' y='196.06' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='141.60px' lengthAdjust='spacingAndGlyphs'>Recherche ou assimilé</text>
+<text x='310.50' y='138.66' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='236.58px' lengthAdjust='spacingAndGlyphs'>Maître de Conférences / Chargé(e) de</text>
+<text x='310.50' y='153.78' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='136.16px' lengthAdjust='spacingAndGlyphs'>recherche ou assimilé</text>
+<text x='323.76' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='7.78px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='370.37' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='416.98' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='463.59' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>300</text>
+<text x='406.98' y='302.90' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='171.71px' lengthAdjust='spacingAndGlyphs'>Nombre de répondant(e)s</text>
+<text x='56.97' y='87.31' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='351.35px' lengthAdjust='spacingAndGlyphs'>Près d'un quart de ces personnes sont doctorants ou</text>
+<text x='56.97' y='103.51' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='103.37px' lengthAdjust='spacingAndGlyphs'>post-doctorants</text>
+<text x='56.97' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='343.91px' lengthAdjust='spacingAndGlyphs'>45% des répondant(e)s de la catégorie des</text>
+<text x='56.97' y='48.82' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='434.58px' lengthAdjust='spacingAndGlyphs'>chercheur(se)s et enseignant(e)s-chercheur(se)s sont</text>
+<text x='56.97' y='67.18' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='93.49px' lengthAdjust='spacingAndGlyphs'>MCU ou CR</text>
+<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='434.34px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Précisez votre catégorie -</text>
+<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='90.87px' lengthAdjust='spacingAndGlyphs'>710 réponses</text>
+<text x='31.23' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='51.49px' lengthAdjust='spacingAndGlyphs'>Fig. 23.2</text>
+</g>
+</svg>

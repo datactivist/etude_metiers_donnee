@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='432.00pt' viewBox='0 0 504.00 432.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: none;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='432.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
+</g>
+<defs>
+  <clipPath id='cpNDUuODl8NDk4LjUyfDQuNzh8NDI2LjUy'>
+    <rect x='45.89' y='4.78' width='452.63' height='421.74' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNDUuODl8NDk4LjUyfDQuNzh8NDI2LjUy)'>
+<text x='272.21' y='246.12' text-anchor='middle' style='font-size: 85.36px;fill: #FFE725; font-family: "Noto Sans";' textLength='166.67px' lengthAdjust='spacingAndGlyphs'>PhD</text>
+<text x='282.42' y='176.31' text-anchor='middle' style='font-size: 52.27px;fill: #5770BE; font-family: "Noto Sans";' textLength='109.39px' lengthAdjust='spacingAndGlyphs'>HDR</text>
+<text x='248.59' y='288.38' text-anchor='middle' style='font-size: 52.27px;fill: #169B62; font-family: "Noto Sans";' textLength='215.13px' lengthAdjust='spacingAndGlyphs'>Doctorat</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
+<text x='45.89' y='61.91' style='font-size: 11.00px; font-family: "Arial";' textLength='202.70px' lengthAdjust='spacingAndGlyphs'>14 réponses, soit 1% des répondant(e)s</text>
+<text x='45.89' y='28.78' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
+<text x='45.89' y='44.98' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='314.98px' lengthAdjust='spacingAndGlyphs'>Quel est votre niveau de diplôme ? [Autre]</text>
+<text x='25.69' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='40.41px' lengthAdjust='spacingAndGlyphs'>Fig. 13</text>
+</g>
+</svg>

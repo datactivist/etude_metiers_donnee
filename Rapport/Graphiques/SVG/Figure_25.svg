@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='432.00pt' viewBox='0 0 504.00 432.00'>
 <defs>
   <style type='text/css'><![CDATA[
     .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
@@ -16,69 +16,64 @@
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: none;'/>
 <defs>
-  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
-    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='432.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
 </g>
 <defs>
-  <clipPath id='cpNDUuODl8NDk4LjUyfDEyMC44MnwyODkuOTc='>
-    <rect x='45.89' y='120.82' width='452.63' height='169.15' />
+  <clipPath id='cpNDUuODl8NDk4LjUyfDIwLjk4fDQyNi41Mg=='>
+    <rect x='45.89' y='20.98' width='452.63' height='405.54' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNDUuODl8NDk4LjUyfDEyMC44MnwyODkuOTc=)'>
-<text x='272.21' y='215.55' text-anchor='middle' style='font-size: 28.45px;fill: #FFE725; font-family: "Noto Sans";' textLength='396.25px' lengthAdjust='spacingAndGlyphs'>réseau de mon établissement</text>
-<text x='280.12' y='189.32' text-anchor='middle' style='font-size: 17.57px;fill: #5770BE; font-family: "Noto Sans";' textLength='226.78px' lengthAdjust='spacingAndGlyphs'>infrastructure de recherche</text>
-<text x='238.80' y='231.65' text-anchor='middle' style='font-size: 14.05px;fill: #169B62; font-family: "Noto Sans";' textLength='27.97px' lengthAdjust='spacingAndGlyphs'>RDA</text>
-<text x='362.51' y='234.19' text-anchor='middle' style='font-size: 12.92px;fill: #FFE725; font-family: "Noto Sans";' textLength='198.83px' lengthAdjust='spacingAndGlyphs'>Réseau des ateliers de la donnée</text>
-<text x='192.85' y='232.11' text-anchor='middle' style='font-size: 12.11px;fill: #5770BE; font-family: "Noto Sans";' textLength='35.05px' lengthAdjust='spacingAndGlyphs'>aucun</text>
-<text x='295.26' y='172.59' text-anchor='middle' style='font-size: 11.02px;fill: #169B62; font-family: "Noto Sans";' textLength='60.49px' lengthAdjust='spacingAndGlyphs'>Huma-Num</text>
-<text x='133.63' y='231.33' text-anchor='middle' style='font-size: 10.31px;fill: #FFE725; font-family: "Noto Sans";' textLength='70.60px' lengthAdjust='spacingAndGlyphs'>réseau interne</text>
-<text x='252.27' y='247.97' text-anchor='middle' style='font-size: 9.54px;fill: #5770BE; font-family: "Noto Sans";' textLength='89.80px' lengthAdjust='spacingAndGlyphs'>Atelier de la donnée</text>
-<text x='135.62' y='192.77' text-anchor='middle' style='font-size: 6.75px;fill: #169B62; font-family: "Noto Sans";' textLength='29.11px' lengthAdjust='spacingAndGlyphs'>Couperin</text>
-<text x='207.23' y='169.01' text-anchor='middle' style='font-size: 6.36px;fill: #FFE725; font-family: "Noto Sans";' textLength='64.34px' lengthAdjust='spacingAndGlyphs'>Recherche Data Gouv</text>
-<text x='412.43' y='195.19' text-anchor='middle' style='font-size: 6.36px;fill: #5770BE; font-family: "Noto Sans";' textLength='6.11px' lengthAdjust='spacingAndGlyphs'>IR</text>
-<text x='253.78' y='195.36' text-anchor='middle' style='font-size: 5.95px;fill: #169B62; font-family: "Noto Sans";' textLength='28.63px' lengthAdjust='spacingAndGlyphs'>MATE-SHS</text>
-<text x='257.88' y='259.30' text-anchor='middle' style='font-size: 5.51px;fill: #FFE725; font-family: "Noto Sans";' textLength='288.52px' lengthAdjust='spacingAndGlyphs'>Association des archivistes français, Données inter-réseaux, réseau de mon établissement (Atelier de la donnée)</text>
-<text x='325.37' y='242.04' text-anchor='middle' style='font-size: 5.03px;fill: #5770BE; font-family: "Noto Sans";' textLength='27.71px' lengthAdjust='spacingAndGlyphs'>Consortium</text>
-<text x='139.43' y='238.59' text-anchor='middle' style='font-size: 5.03px;fill: #169B62; font-family: "Noto Sans";' textLength='113.62px' lengthAdjust='spacingAndGlyphs'>International Virtual Observatory Alliance (IVOA)</text>
-<text x='353.47' y='173.62' text-anchor='middle' style='font-size: 5.03px;fill: #FFE725; font-family: "Noto Sans";' textLength='9.55px' lengthAdjust='spacingAndGlyphs'>HAL</text>
-<text x='105.69' y='180.85' text-anchor='middle' style='font-size: 5.03px;fill: #5770BE; font-family: "Noto Sans";' textLength='97.68px' lengthAdjust='spacingAndGlyphs'>IVOA  SF2A LISA RDA RDG AAS IAU ADASS</text>
-<text x='364.57' y='244.22' text-anchor='middle' style='font-size: 4.50px;fill: #169B62; font-family: "Noto Sans";' textLength='31.00px' lengthAdjust='spacingAndGlyphs'>réseau ateliers</text>
-<text x='341.42' y='157.51' text-anchor='middle' style='font-size: 4.50px;fill: #FFE725; font-family: "Noto Sans";' textLength='175.54px' lengthAdjust='spacingAndGlyphs'>Réseau des référents donnée opérationnel, direction pour la science ouverte Dipso.</text>
-<text x='316.61' y='147.86' text-anchor='middle' style='font-size: 4.50px;fill: #5770BE; font-family: "Noto Sans";' textLength='166.85px' lengthAdjust='spacingAndGlyphs'>Etablissement, IR RESIF, structure internationale type IRIS/UNAVCO/Earthscope</text>
-<text x='213.20' y='196.75' text-anchor='middle' style='font-size: 4.50px;fill: #169B62; font-family: "Noto Sans";' textLength='21.53px' lengthAdjust='spacingAndGlyphs'>PROGEDO</text>
-<text x='217.27' y='268.50' text-anchor='middle' style='font-size: 4.50px;fill: #FFE725; font-family: "Noto Sans";' textLength='311.36px' lengthAdjust='spacingAndGlyphs'>Section AURORE de l'Association des archivistes français, le réseau des ateliers de la donnée, le comité d'intégrité scientifique de mon établissement</text>
-<text x='396.81' y='196.90' text-anchor='middle' style='font-size: 4.50px;fill: #5770BE; font-family: "Noto Sans";' textLength='16.60px' lengthAdjust='spacingAndGlyphs'>Renater</text>
-<text x='342.73' y='139.63' text-anchor='middle' style='font-size: 4.50px;fill: #169B62; font-family: "Noto Sans";' textLength='201.73px' lengthAdjust='spacingAndGlyphs'>Institut Français de Bioinformatique (IFB), National Center for Biotechnology Information (NCBI)</text>
-<text x='423.83' y='181.25' text-anchor='middle' style='font-size: 4.50px;fill: #FFE725; font-family: "Noto Sans";' textLength='41.83px' lengthAdjust='spacingAndGlyphs'>réseau universitaire</text>
-<text x='141.43' y='150.67' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='167.37px' lengthAdjust='spacingAndGlyphs'>Données-inter-réseaux, réseau établissement, RDA, SIST, observatoire virtuel astronomique</text>
-<text x='403.35' y='243.35' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='36.55px' lengthAdjust='spacingAndGlyphs'>aucun en particulier</text>
-<text x='428.89' y='194.55' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='12.63px' lengthAdjust='spacingAndGlyphs'>OZCAR</text>
-<text x='395.27' y='173.53' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='30.12px' lengthAdjust='spacingAndGlyphs'>Réseau Quetelet</text>
-<text x='158.67' y='171.50' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='14.52px' lengthAdjust='spacingAndGlyphs'>INSERM</text>
-<text x='121.48' y='169.28' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='42.22px' lengthAdjust='spacingAndGlyphs'>research infrastructure</text>
-<text x='473.56' y='186.74' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='35.09px' lengthAdjust='spacingAndGlyphs'>Institution network</text>
-<text x='256.91' y='175.69' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='6.98px' lengthAdjust='spacingAndGlyphs'>AAF</text>
-<text x='449.03' y='172.07' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='71.91px' lengthAdjust='spacingAndGlyphs'>Référents Données Opérationels INRAE</text>
-<text x='195.25' y='248.47' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='15.64px' lengthAdjust='spacingAndGlyphs'>RENATIS</text>
-<text x='109.35' y='194.63' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='8.42px' lengthAdjust='spacingAndGlyphs'>CATI</text>
-<text x='428.04' y='254.91' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='60.73px' lengthAdjust='spacingAndGlyphs'>Réseau de l'Institut de Recherche</text>
-<text x='462.52' y='243.42' text-anchor='middle' style='font-size: 3.18px;fill: #5770BE; font-family: "Noto Sans";' textLength='59.54px' lengthAdjust='spacingAndGlyphs'>RENATER, réseau de mon établissement</text>
-<text x='157.33' y='247.99' text-anchor='middle' style='font-size: 3.18px;fill: #169B62; font-family: "Noto Sans";' textLength='25.17px' lengthAdjust='spacingAndGlyphs'>AURORE de l'AAF</text>
-<text x='180.39' y='141.39' text-anchor='middle' style='font-size: 3.18px;fill: #FFE725; font-family: "Noto Sans";' textLength='67.49px' lengthAdjust='spacingAndGlyphs'>Réseaux locaux, RDA, réseau communautaire</text>
+<g clip-path='url(#cpNDUuODl8NDk4LjUyfDIwLjk4fDQyNi41Mg==)'>
+<text x='272.21' y='233.91' text-anchor='middle' style='font-size: 28.45px;fill: #FFE725; font-family: "Noto Sans";' textLength='396.25px' lengthAdjust='spacingAndGlyphs'>réseau de mon établissement</text>
+<text x='272.63' y='207.84' text-anchor='middle' style='font-size: 17.57px;fill: #5770BE; font-family: "Noto Sans";' textLength='226.78px' lengthAdjust='spacingAndGlyphs'>infrastructure de recherche</text>
+<text x='266.66' y='249.10' text-anchor='middle' style='font-size: 14.05px;fill: #169B62; font-family: "Noto Sans";' textLength='27.97px' lengthAdjust='spacingAndGlyphs'>RDA</text>
+<text x='257.80' y='267.41' text-anchor='middle' style='font-size: 12.92px;fill: #FFE725; font-family: "Noto Sans";' textLength='198.83px' lengthAdjust='spacingAndGlyphs'>Réseau des ateliers de la donnée</text>
+<text x='224.23' y='248.80' text-anchor='middle' style='font-size: 12.11px;fill: #5770BE; font-family: "Noto Sans";' textLength='35.05px' lengthAdjust='spacingAndGlyphs'>aucun</text>
+<text x='321.88' y='248.87' text-anchor='middle' style='font-size: 11.02px;fill: #169B62; font-family: "Noto Sans";' textLength='60.49px' lengthAdjust='spacingAndGlyphs'>Huma-Num</text>
+<text x='285.66' y='190.99' text-anchor='middle' style='font-size: 10.31px;fill: #FFE725; font-family: "Noto Sans";' textLength='70.60px' lengthAdjust='spacingAndGlyphs'>réseau interne</text>
+<text x='283.58' y='177.36' text-anchor='middle' style='font-size: 9.54px;fill: #5770BE; font-family: "Noto Sans";' textLength='89.80px' lengthAdjust='spacingAndGlyphs'>Atelier de la donnée</text>
+<text x='213.70' y='187.33' text-anchor='middle' style='font-size: 6.75px;fill: #169B62; font-family: "Noto Sans";' textLength='29.11px' lengthAdjust='spacingAndGlyphs'>Couperin</text>
+<text x='242.62' y='279.59' text-anchor='middle' style='font-size: 6.36px;fill: #FFE725; font-family: "Noto Sans";' textLength='64.34px' lengthAdjust='spacingAndGlyphs'>Recherche Data Gouv</text>
+<text x='193.61' y='247.97' text-anchor='middle' style='font-size: 6.36px;fill: #5770BE; font-family: "Noto Sans";' textLength='6.11px' lengthAdjust='spacingAndGlyphs'>IR</text>
+<text x='232.81' y='213.82' text-anchor='middle' style='font-size: 5.95px;fill: #169B62; font-family: "Noto Sans";' textLength='28.63px' lengthAdjust='spacingAndGlyphs'>MATE-SHS</text>
+<text x='313.91' y='163.55' text-anchor='middle' style='font-size: 5.51px;fill: #FFE725; font-family: "Noto Sans";' textLength='288.52px' lengthAdjust='spacingAndGlyphs'>Association des archivistes français, Données inter-réseaux, réseau de mon établissement (Atelier de la donnée)</text>
+<text x='308.68' y='280.51' text-anchor='middle' style='font-size: 5.03px;fill: #5770BE; font-family: "Noto Sans";' textLength='27.71px' lengthAdjust='spacingAndGlyphs'>Consortium</text>
+<text x='240.81' y='288.62' text-anchor='middle' style='font-size: 5.03px;fill: #169B62; font-family: "Noto Sans";' textLength='113.62px' lengthAdjust='spacingAndGlyphs'>International Virtual Observatory Alliance (IVOA)</text>
+<text x='237.87' y='184.54' text-anchor='middle' style='font-size: 5.03px;fill: #FFE725; font-family: "Noto Sans";' textLength='9.55px' lengthAdjust='spacingAndGlyphs'>HAL</text>
+<text x='240.10' y='296.98' text-anchor='middle' style='font-size: 5.03px;fill: #5770BE; font-family: "Noto Sans";' textLength='97.68px' lengthAdjust='spacingAndGlyphs'>IVOA  SF2A LISA RDA RDG AAS IAU ADASS</text>
+<text x='377.01' y='245.44' text-anchor='middle' style='font-size: 4.50px;fill: #169B62; font-family: "Noto Sans";' textLength='31.00px' lengthAdjust='spacingAndGlyphs'>réseau ateliers</text>
+<text x='269.56' y='150.64' text-anchor='middle' style='font-size: 4.50px;fill: #FFE725; font-family: "Noto Sans";' textLength='175.54px' lengthAdjust='spacingAndGlyphs'>Réseau des référents donnée opérationnel, direction pour la science ouverte Dipso.</text>
+<text x='243.20' y='306.69' text-anchor='middle' style='font-size: 4.50px;fill: #5770BE; font-family: "Noto Sans";' textLength='166.85px' lengthAdjust='spacingAndGlyphs'>Etablissement, IR RESIF, structure internationale type IRIS/UNAVCO/Earthscope</text>
+<text x='339.82' y='186.16' text-anchor='middle' style='font-size: 4.50px;fill: #169B62; font-family: "Noto Sans";' textLength='21.53px' lengthAdjust='spacingAndGlyphs'>PROGEDO</text>
+<text x='297.20' y='140.86' text-anchor='middle' style='font-size: 4.50px;fill: #FFE725; font-family: "Noto Sans";' textLength='311.36px' lengthAdjust='spacingAndGlyphs'>Section AURORE de l'Association des archivistes français, le réseau des ateliers de la donnée, le comité d'intégrité scientifique de mon établissement</text>
+<text x='204.64' y='176.82' text-anchor='middle' style='font-size: 4.50px;fill: #5770BE; font-family: "Noto Sans";' textLength='16.60px' lengthAdjust='spacingAndGlyphs'>Renater</text>
+<text x='245.45' y='315.07' text-anchor='middle' style='font-size: 4.50px;fill: #169B62; font-family: "Noto Sans";' textLength='201.73px' lengthAdjust='spacingAndGlyphs'>Institut Français de Bioinformatique (IFB), National Center for Biotechnology Information (NCBI)</text>
+<text x='156.24' y='243.51' text-anchor='middle' style='font-size: 4.50px;fill: #FFE725; font-family: "Noto Sans";' textLength='41.83px' lengthAdjust='spacingAndGlyphs'>réseau universitaire</text>
+<text x='383.03' y='296.00' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='167.37px' lengthAdjust='spacingAndGlyphs'>Données-inter-réseaux, réseau établissement, RDA, SIST, observatoire virtuel astronomique</text>
+<text x='348.36' y='277.83' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='36.55px' lengthAdjust='spacingAndGlyphs'>aucun en particulier</text>
+<text x='224.27' y='176.70' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='12.63px' lengthAdjust='spacingAndGlyphs'>OZCAR</text>
+<text x='265.44' y='215.06' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='30.12px' lengthAdjust='spacingAndGlyphs'>Réseau Quetelet</text>
+<text x='369.72' y='215.00' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='14.52px' lengthAdjust='spacingAndGlyphs'>INSERM</text>
+<text x='352.20' y='173.94' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='42.22px' lengthAdjust='spacingAndGlyphs'>research infrastructure</text>
+<text x='177.67' y='185.26' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='35.09px' lengthAdjust='spacingAndGlyphs'>Institution network</text>
+<text x='288.46' y='280.61' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='6.98px' lengthAdjust='spacingAndGlyphs'>AAF</text>
+<text x='395.74' y='254.14' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='71.91px' lengthAdjust='spacingAndGlyphs'>Référents Données Opérationels INRAE</text>
+<text x='345.56' y='194.86' text-anchor='middle' style='font-size: 3.90px;fill: #5770BE; font-family: "Noto Sans";' textLength='15.64px' lengthAdjust='spacingAndGlyphs'>RENATIS</text>
+<text x='372.44' y='190.64' text-anchor='middle' style='font-size: 3.90px;fill: #169B62; font-family: "Noto Sans";' textLength='8.42px' lengthAdjust='spacingAndGlyphs'>CATI</text>
+<text x='165.31' y='278.25' text-anchor='middle' style='font-size: 3.90px;fill: #FFE725; font-family: "Noto Sans";' textLength='60.73px' lengthAdjust='spacingAndGlyphs'>Réseau de l'Institut de Recherche</text>
+<text x='364.12' y='288.64' text-anchor='middle' style='font-size: 3.18px;fill: #5770BE; font-family: "Noto Sans";' textLength='59.54px' lengthAdjust='spacingAndGlyphs'>RENATER, réseau de mon établissement</text>
+<text x='379.11' y='267.17' text-anchor='middle' style='font-size: 3.18px;fill: #169B62; font-family: "Noto Sans";' textLength='25.17px' lengthAdjust='spacingAndGlyphs'>AURORE de l'AAF</text>
+<text x='431.38' y='205.11' text-anchor='middle' style='font-size: 3.18px;fill: #FFE725; font-family: "Noto Sans";' textLength='67.49px' lengthAdjust='spacingAndGlyphs'>Réseaux locaux, RDA, réseau communautaire</text>
 </g>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
-<text x='45.89' y='68.95' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='354.30px' lengthAdjust='spacingAndGlyphs'>Suivent ensuite les infrastructures de recherche, dont</text>
-<text x='45.89' y='85.15' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='402.97px' lengthAdjust='spacingAndGlyphs'>Huma-num, Progedo et l'IFB, RDA également mentionné. Le</text>
-<text x='45.89' y='101.35' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='409.31px' lengthAdjust='spacingAndGlyphs'>réseau des ateliers de la donnée ressort mais de façon moins</text>
-<text x='45.89' y='117.55' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='63.35px' lengthAdjust='spacingAndGlyphs'>marquée.</text>
-<text x='45.89' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='439.31px' lengthAdjust='spacingAndGlyphs'>Les réseaux établissements ressortent fortement pour</text>
-<text x='45.89' y='48.82' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='315.57px' lengthAdjust='spacingAndGlyphs'>structurer les activités sur les données</text>
-<text x='498.52' y='309.88' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='415.17px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Dans le cadre de votre</text>
-<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='438.49px' lengthAdjust='spacingAndGlyphs'>activité sur les données, sur quels réseaux ou communautés vous</text>
-<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='218.42px' lengthAdjust='spacingAndGlyphs'>appuyez-vous ? - 1061 réponses</text>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
+<text x='45.89' y='78.11' style='font-size: 11.00px; font-family: "Arial";' textLength='221.58px' lengthAdjust='spacingAndGlyphs'>1061 réponses, soit 68% des répondant(e)s</text>
+<text x='45.89' y='28.78' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
+<text x='45.89' y='44.98' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='355.62px' lengthAdjust='spacingAndGlyphs'>Dans le cadre de votre activité sur les données, </text>
+<text x='45.89' y='61.18' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='423.18px' lengthAdjust='spacingAndGlyphs'>sur quels réseaux ou communautés vous appuyez-vous ?</text>
 <text x='25.69' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='40.41px' lengthAdjust='spacingAndGlyphs'>Fig. 25</text>
 </g>
 </svg>

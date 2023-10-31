@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='432.00pt' viewBox='0 0 504.00 432.00'>
 <defs>
   <style type='text/css'><![CDATA[
     .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
@@ -16,59 +16,63 @@
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: none;'/>
 <defs>
-  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
-    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='432.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
 </g>
 <defs>
-  <clipPath id='cpNDUuODl8NDk4LjUyfDE0OC4xNXwzMDYuMTc='>
-    <rect x='45.89' y='148.15' width='452.63' height='158.02' />
+  <clipPath id='cpNDUuODl8NDk4LjUyfDQuNzh8NDI2LjUy'>
+    <rect x='45.89' y='4.78' width='452.63' height='421.74' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpNDUuODl8NDk4LjUyfDE0OC4xNXwzMDYuMTc=)'>
-<text x='272.21' y='237.32' text-anchor='middle' style='font-size: 28.45px;fill: #FFE725; font-family: "Noto Sans";' textLength='108.44px' lengthAdjust='spacingAndGlyphs'>Biologie</text>
-<text x='307.08' y='211.81' text-anchor='middle' style='font-size: 24.95px;fill: #5770BE; font-family: "Noto Sans";' textLength='192.36px' lengthAdjust='spacingAndGlyphs'>Instrumentation</text>
-<text x='204.65' y='254.45' text-anchor='middle' style='font-size: 24.95px;fill: #169B62; font-family: "Noto Sans";' textLength='98.80px' lengthAdjust='spacingAndGlyphs'>Archives</text>
-<text x='359.87' y='240.01' text-anchor='middle' style='font-size: 20.88px;fill: #FFE725; font-family: "Noto Sans";' textLength='58.31px' lengthAdjust='spacingAndGlyphs'>BAP A</text>
-<text x='132.01' y='226.79' text-anchor='middle' style='font-size: 17.65px;fill: #5770BE; font-family: "Noto Sans";' textLength='142.54px' lengthAdjust='spacingAndGlyphs'>Science du vivant</text>
-<text x='330.26' y='266.11' text-anchor='middle' style='font-size: 17.65px;fill: #169B62; font-family: "Noto Sans";' textLength='117.42px' lengthAdjust='spacingAndGlyphs'>Biologie santé</text>
-<text x='181.03' y='273.26' text-anchor='middle' style='font-size: 15.78px;fill: #FFE725; font-family: "Noto Sans";' textLength='162.26px' lengthAdjust='spacingAndGlyphs'>Environnement marin</text>
-<text x='129.07' y='206.64' text-anchor='middle' style='font-size: 15.78px;fill: #5770BE; font-family: "Noto Sans";' textLength='136.41px' lengthAdjust='spacingAndGlyphs'>recherche clinique</text>
-<text x='277.68' y='185.09' text-anchor='middle' style='font-size: 15.78px;fill: #169B62; font-family: "Noto Sans";' textLength='143.26px' lengthAdjust='spacingAndGlyphs'>Sciences chimiques</text>
-<text x='250.88' y='292.51' text-anchor='middle' style='font-size: 13.67px;fill: #FFE725; font-family: "Noto Sans";' textLength='347.52px' lengthAdjust='spacingAndGlyphs'>Sciences de l'ingénieur et instrumentation scientifique</text>
-<text x='437.44' y='240.26' text-anchor='middle' style='font-size: 13.67px;fill: #5770BE; font-family: "Noto Sans";' textLength='79.47px' lengthAdjust='spacingAndGlyphs'>Geosciences</text>
-<text x='125.83' y='188.22' text-anchor='middle' style='font-size: 13.67px;fill: #169B62; font-family: "Noto Sans";' textLength='124.06px' lengthAdjust='spacingAndGlyphs'>Sciences de la terre</text>
-<text x='136.56' y='241.60' text-anchor='middle' style='font-size: 13.67px;fill: #FFE725; font-family: "Noto Sans";' textLength='8.88px' lengthAdjust='spacingAndGlyphs'>B</text>
-<text x='357.43' y='252.73' text-anchor='middle' style='font-size: 11.16px;fill: #5770BE; font-family: "Noto Sans";' textLength='7.13px' lengthAdjust='spacingAndGlyphs'>A</text>
-<text x='447.45' y='219.05' text-anchor='middle' style='font-size: 11.16px;fill: #169B62; font-family: "Noto Sans";' textLength='85.49px' lengthAdjust='spacingAndGlyphs'>Bioinformatique</text>
-<text x='99.07' y='241.10' text-anchor='middle' style='font-size: 11.16px;fill: #FFE725; font-family: "Noto Sans";' textLength='54.94px' lengthAdjust='spacingAndGlyphs'>Recherche</text>
-<text x='410.15' y='257.97' text-anchor='middle' style='font-size: 11.16px;fill: #5770BE; font-family: "Noto Sans";' textLength='29.60px' lengthAdjust='spacingAndGlyphs'>Santé</text>
-<text x='452.52' y='197.51' text-anchor='middle' style='font-size: 11.16px;fill: #169B62; font-family: "Noto Sans";' textLength='87.21px' lengthAdjust='spacingAndGlyphs'>Expérimentation</text>
-<text x='88.70' y='248.17' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='59.14px' lengthAdjust='spacingAndGlyphs'>métabolomique</text>
-<text x='410.07' y='174.17' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='109.43px' lengthAdjust='spacingAndGlyphs'>C-Techniques expérimentales</text>
-<text x='443.02' y='270.62' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='89.74px' lengthAdjust='spacingAndGlyphs'>électronique / electricité</text>
-<text x='138.16' y='251.77' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='21.59px' lengthAdjust='spacingAndGlyphs'>Bap B</text>
-<text x='334.00' y='248.34' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='28.02px' lengthAdjust='spacingAndGlyphs'>analyse</text>
-<text x='257.52' y='169.62' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='161.76px' lengthAdjust='spacingAndGlyphs'>Responsable de pôle bilans, études , impact</text>
-<text x='343.12' y='159.45' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='93.09px' lengthAdjust='spacingAndGlyphs'>Recherche et Ingénieurie</text>
-<text x='118.27' y='176.13' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='86.10px' lengthAdjust='spacingAndGlyphs'>Collections naturalistes</text>
-<text x='198.91' y='154.53' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='140.76px' lengthAdjust='spacingAndGlyphs'>télédétection satellitaire et hydrologie</text>
-<text x='277.59' y='304.99' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='151.68px' lengthAdjust='spacingAndGlyphs'>Caractérisation et modelisation du solide</text>
-<text x='467.15' y='256.67' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='60.14px' lengthAdjust='spacingAndGlyphs'>Science de la vie</text>
-<text x='272.21' y='229.98' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='123.39px' lengthAdjust='spacingAndGlyphs'>ICD (ingénieur civil de la défense)</text>
+<g clip-path='url(#cpNDUuODl8NDk4LjUyfDQuNzh8NDI2LjUy)'>
+<text x='272.21' y='225.81' text-anchor='middle' style='font-size: 28.45px;fill: #FFE725; font-family: "Noto Sans";' textLength='108.44px' lengthAdjust='spacingAndGlyphs'>Biologie</text>
+<text x='288.39' y='200.45' text-anchor='middle' style='font-size: 24.95px;fill: #5770BE; font-family: "Noto Sans";' textLength='192.36px' lengthAdjust='spacingAndGlyphs'>Instrumentation</text>
+<text x='264.97' y='250.59' text-anchor='middle' style='font-size: 24.95px;fill: #169B62; font-family: "Noto Sans";' textLength='98.80px' lengthAdjust='spacingAndGlyphs'>Archives</text>
+<text x='272.74' y='182.87' text-anchor='middle' style='font-size: 20.88px;fill: #FFE725; font-family: "Noto Sans";' textLength='58.31px' lengthAdjust='spacingAndGlyphs'>BAP A</text>
+<text x='246.92' y='268.41' text-anchor='middle' style='font-size: 17.65px;fill: #5770BE; font-family: "Noto Sans";' textLength='142.54px' lengthAdjust='spacingAndGlyphs'>Science du vivant</text>
+<text x='281.90' y='155.39' text-anchor='middle' style='font-size: 17.65px;fill: #169B62; font-family: "Noto Sans";' textLength='117.42px' lengthAdjust='spacingAndGlyphs'>Biologie santé</text>
+<text x='222.91' y='287.20' text-anchor='middle' style='font-size: 15.78px;fill: #FFE725; font-family: "Noto Sans";' textLength='162.26px' lengthAdjust='spacingAndGlyphs'>Environnement marin</text>
+<text x='148.09' y='211.03' text-anchor='middle' style='font-size: 15.78px;fill: #5770BE; font-family: "Noto Sans";' textLength='136.41px' lengthAdjust='spacingAndGlyphs'>recherche clinique</text>
+<text x='141.49' y='227.03' text-anchor='middle' style='font-size: 15.78px;fill: #169B62; font-family: "Noto Sans";' textLength='143.26px' lengthAdjust='spacingAndGlyphs'>Sciences chimiques</text>
+<text x='248.68' y='304.80' text-anchor='middle' style='font-size: 13.67px;fill: #FFE725; font-family: "Noto Sans";' textLength='347.52px' lengthAdjust='spacingAndGlyphs'>Sciences de l'ingénieur et instrumentation scientifique</text>
+<text x='370.30' y='245.45' text-anchor='middle' style='font-size: 13.67px;fill: #5770BE; font-family: "Noto Sans";' textLength='79.47px' lengthAdjust='spacingAndGlyphs'>Geosciences</text>
+<text x='402.41' y='225.40' text-anchor='middle' style='font-size: 13.67px;fill: #169B62; font-family: "Noto Sans";' textLength='124.06px' lengthAdjust='spacingAndGlyphs'>Sciences de la terre</text>
+<text x='234.74' y='176.78' text-anchor='middle' style='font-size: 13.67px;fill: #FFE725; font-family: "Noto Sans";' textLength='8.88px' lengthAdjust='spacingAndGlyphs'>B</text>
+<text x='341.92' y='212.47' text-anchor='middle' style='font-size: 11.16px;fill: #5770BE; font-family: "Noto Sans";' textLength='7.13px' lengthAdjust='spacingAndGlyphs'>A</text>
+<text x='174.66' y='172.92' text-anchor='middle' style='font-size: 11.16px;fill: #169B62; font-family: "Noto Sans";' textLength='85.49px' lengthAdjust='spacingAndGlyphs'>Bioinformatique</text>
+<text x='342.98' y='174.55' text-anchor='middle' style='font-size: 11.16px;fill: #FFE725; font-family: "Noto Sans";' textLength='54.94px' lengthAdjust='spacingAndGlyphs'>Recherche</text>
+<text x='178.80' y='247.23' text-anchor='middle' style='font-size: 11.16px;fill: #5770BE; font-family: "Noto Sans";' textLength='29.60px' lengthAdjust='spacingAndGlyphs'>Santé</text>
+<text x='374.19' y='268.90' text-anchor='middle' style='font-size: 11.16px;fill: #169B62; font-family: "Noto Sans";' textLength='87.21px' lengthAdjust='spacingAndGlyphs'>Expérimentation</text>
+<text x='345.96' y='279.79' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='59.14px' lengthAdjust='spacingAndGlyphs'>métabolomique</text>
+<text x='280.76' y='137.78' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='109.43px' lengthAdjust='spacingAndGlyphs'>C-Techniques expérimentales</text>
+<text x='130.22' y='191.64' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='89.74px' lengthAdjust='spacingAndGlyphs'>électronique / electricité</text>
+<text x='372.00' y='212.50' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='21.59px' lengthAdjust='spacingAndGlyphs'>Bap B</text>
+<text x='334.19' y='288.41' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='28.02px' lengthAdjust='spacingAndGlyphs'>analyse</text>
+<text x='302.05' y='123.07' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='161.76px' lengthAdjust='spacingAndGlyphs'>Responsable de pôle bilans, études , impact</text>
+<text x='395.39' y='158.07' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='93.09px' lengthAdjust='spacingAndGlyphs'>Recherche et Ingénieurie</text>
+<text x='168.88' y='158.65' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='86.10px' lengthAdjust='spacingAndGlyphs'>Collections naturalistes</text>
+<text x='267.04' y='317.92' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='140.76px' lengthAdjust='spacingAndGlyphs'>télédétection satellitaire et hydrologie</text>
+<text x='325.60' y='115.24' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='151.68px' lengthAdjust='spacingAndGlyphs'>Caractérisation et modelisation du solide</text>
+<text x='421.50' y='208.14' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='60.14px' lengthAdjust='spacingAndGlyphs'>Science de la vie</text>
+<text x='434.52' y='175.61' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='123.39px' lengthAdjust='spacingAndGlyphs'>ICD (ingénieur civil de la défense)</text>
+<text x='151.22' y='138.39' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='123.74px' lengthAdjust='spacingAndGlyphs'>qualité des données et open data</text>
+<text x='224.50' y='328.83' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='129.54px' lengthAdjust='spacingAndGlyphs'>Bap A vivant, terre, environnement</text>
+<text x='416.74' y='150.31' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='136.09px' lengthAdjust='spacingAndGlyphs'>Science des matériaux caratérisation</text>
+<text x='112.83' y='238.45' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='77.98px' lengthAdjust='spacingAndGlyphs'>Pôle culturel (musée)</text>
+<text x='266.49' y='338.96' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='133.77px' lengthAdjust='spacingAndGlyphs'>BAP C (instrumentation scientifique)</text>
+<text x='126.75' y='263.52' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='87.67px' lengthAdjust='spacingAndGlyphs'>Protection des données</text>
+<text x='444.10' y='199.76' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='88.65px' lengthAdjust='spacingAndGlyphs'>médicament vétérinaire</text>
+<text x='99.32' y='251.63' text-anchor='middle' style='font-size: 7.89px;fill: #5770BE; font-family: "Noto Sans";' textLength='91.42px' lengthAdjust='spacingAndGlyphs'>Biologie, environnement</text>
+<text x='257.67' y='106.95' text-anchor='middle' style='font-size: 7.89px;fill: #169B62; font-family: "Noto Sans";' textLength='222.92px' lengthAdjust='spacingAndGlyphs'>Culture, Communication, Production et diffusion des savoirs</text>
+<text x='182.20' y='124.61' text-anchor='middle' style='font-size: 7.89px;fill: #FFE725; font-family: "Noto Sans";' textLength='64.98px' lengthAdjust='spacingAndGlyphs'>Analyse chimique</text>
 </g>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
-<text x='45.89' y='87.31' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='355.04px' lengthAdjust='spacingAndGlyphs'>La catégorie 'Archives' était à priori attendue dans les</text>
-<text x='45.89' y='103.51' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='378.83px' lengthAdjust='spacingAndGlyphs'>catégories proposées ('Documentation et personnels des</text>
-<text x='45.89' y='119.71' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='386.70px' lengthAdjust='spacingAndGlyphs'>bibliothèques'). Une centaine d'autres branches ressortent</text>
-<text x='45.89' y='135.91' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='393.47px' lengthAdjust='spacingAndGlyphs'>dans une moindre mesure, telle que les sciences du vivant.</text>
-<text x='45.89' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='398.94px' lengthAdjust='spacingAndGlyphs'>La biologie, l'instrumentation et les archives sont</text>
-<text x='45.89' y='48.82' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='429.25px' lengthAdjust='spacingAndGlyphs'>les principales branche d'activité déclarées parmi les</text>
-<text x='45.89' y='67.18' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='353.34px' lengthAdjust='spacingAndGlyphs'>personnes exerçant des fonctions supports</text>
-<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='417.67px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Précisez votre branche</text>
-<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='214.62px' lengthAdjust='spacingAndGlyphs'>d'activité. [Autre] - 154 réponses</text>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
+<text x='45.89' y='61.91' style='font-size: 11.00px; font-family: "Arial";' textLength='215.29px' lengthAdjust='spacingAndGlyphs'>154 réponses, soit 10% des répondant(e)s</text>
+<text x='45.89' y='28.78' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
+<text x='45.89' y='44.98' style='font-size: 15.00px; font-weight: bold; font-family: "Arial";' textLength='304.70px' lengthAdjust='spacingAndGlyphs'>Précisez votre branche d'activité. [Autre]</text>
 <text x='25.69' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='40.41px' lengthAdjust='spacingAndGlyphs'>Fig. 24</text>
 </g>
 </svg>

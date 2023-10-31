@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='432.00pt' viewBox='0 0 504.00 432.00'>
 <defs>
   <style type='text/css'><![CDATA[
     .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
@@ -16,50 +16,46 @@
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
 <defs>
-  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
-    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='432.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
 </g>
 <defs>
-  <clipPath id='cpOTguODh8NDA1LjEyfDAuMDB8MzYwLjAw'>
-    <rect x='98.88' y='0.00' width='306.24' height='360.00' />
+  <clipPath id='cpMzAuNDd8NDczLjUzfDAuMDB8NDMyLjAw'>
+    <rect x='30.47' y='0.000000000000057' width='443.06' height='432.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpOTguODh8NDA1LjEyfDAuMDB8MzYwLjAw)'>
-<rect x='98.88' y='0.00' width='306.24' height='360.00' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFFFFF;' />
+<g clip-path='url(#cpMzAuNDd8NDczLjUzfDAuMDB8NDMyLjAw)'>
+<rect x='30.47' y='0.000000000000057' width='443.06' height='432.00' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
 </g>
 <defs>
-  <clipPath id='cpMTQyLjk3fDM1Ny4xN3w3OS42MXwyOTMuODE='>
-    <rect x='142.97' y='79.61' width='214.20' height='214.20' />
+  <clipPath id='cpNzQuNTZ8NDI1LjU4fDgwLjk5fDQzMi4wMA=='>
+    <rect x='74.56' y='80.99' width='351.01' height='351.01' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMTQyLjk3fDM1Ny4xN3w3OS42MXwyOTMuODE=)'>
-<rect x='142.97' y='79.61' width='214.20' height='214.20' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFFFFF;' />
-<polygon points='269.37,224.96 270.76,227.72 272.15,230.48 273.55,233.25 274.94,236.01 276.33,238.77 277.73,241.53 279.12,244.30 280.52,247.06 281.91,249.82 284.48,248.46 286.99,246.99 289.44,245.42 291.82,243.75 294.13,241.99 296.37,240.13 298.52,238.18 300.60,236.14 302.59,234.02 304.49,231.82 306.30,229.55 308.02,227.20 309.63,224.78 311.15,222.30 312.56,219.75 313.87,217.16 315.06,214.51 316.15,211.81 317.13,209.07 317.99,206.29 318.74,203.48 319.37,200.64 319.89,197.78 320.28,194.90 320.56,192.01 320.72,189.10 320.76,186.19 320.67,183.29 320.47,180.39 320.15,177.50 319.72,174.62 319.16,171.77 318.49,168.94 317.70,166.14 316.79,163.37 315.78,160.65 314.65,157.97 313.41,155.34 312.07,152.76 310.62,150.24 309.07,147.78 307.42,145.38 305.67,143.06 303.83,140.81 301.89,138.64 299.87,136.55 297.77,134.54 295.58,132.62 293.32,130.80 290.98,129.06 288.57,127.43 286.10,125.90 283.57,124.47 280.98,123.14 278.34,121.92 275.65,120.82 272.92,119.82 270.15,118.94 267.35,118.17 264.51,117.52 261.65,116.98 258.77,116.56 255.88,116.26 252.98,116.08 250.07,116.02 250.07,119.12 250.07,122.21 250.07,125.31 250.07,128.40 250.07,131.49 250.07,134.59 250.07,137.68 250.07,140.78 250.07,143.87 253.01,143.97 255.93,144.27 258.82,144.77 261.68,145.47 264.47,146.36 267.20,147.45 269.86,148.71 272.41,150.16 274.86,151.77 277.20,153.55 279.41,155.49 281.48,157.57 283.40,159.80 285.17,162.14 286.77,164.60 288.20,167.17 289.45,169.83 290.51,172.57 291.38,175.37 292.06,178.23 292.55,181.13 292.83,184.05 292.91,186.99 292.79,189.92 292.47,192.84 291.95,195.73 291.24,198.58 290.33,201.37 289.23,204.10 287.94,206.74 286.48,209.28 284.85,211.73 283.05,214.05 281.10,216.25 279.01,218.30 276.77,220.21 274.41,221.96 271.94,223.55 269.37,224.96 ' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<polygon points='250.07,143.87 250.07,140.78 250.07,137.68 250.07,134.59 250.07,131.49 250.07,128.40 250.07,125.31 250.07,122.21 250.07,119.12 250.07,116.02 247.17,116.08 244.28,116.26 241.40,116.56 238.53,116.97 235.68,117.51 232.85,118.15 230.06,118.92 227.30,119.79 224.57,120.78 221.89,121.89 219.26,123.10 216.67,124.41 214.15,125.83 211.68,127.36 209.28,128.98 206.95,130.70 204.69,132.52 202.50,134.42 200.40,136.42 198.38,138.50 196.45,140.66 194.60,142.89 192.86,145.20 191.20,147.59 189.65,150.03 188.19,152.54 186.85,155.11 185.60,157.72 184.47,160.39 183.44,163.10 182.53,165.85 181.73,168.64 181.05,171.46 180.48,174.30 180.03,177.16 179.70,180.04 179.49,182.93 179.39,185.83 179.41,188.73 179.56,191.62 179.82,194.51 180.20,197.38 180.69,200.24 181.31,203.07 182.03,205.88 182.88,208.65 183.83,211.39 184.90,214.08 186.08,216.73 187.36,219.33 188.75,221.87 190.25,224.36 191.84,226.78 193.53,229.13 195.32,231.42 197.20,233.62 199.16,235.75 201.22,237.80 203.35,239.76 205.57,241.63 207.86,243.41 210.22,245.09 212.64,246.67 215.13,248.16 217.68,249.54 220.28,250.81 222.94,251.98 225.64,253.04 228.38,253.99 231.15,254.82 233.96,255.54 236.80,256.14 239.65,256.62 242.53,256.99 245.42,257.24 248.31,257.38 251.21,257.39 254.11,257.28 257.00,257.06 259.88,256.71 262.74,256.25 265.58,255.68 268.39,254.98 271.18,254.17 273.92,253.25 276.63,252.22 279.29,251.07 281.91,249.82 280.52,247.06 279.12,244.30 277.73,241.53 276.33,238.77 274.94,236.01 273.55,233.25 272.15,230.48 270.76,227.72 269.37,224.96 266.72,226.18 264.00,227.23 261.21,228.08 258.37,228.74 255.49,229.21 252.58,229.48 249.67,229.55 246.75,229.42 243.86,229.10 240.99,228.58 238.16,227.86 235.39,226.96 232.68,225.86 230.06,224.59 227.53,223.14 225.10,221.52 222.79,219.74 220.61,217.81 218.56,215.73 216.66,213.52 214.91,211.19 213.33,208.74 211.91,206.19 210.68,203.54 209.62,200.83 208.76,198.04 208.08,195.20 207.60,192.33 207.32,189.42 207.23,186.51 207.35,183.59 207.66,180.69 208.16,177.82 208.87,174.99 209.76,172.22 210.84,169.51 212.10,166.88 213.54,164.34 215.14,161.91 216.91,159.59 218.83,157.39 220.90,155.34 223.10,153.42 225.43,151.67 227.87,150.07 230.42,148.65 233.05,147.40 235.77,146.33 238.55,145.45 241.38,144.76 244.26,144.27 247.16,143.97 250.07,143.87 ' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
-<text x='333.42' y='171.96' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>43%</text>
-<text x='166.72' y='211.62' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>57%</text>
-<text x='250.07' y='200.93' text-anchor='middle' style='font-size: 39.83px; font-weight: bold;fill: #333333; fill-opacity: 0.80; font-family: "Arial";' textLength='68.34px' lengthAdjust='spacingAndGlyphs'>975</text>
-<text x='250.07' y='200.93' text-anchor='middle' style='font-size: 39.83px; font-weight: bold;fill: #333333; fill-opacity: 0.80; font-family: "Arial";' textLength='68.34px' lengthAdjust='spacingAndGlyphs'>975</text>
+<g clip-path='url(#cpNzQuNTZ8NDI1LjU4fDgwLjk5fDQzMi4wMA==)'>
+<rect x='74.56' y='80.99' width='351.01' height='351.01' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFFFFF;' />
+<polygon points='281.69,319.17 283.97,323.70 286.26,328.23 288.54,332.75 290.83,337.28 293.11,341.81 295.39,346.33 297.68,350.86 299.96,355.39 302.24,359.91 306.45,357.68 310.57,355.28 314.58,352.70 318.48,349.97 322.27,347.08 325.93,344.03 329.47,340.83 332.87,337.50 336.13,334.02 339.25,330.42 342.22,326.69 345.03,322.84 347.67,318.88 350.16,314.81 352.47,310.64 354.61,306.38 356.58,302.04 358.36,297.62 359.96,293.13 361.37,288.58 362.60,283.98 363.63,279.33 364.48,274.63 365.13,269.91 365.58,265.17 365.84,260.41 365.90,255.65 365.77,250.88 365.44,246.13 364.92,241.39 364.20,236.68 363.29,232.00 362.18,227.37 360.89,222.78 359.41,218.25 357.75,213.78 355.90,209.39 353.87,205.08 351.67,200.85 349.29,196.72 346.75,192.69 344.04,188.77 341.18,184.96 338.16,181.27 334.99,177.71 331.68,174.29 328.23,171.00 324.65,167.86 320.94,164.86 317.11,162.03 313.17,159.35 309.12,156.84 304.97,154.49 300.73,152.32 296.40,150.33 291.99,148.51 287.51,146.88 282.97,145.43 278.38,144.17 273.73,143.10 269.05,142.22 264.33,141.54 259.59,141.05 254.84,140.76 250.07,140.66 250.07,145.73 250.07,150.80 250.07,155.87 250.07,160.94 250.07,166.01 250.07,171.08 250.07,176.15 250.07,181.22 250.07,186.29 254.88,186.46 259.67,186.95 264.41,187.77 269.09,188.91 273.67,190.38 278.15,192.15 282.49,194.22 286.68,196.59 290.70,199.24 294.53,202.16 298.15,205.33 301.54,208.75 304.69,212.39 307.58,216.23 310.21,220.27 312.55,224.47 314.59,228.83 316.34,233.32 317.77,237.91 318.88,242.59 319.68,247.34 320.14,252.13 320.27,256.94 320.08,261.75 319.55,266.54 318.70,271.27 317.53,275.94 316.04,280.52 314.23,284.98 312.13,289.31 309.74,293.49 307.06,297.49 304.12,301.30 300.92,304.89 297.49,308.26 293.83,311.39 289.96,314.26 285.91,316.86 281.69,319.17 ' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<polygon points='250.07,186.29 250.07,181.22 250.07,176.15 250.07,171.08 250.07,166.01 250.07,160.94 250.07,155.87 250.07,150.80 250.07,145.73 250.07,140.66 245.32,140.76 240.58,141.05 235.86,141.53 231.16,142.21 226.49,143.09 221.86,144.15 217.27,145.40 212.75,146.84 208.28,148.46 203.89,150.26 199.57,152.25 195.34,154.40 191.20,156.73 187.16,159.23 183.23,161.89 179.40,164.71 175.70,167.69 172.12,170.81 168.68,174.08 165.37,177.48 162.20,181.02 159.18,184.69 156.31,188.48 153.60,192.38 151.05,196.39 148.67,200.50 146.46,204.70 144.42,208.99 142.57,213.36 140.89,217.81 139.39,222.32 138.09,226.88 136.97,231.50 136.04,236.16 135.30,240.85 134.75,245.57 134.40,250.30 134.25,255.05 134.28,259.80 134.52,264.55 134.94,269.28 135.57,273.98 136.38,278.66 137.38,283.31 138.58,287.90 139.96,292.45 141.53,296.93 143.27,301.35 145.20,305.69 147.31,309.95 149.59,314.12 152.03,318.19 154.65,322.15 157.42,326.01 160.35,329.75 163.42,333.37 166.65,336.86 170.01,340.21 173.51,343.42 177.14,346.49 180.89,349.40 184.76,352.16 188.74,354.76 192.82,357.19 196.99,359.45 201.26,361.54 205.61,363.45 210.03,365.19 214.52,366.74 219.07,368.10 223.67,369.28 228.32,370.27 233.00,371.06 237.71,371.67 242.44,372.08 247.19,372.29 251.94,372.31 256.68,372.14 261.42,371.77 266.14,371.21 270.83,370.45 275.48,369.51 280.09,368.37 284.65,367.04 289.16,365.53 293.60,363.84 297.96,361.97 302.24,359.91 299.96,355.39 297.68,350.86 295.39,346.33 293.11,341.81 290.83,337.28 288.54,332.75 286.26,328.23 283.97,323.70 281.69,319.17 277.35,321.18 272.89,322.88 268.32,324.28 263.66,325.37 258.95,326.13 254.19,326.58 249.41,326.69 244.64,326.49 239.89,325.95 235.18,325.10 230.55,323.93 226.01,322.44 221.58,320.65 217.28,318.57 213.13,316.19 209.15,313.54 205.37,310.62 201.79,307.45 198.43,304.05 195.32,300.43 192.45,296.60 189.86,292.59 187.54,288.41 185.52,284.08 183.79,279.62 182.37,275.06 181.26,270.41 180.47,265.70 180.01,260.94 179.87,256.16 180.05,251.39 180.56,246.63 181.40,241.93 182.55,237.29 184.01,232.74 185.78,228.30 187.85,223.99 190.20,219.83 192.83,215.84 195.73,212.04 198.88,208.45 202.27,205.08 205.88,201.95 209.69,199.06 213.69,196.45 217.86,194.11 222.18,192.07 226.63,190.32 231.19,188.88 235.83,187.75 240.54,186.94 245.30,186.45 250.07,186.29 ' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='386.66' y='231.10' text-anchor='middle' style='font-size: 19.92px;fill: #333333; font-family: "Arial";' textLength='39.31px' lengthAdjust='spacingAndGlyphs'>43%</text>
+<text x='113.48' y='296.11' text-anchor='middle' style='font-size: 19.92px;fill: #333333; font-family: "Arial";' textLength='39.31px' lengthAdjust='spacingAndGlyphs'>57%</text>
+<text x='250.07' y='270.71' text-anchor='middle' style='font-size: 39.83px; font-weight: bold;fill: #333333; fill-opacity: 0.80; font-family: "Arial";' textLength='68.34px' lengthAdjust='spacingAndGlyphs'>975</text>
+<text x='250.07' y='270.71' text-anchor='middle' style='font-size: 39.83px; font-weight: bold;fill: #333333; fill-opacity: 0.80; font-family: "Arial";' textLength='68.34px' lengthAdjust='spacingAndGlyphs'>975</text>
 </g>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
-<rect x='362.84' y='160.72' width='42.28' height='51.99' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFFFFF;' />
-<rect x='365.00' y='180.30' width='12.96' height='12.96' style='stroke-width: 3.25; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<rect x='365.00' y='197.58' width='12.96' height='12.96' style='stroke-width: 3.25; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
-<text x='386.10' y='190.21' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='19.02px' lengthAdjust='spacingAndGlyphs'>Non</text>
-<text x='386.10' y='207.49' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='15.90px' lengthAdjust='spacingAndGlyphs'>Oui</text>
-<text x='142.97' y='29.50' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='219.69px' lengthAdjust='spacingAndGlyphs'>Politique des données dans les</text>
-<text x='142.97' y='45.05' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='272.84px' lengthAdjust='spacingAndGlyphs'>établissements / organismes, 57% des</text>
-<text x='142.97' y='60.60' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='302.82px' lengthAdjust='spacingAndGlyphs'>répondants déclarent que leur structure a</text>
-<text x='142.97' y='76.15' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='287.14px' lengthAdjust='spacingAndGlyphs'>formalisé un document de gouvernance</text>
-<text x='142.97' y='309.53' style='font-size: 12.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='240.16px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Votre</text>
-<text x='142.97' y='322.49' style='font-size: 12.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='304.12px' lengthAdjust='spacingAndGlyphs'>établissement/organisme a-t-il formalisé une organisation</text>
-<text x='142.97' y='335.45' style='font-size: 12.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='295.77px' lengthAdjust='spacingAndGlyphs'>des activités ou des rôles sur les données à l'échelle de</text>
-<text x='142.97' y='348.41' style='font-size: 12.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='321.11px' lengthAdjust='spacingAndGlyphs'>l'établissement ou de différentes structures ? - 975 réponses</text>
-<text x='120.93' y='12.01' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='44.09px' lengthAdjust='spacingAndGlyphs'>Fig. 29</text>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
+<rect x='431.25' y='230.50' width='42.28' height='51.99' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect x='433.41' y='250.09' width='12.96' height='12.96' style='stroke-width: 3.25; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='433.41' y='267.37' width='12.96' height='12.96' style='stroke-width: 3.25; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='454.51' y='259.99' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='19.02px' lengthAdjust='spacingAndGlyphs'>Non</text>
+<text x='454.51' y='277.27' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='15.90px' lengthAdjust='spacingAndGlyphs'>Oui</text>
+<text x='74.56' y='78.11' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='241.66px' lengthAdjust='spacingAndGlyphs'>975 réponses, soit 100% des répondant(e)s</text>
+<text x='74.56' y='29.50' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='372.20px' lengthAdjust='spacingAndGlyphs'>Votre établissement/organisme a-t-il formalisé une </text>
+<text x='74.56' y='45.05' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='394.42px' lengthAdjust='spacingAndGlyphs'>organisation des activités ou des rôles sur les données </text>
+<text x='74.56' y='60.60' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='423.32px' lengthAdjust='spacingAndGlyphs'>à l'échelle de l'établissement ou de différentes structures ?</text>
+<text x='52.52' y='12.01' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='44.09px' lengthAdjust='spacingAndGlyphs'>Fig. 29</text>
 </g>
 </svg>

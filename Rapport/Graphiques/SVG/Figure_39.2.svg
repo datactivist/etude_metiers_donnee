@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='432.00pt' height='360.00pt' viewBox='0 0 432.00 360.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw0MzIuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='432.00' height='360.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw0MzIuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='-0.000000000000032' y='0.00' width='432.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMjM0Ljg5fDQyNi41Mnw1NS4zNnwzMTkuMDI='>
+    <rect x='234.89' y='55.36' width='191.64' height='263.66' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMjM0Ljg5fDQyNi41Mnw1NS4zNnwzMTkuMDI=)'>
+<rect x='234.89' y='55.36' width='191.64' height='263.66' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='243.60' y='244.87' width='69.49' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='243.60' y='80.08' width='154.17' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='243.60' y='162.47' width='128.11' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='333.12' y='272.63' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>20%</text>
+<text x='417.81' y='107.85' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>44%</text>
+<text x='391.75' y='190.24' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>36%</text>
+<rect x='243.60' y='244.87' width='69.49' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='243.60' y='80.08' width='154.17' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='243.60' y='162.47' width='128.11' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+</g>
+<g clip-path='url(#cpMC4wMHw0MzIuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='229.95' y='273.01' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='143.38px' lengthAdjust='spacingAndGlyphs'>Doctorant(e) / Post-doctorant(e)</text>
+<text x='229.95' y='185.43' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='150.21px' lengthAdjust='spacingAndGlyphs'>Professeur(e) / Directeur(trice) de</text>
+<text x='229.95' y='195.80' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='100.34px' lengthAdjust='spacingAndGlyphs'>Recherche ou assimilé</text>
+<text x='229.95' y='103.04' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='168.29px' lengthAdjust='spacingAndGlyphs'>Maître de Conférences / Chargé(e) de</text>
+<text x='229.95' y='113.41' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='98.33px' lengthAdjust='spacingAndGlyphs'>recherche ou assimilé</text>
+<polyline points='243.60,321.76 243.60,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='287.02,321.76 287.02,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='330.45,321.76 330.45,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='373.88,321.76 373.88,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='417.31,321.76 417.31,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='243.60' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='287.02' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='10.97px' lengthAdjust='spacingAndGlyphs'>20</text>
+<text x='330.45' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='10.97px' lengthAdjust='spacingAndGlyphs'>40</text>
+<text x='373.88' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='10.97px' lengthAdjust='spacingAndGlyphs'>60</text>
+<text x='417.31' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='10.97px' lengthAdjust='spacingAndGlyphs'>80</text>
+<text x='330.70' y='351.64' text-anchor='middle' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='146.43px' lengthAdjust='spacingAndGlyphs'>Nombre de répondant(e)s</text>
+<text x='426.52' y='47.00' text-anchor='end' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='259.75px' lengthAdjust='spacingAndGlyphs'>Répartition des 452 volontaires aux entretiens</text>
+<text x='426.52' y='29.50' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='356.46px' lengthAdjust='spacingAndGlyphs'>Catégorie des chercheurs, enseignant-chercheurs</text>
+<text x='33.57' y='17.49' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='56.18px' lengthAdjust='spacingAndGlyphs'>Fig. 39.2</text>
+</g>
+</svg>

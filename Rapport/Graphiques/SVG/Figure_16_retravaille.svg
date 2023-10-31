@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='0.00' y='0.00' width='504.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMzA4LjIzfDQ5OC41Mnw2Mi44M3wyMzQuODU='>
+    <rect x='308.23' y='62.83' width='190.29' height='172.02' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMzA4LjIzfDQ5OC41Mnw2Mi44M3wyMzQuODU=)'>
+<polyline points='316.88,234.85 316.88,62.83 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='372.68,234.85 372.68,62.83 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='428.49,234.85 428.49,62.83 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<polyline points='484.29,234.85 484.29,62.83 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
+<rect x='316.88' y='75.12' width='131.03' height='24.57' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='316.88' y='116.08' width='60.05' height='24.57' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<rect x='316.88' y='157.03' width='23.33' height='24.57' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<rect x='316.88' y='197.99' width='22.88' height='24.57' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
+<text x='464.94' y='92.48' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>55%</text>
+<text x='393.96' y='133.44' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>25%</text>
+<text x='357.24' y='174.40' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>10%</text>
+<text x='356.79' y='215.36' text-anchor='middle' style='font-size: 14.23px;fill: #333333; font-family: "Arial";' textLength='28.09px' lengthAdjust='spacingAndGlyphs'>10%</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='303.30' y='215.38' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='227.24px' lengthAdjust='spacingAndGlyphs'>Formation certifiante non diplômante</text>
+<text x='303.30' y='174.42' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='135.40px' lengthAdjust='spacingAndGlyphs'>Formation diplômante</text>
+<text x='303.30' y='133.46' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='240.45px' lengthAdjust='spacingAndGlyphs'>Formation intra- ou inter-établissement</text>
+<text x='303.30' y='92.51' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='87.16px' lengthAdjust='spacingAndGlyphs'>Autoformation</text>
+<text x='316.88' y='252.78' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='7.78px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='372.68' y='252.78' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>500</text>
+<text x='428.49' y='252.78' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='31.13px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='484.29' y='252.78' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='31.13px' lengthAdjust='spacingAndGlyphs'>1500</text>
+<text x='403.37' y='286.70' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='140.03px' lengthAdjust='spacingAndGlyphs'>Nombre de réponses</text>
+<text x='45.89' y='50.59' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='330.95px' lengthAdjust='spacingAndGlyphs'>Pas de formation certifiante ou diplomante suivies</text>
+<text x='45.89' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='269.50px' lengthAdjust='spacingAndGlyphs'>Prédominance de l'autoformation</text>
+<text x='498.52' y='309.88' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='422.67px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Vous êtes-vous formé à</text>
+<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='397.67px' lengthAdjust='spacingAndGlyphs'>la gestion et la diffusion des données de recherche ? - 2126</text>
+<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='61.69px' lengthAdjust='spacingAndGlyphs'>réponses</text>
+<text x='25.69' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='40.41px' lengthAdjust='spacingAndGlyphs'>Fig. 16</text>
+</g>
+</svg>

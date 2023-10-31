@@ -64,7 +64,7 @@ library(cowplot)
 library(glue)
 
 # Données
-data <- read_csv("../data/donnees_lemmatisees_cols_Autre3.csv") |> 
+data <- read_csv("../data/donnees_complete.csv") |> 
     filter(!is.na(`Date de soumission`)) # réponses complètes donc fiables
 questions <- as.data.frame(colnames(data)) |> 
     rename(rowname = `colnames(data)`)
@@ -82,12 +82,10 @@ saving_plot <- function(graph, name, width, height) {
 
 ### Statistiques générales
 
-`r nrow(data)` répondants, 28 questions
+`r nrow(data)` répondant(e)s, 28 questions
 
 ```{r}
-data_summary <- data |> select(-c(1, 114:117))
-
-print(dfSummary(data_summary, style = "grid", graph.magnif = 1, 
+print(dfSummary(data, style = "grid", graph.magnif = 1, 
                 valid.col = FALSE, varnumbers = FALSE, tmp.img.dir = "/tmp", 
                 max.distinct.values = 5, headings = TRUE, method = "render", 
                 col.widths  = c(300, 200, 100, 50, 20)),
@@ -117,7 +115,7 @@ donut_plot <- function(data, variable, titre, figure){
           labs(title = titre,
              tag = figure, 
                subtitle = paste0(data |> filter(!is.na({{variable}})) |> nrow(), " réponses, soit ", 
-                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
+                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondant(e)s")) +
           xlim(c(0, 4)) +   
           theme_void() +
           theme(legend.position = "right",
@@ -174,7 +172,7 @@ wordcloud_autre <- function(data, variable, titre, n_slice, n_max_size, figure){
           labs(title = paste0("\n", titre),
              tag = figure, 
                subtitle = paste0(data |> filter(!is.na({{variable}})) |> nrow(), " réponses, soit ", 
-                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
+                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondant(e)s")) +
           theme_minimal() +
           theme(plot.title = element_text(face = "bold", size = 15),
                 plot.subtitle = element_text(margin = margin(t = 0, r = 0, b = -60, l = 0)))
@@ -190,10 +188,10 @@ barplot_qs_unique <- function(data, variable, titre, figure){
         ggplot(aes(x = col, y = n)) +
           geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
           coord_flip() +
-          labs(x = "", y = "Nombre de répondants", title = titre,
+          labs(x = "", y = "Nombre de répondant(e)s", title = titre,
              tag = figure, 
                subtitle = paste0(data |> filter(!is.na({{variable}})) |> nrow(), " réponses, soit ", 
-                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
+                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondant(e)s")) +
           scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
           theme_classic() +
           theme(legend.position = "none",
@@ -221,10 +219,10 @@ barplot_branche_activite_emploi <- function(data, titre, figure){
         ggplot(aes(x = col, y = n, fill = group, group = group)) +
           geom_bar(stat = "identity", width = .6) +
           coord_flip() +
-          labs(x = "", y = "Nombre de répondants", title = titre,
+          labs(x = "", y = "Nombre de répondant(e)s", title = titre,
              tag = figure, 
                subtitle = paste0(data |> filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> nrow(), " réponses, soit ", 
-                                round(((data |> filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
+                                round(((data |> filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> nrow()) / nrow(data)) * 100, 0), "% des répondant(e)s")) +
           scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
           scale_fill_manual(values = c("Personnel d'appui / soutien à la recherche" = "#5770BE",
                                        "Chercheur / Enseignant-chercheur " = "#ffe725")) +
@@ -255,10 +253,10 @@ barplot_qs_unique_top_n <- function(data, variable, slice_min, slice_max, titre,
         ggplot(aes(x = col, y = n)) +
           geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
           coord_flip() +
-          labs(x = "", y = "Nombre de répondants", title = titre,
+          labs(x = "", y = "Nombre de répondant(e)s", title = titre,
              tag = figure, 
                subtitle = paste0(data |> filter(!is.na({{variable}})) |> nrow(), " réponses, soit ", 
-                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondants")) +
+                                round(((data |> filter(!is.na({{variable}})) |> nrow()) / nrow(data)) * 100, 0), "% des répondant(e)s")) +
           scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
           #scale_y_discrete(limits = 1:max(table$n)) +
           theme_classic() +
@@ -318,23 +316,35 @@ table |>
 ```
 
 ```{r out.width='60%'}
-data |> 
+graph <- data |> 
     mutate(`Langue de départ` = case_when(`Langue de départ` == "fr" ~ "français",
                                           `Langue de départ` == "en" ~ "anglais")) |> 
     donut_plot(`Langue de départ`, "Langue de départ", "Fig. 1")
+graph
+saving_plot(graph, "1", 7, 6)
 
-data |> 
+graph <- data |> 
     filter(!is.na(`Dans quel type d'établissement exercez-vous votre activité ?`)) |> 
     mutate(`Dans quel type d'établissement exercez-vous votre activité ?` = factor(`Dans quel type d'établissement exercez-vous votre activité ?`, ordered = TRUE, levels = c("Ecole", "Organisme de recherche", "Université", "Autre"))) |> 
     donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?", "Fig. 2")
+graph
+saving_plot(graph, "2", 7, 6)
 
-wordcloud_autre(data, `Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? [Autre]", 40, 10, "Fig. 3")
+graph <- wordcloud_autre(data, `Dans quel type d'établissement exercez-vous votre activité ? [Autre]`, "Dans quel type d'établissement exercez-vous votre activité ? \n[Autre]", 40, 10, "Fig. 3")
+graph
+saving_plot(graph, "3", 7, 6)
 
-barplot_qs_multiples(data, 8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?", "Fig. 4")  
+graph <- barplot_qs_multiples(data, 8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?", "Fig. 4")  
+graph
+saving_plot(graph, "4", 7, 6)
 
-barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?", "Fig. 5")
+graph <- barplot_qs_unique(data, `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?", "Fig. 5")
+graph
+saving_plot(graph, "5", 7, 6)
 
-barplot_cycle(data, "Fig. 6")
+graph <- barplot_cycle(data, "Fig. 6")
+graph
+saving_plot(graph, "6", 7, 6)
 ```
 
 ```{r fig.width=12}
@@ -348,7 +358,9 @@ plot_moins <- data |>
     barplot_qs_multiples(23, 37, 11, 15, "#ffe725", "", "") +
     labs(caption = "Top 5 des catégories les moins représentées") +
     theme(plot.caption = element_text(face = "italic"))
-grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Quelles sont les activités qu'implique votre travail sur les données ?",gp=gpar(fontsize = 15, font = 2)))
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Quelles sont les activités qu'implique votre travail sur les données ?",gp=gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "7", 12, 8)
 
 plot_plus <- data |> 
     rename(`Comment intervenez-vous sur ces activités ? [Choisir l’entrepôt]` = 45) |> 
@@ -360,7 +372,9 @@ plot_moins <- data |>
     barplot_qs_multiples(38, 50, 9, 13, "#ffe725", "", "") +
     labs(caption = "Top 5 des catégories les moins représentées") +
     theme(plot.caption = element_text(face = "italic"))
-grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Comment intervenez-vous sur ces activités ?", gp = gpar(fontsize = 15, font = 2)))
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Comment intervenez-vous sur ces activités ?", gp = gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "8", 12, 8)
 
 plot_plus <- data |> 
     rename(`Quelles sont les activités qu'implique votre travail sur les données ? [Choisir l’entrepôt]` = 60) |> 
@@ -372,69 +386,110 @@ plot_moins <- data |>
     barplot_qs_multiples(51, 65, 11, 15, "#ffe725", "", "") +
     labs(caption = "Top 5 des catégories les moins représentées") +
     theme(plot.caption = element_text(face = "italic"))
-grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Quel est le poids de chaque activité dans votre travail ?",gp=gpar(fontsize = 15, font = 2)))
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Quel est le poids de chaque activité dans votre travail ?",gp=gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "9", 12, 8)
 ```
 
 ```{r out.width='60%'}
 
-barplot_qs_multiples(data, 66, 76, 1, 11, "#5770BE", "Sur quels types de données travaillez-vous ?", "Fig. 10")
+graph <- barplot_qs_multiples(data, 66, 76, 1, 11, "#5770BE", "Sur quels types de données travaillez-vous ?", "Fig. 10")
+graph
+saving_plot(graph, "10", 7, 6)
 
-wordcloud_autre(data, `Sur quels types de données travaillez-vous ? [Autre]`, "Sur quels types de données travaillez-vous ? [Autre]", 40, 12, "Fig. 11")
+graph <- wordcloud_autre(data, `Sur quels types de données travaillez-vous ? [Autre]`, "Sur quels types de données travaillez-vous ? [Autre]", 40, 12, "Fig. 11")
+graph
+saving_plot(graph, "11", 7, 6)
 
-barplot_qs_unique(data, `Quel est votre niveau de diplôme ?`, "Quel est votre niveau de diplôme ?", "Fig. 12")  
+graph <- barplot_qs_unique(data, `Quel est votre niveau de diplôme ?`, "Quel est votre niveau de diplôme ?", "Fig. 12")  
+graph
+saving_plot(graph, "12", 7, 6)
 
-data |> 
+graph <- data |> 
     mutate(nv_diplome = case_when(`Quel est votre niveau de diplôme ? [Autre]` == "Ph.D. (Québec)" ~ "PhD", 
                                   `Quel est votre niveau de diplôme ? [Autre]` == "PhD (USA)" ~ "PhD", 
                                   `Quel est votre niveau de diplôme ? [Autre]` == "Médicin + MSc biostatistic + MSc data science + PhD" ~ "PhD", 
                                   TRUE ~ `Quel est votre niveau de diplôme ? [Autre]`)) |> 
     wordcloud_autre(nv_diplome, "Quel est votre niveau de diplôme ? [Autre]", 40, 30, "Fig. 13")
+graph
+saving_plot(graph, "13", 7, 6)
 
-barplot_qs_unique(data, `Quel est le domaine de votre formation initiale ?`, "Quel est le domaine de votre formation initiale ?", "Fig. 14")  
+graph <- barplot_qs_unique(data, `Quel est le domaine de votre formation initiale ?`, "Une variété de domaines de formation initiale", "Fig. 14")  
+graph
+saving_plot(graph, "14", 7, 6)
 
-wordcloud_autre(data, `Quel est le domaine de votre formation initiale ? [Autre]`, "Quel est le domaine de votre formation initiale ? [Autre]", 40, 10, "Fig. 15")
+graph <- wordcloud_autre(data, `Quel est le domaine de votre formation initiale ? [Autre]`, "Quel est le domaine de votre formation initiale ? [Autre]", 40, 10, "Fig. 15")
+graph
+saving_plot(graph, "15", 7, 6)
 
-barplot_qs_multiples(data, 81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?", "Fig. 16")
+graph <- barplot_qs_multiples(data, 81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?", "Fig. 16")
+graph
+saving_plot(graph, "16", 7, 6)
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste le plus récent]`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 17") +
+graph <- barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste le plus récent]`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 17") +
     labs(subtitle = "Top 10 des plus récents (t)")
+graph
+saving_plot(graph, "17", 7, 6)
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 18") +
+graph <- barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent]`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 18") +
     labs(subtitle = "Top 10 des postes précédents (t-1)")
+graph
+saving_plot(graph, "18", 7, 6)
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 2`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 19") +
+graph <- barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 2`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 19") +
     labs(subtitle = "Top 10 des postes précédents (t-2)")
+graph
+saving_plot(graph, "29", 7, 6)
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 3`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 20") +
+graph <- barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 3`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 20") +
     labs(subtitle = "Top 10 des postes précédents (t-3)")
+graph
+saving_plot(graph, "20", 7, 6)
 
-barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 4`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 21") +
+graph <- barplot_qs_unique_top_n(data, `Quels postes, fonctions ou responsabilités significatifs avez-vous occupés dans l'enseignement supérieur et/ou la recherche, du plus récent au plus ancien ? [Intitulé du poste précédent] 4`, 1, 10, "Quels postes, fonctions ou responsabilités significatifs avez-vous \noccupés dans l'enseignement supérieur et/ou la recherche, \ndu plus récent au plus ancien ?", "Fig. 21") +
     labs(subtitle = "Top 10 des postes précédents (t-4)")
+graph
+saving_plot(graph, "21", 7, 6)
 ```
 
 ```{r fig.width=12}
 donut <- data |> 
     filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
-    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+"),
+           `Quelle est votre catégorie d'emploi actuel ?` = str_replace_all(`Quelle est votre catégorie d'emploi actuel ?`, 
+                                         "Chercheur / Enseignant-chercheur", "Chercheur(se)s / enseignant(e)s-chercheur(se)s")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?", "Fig. 22.1") +
     theme(legend.position = "bottom") +
     guides(fill = guide_legend(title = "", nrow = 2, byrow = T))
-bar <- barplot_branche_activite_emploi(data, "Branche d'activité des répondants", "Fig. 22.2")+
+saving_plot(donut, "22.1", 6, 5)
+
+bar <- barplot_branche_activite_emploi(data, "Branche d'activité des répondant(e)s", "Fig. 22.2")+
     theme(plot.title = element_text(hjust = 1))
+saving_plot(bar, "22.2", 7, 5)
+
 grid.arrange(donut, bar, ncol = 2)
+
 
 bar1 <- barplot_qs_unique(data, `Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs", "Fig. 23.2") +
     geom_bar(stat = "identity", width = .6, fill = '#ffe725')
+saving_plot(bar1, "23.2", 8, 5)
+
 bar2 <- barplot_qs_unique(data, `Précisez votre catégorie 2`, "Catégorie des personnels d'appui, soutiens à la recherche", "Fig. 23.1")
+saving_plot(bar2, "23.1", 6, 5)
+
 grid.arrange(bar2, bar1, ncol = 2)
 ```
 
 <br>
 
 ```{r out.width='60%'}
-wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 10, "Fig. 24")
+graph <- wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 40, 10, "Fig. 24")
+graph
+saving_plot(graph, "24", 7, 6)
 
-wordcloud_autre(data, `Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 10, "Fig. 25")  
+graph <- wordcloud_autre(data, `Dans le cadre de votre activité sur les données, sur quels réseaux ou communautés vous appuyez-vous ?`, "Dans le cadre de votre activité sur les données, \nsur quels réseaux ou communautés vous appuyez-vous ?", 40, 10, "Fig. 25")  
+graph
+saving_plot(graph, "25", 7, 6)
 ```
 
 ```{r fig.width=12}
@@ -444,19 +499,27 @@ plot_plus <- barplot_qs_multiples(data, 96, 110, 1, 5, "#169B62", "", "Fig. 26")
 plot_moins <- barplot_qs_multiples(data, 96, 110, 11, 15, "#ffe725", "", "") +
     labs(caption = "Top 5 des catégories les moins représentées") +
     theme(plot.caption = element_text(face = "italic"))
-grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "26", 15, 8)
 ```
 
 ```{r out.width='60%'}
-wordcloud_autre(data, `Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 13, "Fig. 27")
+graph <- wordcloud_autre(data, `Sur quelles activités auriez-vous besoin d'une formation ? [Autre]`, "Sur quelles activités auriez-vous besoin d'une formation ? [Autre]", 10, 13, "Fig. 27")
+graph
+saving_plot(graph, "27", 7, 6)
 
-wordcloud_autre(data, `Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 10, "Fig. 28")
+graph <- wordcloud_autre(data, `Sous quel intitulé présentez-vous votre poste actuel ?`, "Sous quel intitulé présentez-vous votre poste actuel ?", 40, 10, "Fig. 28")
+graph
+saving_plot(graph, "28", 7, 6)
 
-data |> 
+graph <- data |> 
     filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> 
     donut_plot(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`, "Votre établissement/organisme a-t-il formalisé une \norganisation des activités ou des rôles sur les données \nà l'échelle de l'établissement ou de différentes structures ?", "Fig. 29")
+graph
+saving_plot(graph, "29", 7, 6)
 
-data |> 
+graph <- data |> 
     mutate(consentement = case_when(is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) ~ "Non",
                                     TRUE ~ "Oui")) |>
     group_by(consentement) |> summarise(Freq = n()) |> 
@@ -482,7 +545,11 @@ data |>
             panel.background = element_rect(fill = "white", colour = "white"),
             legend.background = element_rect(fill = "white", colour = "white"))+
       guides(fill = guide_legend(title = ""))
+graph
+saving_plot(graph, "30", 7, 6)
 ```
+
+
 
 ```{r}
 data |> 
@@ -512,32 +579,40 @@ colnames(data) |> as.data.frame() |>
 ### Profils des volontaires aux entretiens
 
 ```{r out.width='60%'}
-data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9,
+graph <- data |> 
+    filter(is_volunteer == 1,
            !is.na(`Dans quel type d'établissement exercez-vous votre activité ?`)) |> 
     mutate(`Dans quel type d'établissement exercez-vous votre activité ?` = factor(`Dans quel type d'établissement exercez-vous votre activité ?`, ordered = TRUE, levels = c("Ecole", "Organisme de recherche", "Université", "Autre"))) |> 
     donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?", "Fig. 31") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")
+graph
+saving_plot(graph, "31", 7, 6)
 
-data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+graph <- data |> 
+    filter(is_volunteer == 1) |> 
     barplot_qs_multiples(8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?", "Fig. 32") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")  
+graph
+saving_plot(graph, "32", 7, 6)
 
-data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+graph <- data |> 
+    filter(is_volunteer == 1) |> 
     barplot_qs_unique(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?", "Fig. 33") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")
+graph
+saving_plot(graph, "33", 7, 6)
 
-data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+graph <- data |> 
+    filter(is_volunteer == 1) |> 
     barplot_cycle("Fig. 34") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")
+graph
+saving_plot(graph, "34", 7, 6)
 ```
 
 ```{r fig.width=12}
 plot_plus <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+    filter(is_volunteer == 1) |> 
     rename(`Quelles sont les activités qu'implique votre travail sur les données ? [Choisir l’entrepôt]` = 32) |> 
     barplot_qs_multiples(23, 37, 1, 5, "#169B62", "", "Fig. 35") +
     labs(caption = "Top 5 des catégories les plus représentées", 
@@ -545,80 +620,92 @@ plot_plus <- data |>
     theme(plot.caption = element_text(face = "italic"),
           plot.subtitle = element_text(hjust = 1))
 plot_moins <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+    filter(is_volunteer == 1) |> 
     rename(`Quelles sont les activités qu'implique votre travail sur les données ? [Choisir l’entrepôt]` = 32) |> 
     barplot_qs_multiples(23, 37, 11, 15, "#ffe725", "", "") +
     labs(caption = "Top 5 des catégories les moins représentées",
          subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(plot.caption = element_text(face = "italic"),
           plot.subtitle = element_text(hjust = 1))
-grid.arrange(plot_plus, plot_moins, ncol = 2, 
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, 
              top = textGrob("Quelles sont les activités qu'implique votre travail sur les données ?", 
                             gp = gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "35", 15, 8)
 ```
 
 ```{r out.width='60%'}
-data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+graph <- data |> 
+    filter(is_volunteer == 1) |> 
     barplot_qs_multiples(66, 76, 1, 11, "#5770BE", "Sur quels types de données travaillez-vous ?", "Fig. 36") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")
+graph
+saving_plot(graph, "36", 7, 6)
 
-data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+graph <- data |> 
+    filter(is_volunteer == 1) |> 
     barplot_qs_multiples(81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?", "Fig. 37") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens")
+graph
+saving_plot(graph, "37", 7, 6)
 ```
 
 ```{r fig.width=12}
 donut <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9,
+    filter(is_volunteer == 1,
            !is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
     mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?", "Fig. 38.1") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(legend.position = "bottom") +
     guides(fill = guide_legend(title = "", nrow = 2, byrow = T))
+saving_plot(donut, "38.1", 6, 5)
 bar <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |>
-    barplot_branche_activite_emploi("Branche d'activité des répondants", "Fig. 38.2") +
+    filter(is_volunteer == 1) |>
+    barplot_branche_activite_emploi("Branche d'activité des répondant(e)s", "Fig. 38.2") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(plot.subtitle = element_text(hjust = 1),
           plot.title = element_text(hjust = 1))
+saving_plot(bar, "38.2", 6, 5)
 grid.arrange(donut, bar, ncol = 2)
 
 bar1 <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |>
+    filter(is_volunteer == 1) |>
     barplot_qs_unique(`Précisez votre catégorie`, "Catégorie des chercheurs, enseignant-chercheurs", "Fig. 39.2") +
     geom_bar(stat = "identity", width = .6, fill = '#ffe725') +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(plot.subtitle = element_text(hjust = 1))
+saving_plot(bar1, "39.2", 6, 5)
 bar2 <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |>
+    filter(is_volunteer == 1) |>
     barplot_qs_unique(`Précisez votre catégorie 2`, "Catégorie des personnels d'appui, soutiens à la recherche", "Fig. 39.1") +
     labs(subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(plot.subtitle = element_text(hjust = 1))
+saving_plot(bar2, "39.1", 6, 5)
 grid.arrange(bar2, bar1, ncol = 2)
 
 plot_plus <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+    filter(is_volunteer == 1) |> 
     barplot_qs_multiples(96, 110, 1, 5, "#169B62", "", "Fig. 40") +
     labs(caption = "Top 5 des catégories les plus représentées",
          subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(plot.caption = element_text(face = "italic"),
           plot.subtitle = element_text(hjust = 1))
 plot_moins <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+    filter(is_volunteer == 1) |> 
     barplot_qs_multiples(96, 110, 11, 15, "#ffe725", "", "") +
     labs(caption = "Top 5 des catégories les moins représentées",
          subtitle = "Répartition des 452 volontaires aux entretiens") +
     theme(plot.caption = element_text(face = "italic"),
           plot.subtitle = element_text(hjust = 1))
-grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "40", 12, 8)
 ```
 
 ```{r out.width='70%'}
 analyse <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -633,7 +720,7 @@ analyse <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Analyse, traitement, calcul")
 planification <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -648,7 +735,7 @@ planification <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Planification, PGD")
 collecte <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -663,7 +750,7 @@ collecte <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Collecte, création, stockage")
 depot <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -678,7 +765,7 @@ depot <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Dépôt")
 ouverture <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -693,7 +780,7 @@ ouverture <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Ouverture ou partage")
 prepa_depot <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -708,7 +795,7 @@ prepa_depot <- data |>
     mutate(rowname = fct_reorder(rowname, V1),
            cycle = "Préparation du dépôt")
 reutilisation <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & 
+    filter(is_volunteer == 1 & 
                `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Oui") |> 
     select(8:12)|> mutate_all(na_if, "Non") |> 
     summarise_all(funs(sum(!is.na(.)))) |> 
@@ -732,7 +819,7 @@ cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, 
                                             "Réutilisation",
                                             "Planification, PGD")))
 
-cycle_lieux |> 
+graph <- cycle_lieux |> 
   ggplot(aes(y = V1)) +
   geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
   scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
@@ -750,11 +837,13 @@ cycle_lieux |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
     guides(fill = guide_legend(title = ""), 
            col = "none")
+graph
+saving_plot(graph, "41", 12, 9)
 ```
 
 ```{r liste volontaires métiers, eval=FALSE, include=FALSE}
 volontaires_metiers <- data |> 
-    filter(!is.na(`Accepteriez-vous un entretien pour approfondir cette enquête ?  Nous souhaitons approfondir cette enquête au travers d'entretiens avec des profils variés de professionnels des données de recherche.  Si vous êtes volontaire pour un entretien en visio dans les prochains mois, merci de laisser vos coordonnées pour que nous puissions vous recontacter.  [Prénom]`) & `ID de la réponse` != 9) |> 
+    filter(is_volunteer == 1) |> 
     select(90:94, 114:117) |> 
     rename(prenom = 6, nom = 7, mail = 8, tel = 9) |> 
     mutate(metiers = paste(`Quelle est votre catégorie d'emploi actuel ?`, ":", `Précisez votre catégorie`, `Précisez votre catégorie 2`, ":", `Précisez votre branche d'activité.`),
@@ -807,7 +896,7 @@ corrplot(matrix, method="color", col=col(200),
 
 La matrice de corrélation ci-dessus quantifie le lien existant entre les différentes parties du cycle de vie de la donnée. Elle montre pour chaque partie du cycle sa **corrélation**, c'est-à-dire l'interdépendance, avec les autres parties du cycle. Celle-ci est quantifiée par un *coefficient* borné entre -1 et 1 ; plus il se rapproche de 1 ou -1 et plus la corrélation est forte. A contrario, les coefficients proches de 0 traduisent une absence de lien ou un lien très faible entre les parties du cycle concernées. Cette matrice permet ainsi de mettre en lumière les parties isolées et au contraire, les parties du cycle fortement liées entre elles.
 
-Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondants interviennent sur plusieurs d'entre elles.
+Les phases de dépôt et de préparation au dépôt sont corrélées à 71%, ce sont les 2 phases les plus corrélées du cycle. Celles-ci sont aussi corrélées à la phase d'ouverture ou de partage, à respectivement 58% et 53%, elle-même liée à la réutilisation à 47%. D'un autre côté, la partie *'Analyse, traitement, calcul'* se voit isolée avec des coefficients très bas, traduisant une absence de corrélation avec les autres phases du cycle. Cela montre que cette partie du cycle est très spécifique ; la plupart des analystes n'interviennent pas sur d'autres parties du cycle de vie de la donnée. En revanche, les phases de réutilisation, planification, PGD et principalement préparation au dépôt, dépôt et ouverture ou partage étant moins spécifiques, les répondant(e)s interviennent sur plusieurs d'entre elles.
 
 ```{r eval=FALSE, fig.width=12, include=FALSE}
 table <- data |> 
@@ -854,10 +943,10 @@ barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, varia
       ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
         geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = 2) +
         coord_flip() +
-        labs(x = "", y = "Nombre de répondants", title = titre, 
+        labs(x = "", y = "Nombre de répondant(e)s", title = titre, 
              tag = figure, 
              subtitle = paste0(sum(table$n), " réponses, soit ", 
-                             round(((sum(table$n)) / nrow(data)) * 100, 0), "% des répondants")) +
+                             round(((sum(table$n)) / nrow(data)) * 100, 0), "% des répondant(e)s")) +
         theme_classic() +
         scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
         scale_fill_manual(values = c("#ffe725", "#169B62")) +
@@ -879,29 +968,45 @@ barplot_comp_cycle <- function(data, variable_phase, oui_cycle, non_cycle, varia
 }
 
 
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée", "Fig. 42")
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée", "Fig. 43")
-data |> 
+graph <- barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondant(e)s intervenant sur \nla partie 'Analyse, traitement, calcul' du cycle de \nvie de la donnée", "Fig. 42")
+graph
+saving_plot(graph, "42", 8, 7)
+
+graph <- barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]`, "Analyse, traitement, calcul", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondant(e)s intervenant \nsur la partie 'Analyse, traitement, calcul' du \ncycle de vie de la donnée", "Fig. 43")
+graph
+saving_plot(graph, "43", 8, 7)
+
+graph <- data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui") |> 
     select(-18) |> 
     barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les analystes de données \ninterviennent (Analyse, traitement, calcul)", "Fig. 44") +
     labs(caption = paste(data |> filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Oui" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Non") |> nrow(), 
-                         "répondants n'interviennent que sur la partie 'Analyse, traitement, calcul'")) +
+                         "répondant(e)s n'interviennent que sur la partie 'Analyse, traitement, calcul'")) +
     theme(plot.caption = element_text(face = 'italic'))
+graph
+saving_plot(graph, "44", 8, 7)
 ```
 
 #### Collecte, création, stockage
 
 ```{r out.width='60%'}
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondants intervenant sur \nla partie 'Collecte, création, stockage' du cycle de \nvie de la donnée", "Fig. 45")
-barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondants intervenant \nsur la partie 'Collecte, création, stockage' du \ncycle de vie de la donnée", "Fig. 46")
-data |> 
+graph <- barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Discipline des répondant(e)s intervenant sur \nla partie 'Collecte, création, stockage' du cycle de \nvie de la donnée", "Fig. 45")
+graph
+saving_plot(graph, "45", 8, 7)
+
+graph <- barplot_comp_cycle(data, `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]`, "Collecte, création, stockage", "Autres parties du cycle", `Précisez votre branche d'activité.`, "Branche d'activité des répondant(e)s intervenant \nsur la partie 'Collecte, création, stockage' du \ncycle de vie de la donnée", "Fig. 46")
+graph
+saving_plot(graph, "46", 8, 7)
+
+graph <- data |> 
     filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui") |> 
     select(-17) |> 
     barplot_qs_multiples(16, 21, 1, 11, "#5770BE", "Autres parties du cycle sur lesquelles les collecteurs de données \ninterviennent (Collecte, création, stockage)", "Fig. 47") +
     labs(caption = paste(data |> filter(`Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Analyse, traitement, calcul]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Collecte, création, stockage]` == "Oui" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Dépôt]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Ouverture ou partage (accès restreint)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Planification, plan de gestion de données]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Préparation du dépôt (structuration et description)]` == "Non" & `Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? [Réutilisation]` == "Non") |> nrow(), 
-                         "répondants n'interviennent que sur la partie 'Collecte, création, stockage'")) +
+                         "répondant(e)s n'interviennent que sur la partie 'Collecte, création, stockage'")) +
     theme(plot.caption = element_text(face = 'italic'))
+graph
+saving_plot(graph, "47", 8, 7)
 ```
 
 ### Lieux, métiers, dynamiques
@@ -1015,7 +1120,7 @@ cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, 
                                             "Réutilisation",
                                             "Planification, PGD")))
 
-cycle_lieux |> 
+graph <- cycle_lieux |> 
   ggplot(aes(y = V1)) +
   geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
   scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
@@ -1034,6 +1139,8 @@ cycle_lieux |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
     guides(fill = guide_legend(title = ""), 
            col = "none")
+graph
+saving_plot(graph, "48", 12, 9)
 ```
 
 ### Croisements issus de l'atelier du 21/04/2023
@@ -1065,12 +1172,12 @@ table <- data |>
                                             "Ouverture ou partage ",
                                             "Réutilisation",
                                             "Planification, PGD")))
-table |> 
+graph <- table |> 
     ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 49",
-           title = "Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des individus",
+           title = "Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des répondant(e)s",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
@@ -1086,18 +1193,20 @@ table |>
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "49", 12, 8)
 ```
 
 ##### Doubles barres
 
 ```{r prop1.2, out.width='70%'}
-table |> 
+graph <- table |> 
     ggplot(aes(x = rowname, y  = percent, fill = `Quelle est votre catégorie d'emploi actuel ?`, group = `Quelle est votre catégorie d'emploi actuel ?`)) +
       geom_bar(stat = "identity", width = .7, col = "white", position = "dodge", size = 1) +
       coord_flip() +
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       labs(x = "", y = "Nombre de réponses",  tag = "Fig. 50",
-           title = "Répartition de l'intervention dans le cycle de vie de la \ndonnées selon la catégorie d'emploi des individus",
+           title = "Répartition de l'intervention dans le cycle de vie de la \ndonnées selon la catégorie d'emploi des répondant(e)s",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
@@ -1113,6 +1222,8 @@ table |>
                 color = "#333333", size = 3, check_overlap = T,
                 position = position_dodge(width = .9)) +
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
+graph
+saving_plot(graph, "50", 8, 7)
 ```
 
 #### Proposition 2
@@ -1319,7 +1430,7 @@ entrepot <- data |>
 formation_activites <- rbind(analyser, maj, coordonner, structurer, protocole_obtention, deposer, standards, qualite, nettoyer, publier, outils, superviser, metadonnees, entrepot) |> 
     group_by(formation) |> mutate(percent = round(V1/sum(V1)*100, 0))|> ungroup()
 
-formation_activites |> 
+graph <- formation_activites |> 
     group_by(rowname) |> mutate(percent = round((V1 / sum(V1))*100, 0)) |> ungroup() |> 
     filter(formation != "Décrire et mettre en œuvre le protocole d’obtention des données initiales – brutes",
            formation != "Déposer les jeux de données",
@@ -1352,7 +1463,7 @@ formation_activites |>
      #text = paste("Besoin de formation :", formation, "\nTravail des données :", rowname, "\n", V1, "réponses soit", percent, "%"))) +
       geom_col(aes(x = formation), color = "white", fill = "#5770BE", width = 0.7) +
       labs(x = "Besoins de formation", y = "Pourcentage",  tag = "Fig. 51",
-           title = "Répartition des besoins de formation des individus selon leur type d'activités dédiées aux données",
+           title = "Répartition des besoins de formation des répondant(e)s selon leur type d'activités dédiées aux données",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_y_continuous(breaks = scales::pretty_breaks()) +
@@ -1369,9 +1480,11 @@ formation_activites |>
             panel.grid.major.x = element_line(size = 0.5)
             ) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "51", 12, 10)
 ```
 
--   6% des répondants ayant une activité dans le choix de l'entrepôt ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
+-   6% des répondant(e)s ayant une activité dans le choix de l'entrepôt ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
 
 #### Proposition 3 {.tabset}
 
@@ -1393,7 +1506,7 @@ table <- data |>
            `Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
     arrange(desc(percent)) 
 
-table |> 
+graph <- table |> 
     mutate(keep = case_when(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche" &
                                 row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
@@ -1402,7 +1515,7 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 52",
-           title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des individus",
+           title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des répondant(e)s",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_y_continuous(breaks = scales::pretty_breaks()) +
@@ -1419,15 +1532,17 @@ table |>
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
-      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondants")), 
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondant(e)s")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "52", 12, 8)
 ```
 
 ##### Bottom 5
 
 ```{r prop3.2, fig.width=12}
-table |> 
+graph <- table |> 
     mutate(keep = case_when(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche" &
                                 row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
@@ -1436,7 +1551,7 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 53",
-           title = "Répartition de chaque type d'activité dédiée aux données selon la catégorie d'emploi des individus",
+           title = "Répartition de chaque type d'activité dédiée aux données \nselon la catégorie d'emploi des répondant(e)s",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_y_continuous(breaks = scales::pretty_breaks()) +
@@ -1452,10 +1567,12 @@ table |>
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T) +
-      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondants")), 
-                color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0) +
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondant(e)s")), 
+                color = "#CCCCCC", size = 3, check_overlap = T, hjust = 0) +
       facet_wrap(~`Quelle est votre catégorie d'emploi actuel ?`) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "53", 10, 6)
 ```
 
 #### Proposition 4 {.tabset}
@@ -1631,14 +1748,14 @@ croisements_domaine <- function(min, max, row_num){
         ungroup()
     assign("table", table, envir = .GlobalEnv)
 }
-croisements_domaine(96, 110, 6) |> 
+graph <- croisements_domaine(96, 110, 6) |> 
     mutate(rowname = str_wrap(rowname, width = 55),
            rowname = str_replace_all(rowname, "Choisir", "Choisir l'entrepôt")) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
       labs(x = "Discipline", y = "Pourcentage",  tag = "Fig. 54",
-           title = "Répartition des besoins de formation par discipline des répondants",
+           title = "Répartition des besoins de formation par discipline des répondant(e)s",
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
@@ -1653,21 +1770,23 @@ croisements_domaine(96, 110, 6) |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "54", 10, 7)
 ```
 
--   21% des répondants ayant un besoin de formation en '*analyse, représentation, modélisation et prédiction*' travaillent dans la discipline des sciences humaines et sociales.
+-   21% des répondant(e)s ayant un besoin de formation en '*analyse, représentation, modélisation et prédiction*' travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Formation gestion de données
 
 ```{r prop4.2, fig.width=12, fig.height=8}
 # Domaine thématique / Formation gestion de données
-croisements_domaine(81, 84, 4) |> 
+graph <- croisements_domaine(81, 84, 4) |> 
     mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
       labs(x = "Discipline", y = "Pourcentage",  tag = "Fig. 55",
-           title = "Répartition des types de formation en gestion de données par discipline des répondants",
+           title = "Répartition des types de formation en gestion de données par discipline des répondant(e)s",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
@@ -1681,21 +1800,23 @@ croisements_domaine(81, 84, 4) |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "55", 10, 7)
 ```
 
--   21% des répondants s'étant *autoformés* à la gestion et la diffusion de données travaillent dans la discipline des sciences humaines et sociales.
+-   21% des répondant(e)s s'étant *autoformés* à la gestion et la diffusion de données travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Cycle de vie
 
 ```{r prop4.3, fig.width=12, fig.height=8}
 # Domaine thématique / Cycle de vie
-croisements_domaine(16, 22, 7) |> 
+graph <- croisements_domaine(16, 22, 7) |> 
     mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
       labs(x = "Discipline", y = "Pourcentage",  tag = "Fig. 56",
-           title = "Répartition de l'intervention dans le cycle de vie de la donnée par discipline des répondants",
+           title = "Répartition de l'intervention dans le cycle de vie de la donnée par discipline des répondant(e)s",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 55)) + #axis-text trop longs sur plusieurs lignes
@@ -1709,21 +1830,23 @@ croisements_domaine(16, 22, 7) |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "56", 10, 7)
 ```
 
--   17% des répondants intervenant en *analyse, traitement et calcul* dans le cycle de vie travaillent dans la discipline des sciences humaines et sociales.
+-   17% des répondant(e)s intervenant en *analyse, traitement et calcul* dans le cycle de vie travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Activités des données
 
 ```{r prop4.4, fig.width=12, fig.height=8}
 # Domaine thématique / Activités des données
-croisements_domaine(23, 37, 6) |> 
+graph <- croisements_domaine(23, 37, 6) |> 
     mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
       labs(x = "Discipline", y = "Pourcentage", tag = "Fig. 57",
-           title = "Répartition du type d'activité dans les données par discipline des répondants",
+           title = "Répartition du type d'activité dans les données par discipline des répondant(e)s",
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
@@ -1739,21 +1862,23 @@ croisements_domaine(23, 37, 6) |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "57", 10, 7)
 ```
 
--   17% des répondants travaillant en *analyse, traitement et calcul* sur les données travaillent dans la discipline des sciences humaines et sociales.
+-   17% des répondant(e)s travaillant en *analyse, traitement et calcul* sur les données travaillent dans la discipline des sciences humaines et sociales.
 
 ##### Types de données
 
 ```{r prop4.5, fig.width=12, fig.height=8}
 # Domaine thématique / Types de données
-croisements_domaine(66, 76, 6) |> 
+graph <- croisements_domaine(66, 76, 6) |> 
     mutate(rowname = str_wrap(rowname, width = 55)) |> 
     mutate(domaine = reorder(domaine, V1, desc = TRUE)) |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = domaine), color = "white", fill = "#5770BE", width = 0.7) +
       labs(x = "Discipline", y = "Pourcentage",  tag = "Fig. 58",
-           title = "Répartition du type de données travaillé par discipline des répondants",
+           title = "Répartition du type de données travaillé par discipline des répondant(e)s",
            caption = "Top 6 des catégories les plus représentées",
            subtitle = paste0(sum(formation_activites$V1), " réponses")) +
       theme_classic() +
@@ -1769,9 +1894,11 @@ croisements_domaine(66, 76, 6) |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "58", 10, 7)
 ```
 
--   34% des répondants travaillant des *données d'enquête et statistiques* travaillent dans la discipline des sciences humaines et sociales.
+-   34% des répondant(e)s travaillant des *données d'enquête et statistiques* travaillent dans la discipline des sciences humaines et sociales.
 
 #### Proposition 5 {.tabset}
 
@@ -1795,7 +1922,7 @@ table <- data |>
     arrange(desc(V1))
 
 
-table |> 
+graph <- table |> 
     mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
                                 row_number() <= 5 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
@@ -1812,7 +1939,7 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 59",
-           title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des individus",
+           title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des répondant(e)s",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -1839,6 +1966,8 @@ autre <- table(data$`Dans quel type d'établissement exercez-vous votre activit�
     slice(1:10) |> 
     select(etablissement_autre) |> 
     t()
+graph
+saving_plot(graph, "59", 12, 9)
 ```
 
 Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
@@ -1846,7 +1975,7 @@ Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
 ##### Bottom 5
 
 ```{r prop5.2, fig.width=12, fig.height=8}
-table |> 
+graph <- table |> 
     mutate(keep = case_when(`Dans quel type d'établissement exercez-vous votre activité ?` == "Organisme de recherche" &
                                 row_number() >= 10 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
@@ -1864,7 +1993,7 @@ table |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 60",
-           title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des individus",
+           title = "Répartition de chaque type d'activité dédiée aux données selon le type d'établissement \nd'affiliation des répondant(e)s",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -1884,6 +2013,8 @@ table |>
                                    "Organisme de recherche" = "#5770BE", 
                                    "Université" = "#169B62", 
                                    "Autre (4% des établissements)" = "#666666"))
+graph
+saving_plot(graph, "60", 12, 9)
 ```
 
 Les 10 réponses '**Autre**' les plus courantes : *`r autre`*.
@@ -2108,11 +2239,11 @@ formation_cycle_plus <- formation_cycle |>
                                             "Réutilisation",
                                             "Planification, PGD")))
 
-formation_cycle_plus |> 
+graph <- formation_cycle_plus |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
       labs(x = "Besoins de formation", y = "Pourcentage",  tag = "Fig. 61",
-           title = "Répartition des besoins de formation des individus selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
+           title = "Un besoin transverse de formation sur les enjeux de qualité \ndes données et de leur conformité aux cadres législatifs",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
@@ -2127,9 +2258,13 @@ formation_cycle_plus |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "61", 12,10)
+#saving_plot(graph, "61", 10, 8)
+#ggsave(file = glue("Graphiques/PNG/Figure_61.png"), plot = graph, width = 10, height = 8)
 ```
 
--   9% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
+-   9% des répondant(e)s intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*supervision de l'ensemble du cycle de vie*'.
 
 ##### Bottom 5
 
@@ -2148,11 +2283,11 @@ formation_cycle_moins <- formation_cycle |>
                                             "Réutilisation",
                                             "Planification, PGD")))
 
-formation_cycle_moins |> 
+graph <- formation_cycle_moins |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
       labs(x = "Besoins de formation", y = "Pourcentage",  tag = "Fig. 62",
-           title = "Répartition des besoins de formation des individus selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
+           title = "Répartition des besoins de formation des répondant(e)s selon leur(s) \nétape(s) d'intervention dans le cycle de vie de la donnée",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_cycle$V1), " réponses")) +
       theme_classic() +
@@ -2167,9 +2302,11 @@ formation_cycle_moins |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "62", 12,10)
 ```
 
--   6% des répondants intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*nettoyage, affinement, conversion et description des données brutes*'.
+-   6% des répondant(e)s intervenant en *collecte, création et stockage* dans le cycle de vie ont un besoin de formation en '*nettoyage, affinement, conversion et description des données brutes*'.
 
 #### Proposition 7 {.tabset}
 
@@ -2209,14 +2346,14 @@ chercheurs <- data |>
 table <- rbind(appui, chercheurs) |> 
     group_by(rowname) |> 
     arrange(desc(V1)) |> ungroup()
-table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() <= 6 ~ 1, .default = 0)) |>  
+graph <- table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() <= 6 ~ 1, .default = 0)) |>  
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
     ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 63",
-           title = "Répartition des besoins de formation des individus selon leur catégorie d'emploi",
+           title = "Répartition des besoins de formation des répondant(e)s selon leur catégorie d'emploi",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -2233,12 +2370,14 @@ table |> mutate(keep = case_when(cat == "Personnel d'appui / soutien à la reche
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~cat) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "63", 12, 6)
 ```
 
 ##### Bottom 5
 
 ```{r prop7.2, fig.width=12}
-table |> ungroup() |> 
+graph <- table |> ungroup() |> 
     mutate(keep = case_when(cat == "Personnel d'appui / soutien à la recherche" & row_number() >= 18 ~ 1, .default = 0)) |> ungroup() |> 
     filter(any(keep == 1), .by = rowname) |> select(-keep) |> 
     mutate(rowname = fct_reorder(rowname, V1)) |> 
@@ -2246,7 +2385,7 @@ table |> ungroup() |>
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
       labs(x = "", y = "Pourcentage",  tag = "Fig. 64",
-           title = "Répartition des besoins de formation des individus selon leur catégorie d'emploi",
+           title = "Répartition des besoins de formation des répondant(e)s selon leur catégorie d'emploi",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste(sum(table$V1), "réponses")) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -2263,6 +2402,8 @@ table |> ungroup() |>
                 color = "#333333", size = 3, check_overlap = T) +
       facet_wrap(~cat) +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
+graph
+saving_plot(graph, "64", 12, 8)
 ```
 
 #### Proposition 8 {.tabset}
@@ -2479,11 +2620,11 @@ formation_besoins_plus <- formation_besoins |>
                                                 "Formation certifiante non diplômante", "Formation diplômante")),
            formation = fct_reorder(formation, V1))
 
-formation_besoins_plus |> 
+graph <- formation_besoins_plus |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#169B62", width = 0.7) +
       labs(x = "Besoins de formation", y = "Pourcentage",  tag = "Fig. 65",
-           title = "Répartition des besoins actuels de formation des individus selon le type \nde formation déjà reçu à la gestion des données de recherche",
+           title = "Répartition des besoins actuels de formation des répondant(e)s selon le type \nde formation déjà reçu à la gestion des données de recherche",
            caption = "Top 5 des catégories les plus représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
@@ -2498,9 +2639,11 @@ formation_besoins_plus |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "65", 12, 9)
 ```
 
--   12% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation pour '*garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs*'.
+-   12% des répondant(e)s s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation pour '*garantir la qualité des données et leur conformité de diffusion par rapport aux cadres législatifs*'.
 
 ##### Bottom 5
 
@@ -2513,11 +2656,11 @@ formation_besoins_moins <- formation_besoins |>
            rowname = factor(rowname, levels = c("Autoformation", "Formation intra- ou inter-établissement ", 
                                                 "Formation certifiante non diplômante", "Formation diplômante")))
 
-formation_besoins_moins |> 
+graph <- formation_besoins_moins |> 
     ggplot(aes(y  = percent)) + 
       geom_col(aes(x = formation), color = "white", fill = "#ffe725", width = 0.7) +
       labs(x = "Besoins de formation", y = "Pourcentage",  tag = "Fig. 66",
-           title = "Répartition des besoins actuels de formation des individus selon le type \nde formation déjà reçu à la gestion des données de recherche",
+           title = "Répartition des besoins actuels de formation des répondant(e)s selon le type \nde formation déjà reçu à la gestion des données de recherche",
            caption = "Top 5 des catégories les moins représentées",
            subtitle = paste0(sum(formation_besoins$V1), " réponses")) +
       theme_classic() +
@@ -2532,9 +2675,11 @@ formation_besoins_moins |>
             axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0)),
             panel.grid.major.x = element_line(size = 0.5)) +
       facet_wrap(~rowname, labeller = labeller(facet_category = label_wrap_gen(width = 5)))
+graph
+saving_plot(graph, "66", 12, 9)
 ```
 
--   6% des répondants s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation en '*création, structuration, description des jeux de données validés*'.
+-   6% des répondant(e)s s'étant *autoformés* à la gestion et la diffusion de données ont un besoin de formation en '*création, structuration, description des jeux de données validés*'.
 
 # Données issues des entretiens
 
@@ -2548,25 +2693,33 @@ liste_entretiens <- left_join(liste_envoyee |> mutate(nom_prenom = paste(nom, pr
                               by = "nom_prenom") |> 
     select(-1)
 
-liste_entretiens |> 
+graph <- liste_entretiens |> 
     filter(!is.na(`Dans quel type d'établissement exercez-vous votre activité ?`)) |> 
     mutate(`Dans quel type d'établissement exercez-vous votre activité ?` = factor(`Dans quel type d'établissement exercez-vous votre activité ?`, ordered = TRUE, levels = c("Ecole", "Organisme de recherche", "Université", "Autre"))) |> 
     donut_plot(`Dans quel type d'établissement exercez-vous votre activité ?`, "Dans quel type d'établissement exercez-vous votre activité ?", "Fig. 67") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     scale_fill_manual(values = c('#5770BE', "#169B62", "#666666"))
+graph
+saving_plot(graph, "67", 7, 6)
 
 
-liste_entretiens |> 
+graph <- liste_entretiens |> 
     barplot_qs_multiples(8, 12, 1, 11, "#5770BE", "Où réalisez-vous votre activité en lien avec les données de \nrecherche ?", "Fig. 68") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")  
+graph
+saving_plot(graph, "68", 7, 6)
 
-liste_entretiens |> 
+graph <- liste_entretiens |> 
     barplot_qs_unique(`Sur quel domaine thématique réalisez-vous votre activité sur les données ?`, "Sur quel domaine thématique réalisez-vous votre activité sur \nles données ?", "Fig. 69") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+graph
+saving_plot(graph, "69", 7, 6)
 
-liste_entretiens |> 
+graph <- liste_entretiens |> 
     barplot_cycle("Fig. 70") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+graph
+saving_plot(graph, "70", 7, 6)
 ```
 
 ```{r fig.width=12}
@@ -2584,34 +2737,44 @@ plot_moins <- liste_entretiens |>
          subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     theme(plot.caption = element_text(face = "italic"),
           plot.subtitle = element_text(hjust = 1))
-grid.arrange(plot_plus, plot_moins, ncol = 2, 
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, 
              top = textGrob("Quelles sont les activités qu'implique votre travail sur les données ?", 
                             gp = gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "71", 11, 7)
 ```
 
 ```{r out.width='60%'}
-liste_entretiens |> 
+graph <- liste_entretiens |> 
     barplot_qs_multiples(66, 76, 1, 11, "#5770BE", "Sur quels types de données travaillez-vous ?", "Fig. 72") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+graph
+saving_plot(graph, "72", 8, 6)
 
-liste_entretiens |> 
+graph <- liste_entretiens |> 
     barplot_qs_multiples(81, 84, 1, 11, "#5770BE", "Vous êtes-vous formé à la gestion et la diffusion des \ndonnées de recherche ?", "Fig. 73") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien")
+graph
+saving_plot(graph, "73", 8, 6)
 ```
 
 ```{r fig.width=12}
 donut <- liste_entretiens |> 
     filter(!is.na(`Quelle est votre catégorie d'emploi actuel ?`)) |> 
-    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+")) |> 
+    mutate(`Quelle est votre catégorie d'emploi actuel ?` = str_extract(`Quelle est votre catégorie d'emploi actuel ?`, "^[^(]+"),
+           `Quelle est votre catégorie d'emploi actuel ?` = str_replace_all(`Quelle est votre catégorie d'emploi actuel ?`, 
+                                         "Chercheur / Enseignant-chercheur", "Chercheur(se)s / enseignant(e)s-chercheur(se)s")) |> 
     donut_plot(`Quelle est votre catégorie d'emploi actuel ?`, "Quelle est votre catégorie d'emploi actuel ?", "Fig. 74.1") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     theme(legend.position = "bottom") +
     guides(fill = guide_legend(title = "", nrow = 2, byrow = T))
+saving_plot(donut, "74.1", 8, 6)
 bar <- liste_entretiens |> 
-    barplot_branche_activite_emploi("Branche d'activité des répondants", "Fig. 74.2") +
+    barplot_branche_activite_emploi("Branche d'activité des répondant(e)s", "Fig. 74.2") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     theme(plot.subtitle = element_text(hjust = 1),
           plot.title = element_text(hjust = 1))
+saving_plot(bar, "74.2", 8, 6)
 grid.arrange(donut, bar, ncol = 2)
 
 bar1 <- liste_entretiens |> 
@@ -2619,10 +2782,12 @@ bar1 <- liste_entretiens |>
     geom_bar(stat = "identity", width = .6, fill = '#ffe725') +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     theme(plot.subtitle = element_text(hjust = 1))
+saving_plot(bar1, "75.2", 8, 6)
 bar2 <- liste_entretiens |> 
     barplot_qs_unique(`Précisez votre catégorie 2`, "Catégorie des personnels d'appui, soutiens à la recherche", "Fig. 75.1") +
     labs(subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     theme(plot.subtitle = element_text(hjust = 1))
+saving_plot(bar2, "75.1", 8, 6)
 grid.arrange(bar2, bar1, ncol = 2)
 
 plot_plus <- liste_entretiens |> 
@@ -2637,7 +2802,9 @@ plot_moins <- liste_entretiens |>
          subtitle = "Répartition des 27 volontaires interrogés en entretien") +
     theme(plot.caption = element_text(face = "italic"),
           plot.subtitle = element_text(hjust = 1))
-grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, top = textGrob("Sur quelles activités auriez-vous besoin d'une formation ?", gp = gpar(fontsize = 15, font = 2)))
+graph
+saving_plot(graph, "76", 12, 8)
 ```
 
 ```{r out.width='70%'}
@@ -2749,7 +2916,7 @@ cycle_lieux <- rbind(analyse, planification, reutilisation, prepa_depot, depot, 
                                             "Réutilisation",
                                             "Planification, PGD")))
 
-cycle_lieux |> 
+graph <- cycle_lieux |> 
   ggplot(aes(y = V1)) +
   geom_col(aes(x = cycle, color = rowname, fill = rowname), position = "stack", width = 0.7) +
   scale_color_manual(values = c("white", "white", "white", "white", "white", "white")) +
@@ -2767,6 +2934,8 @@ cycle_lieux |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 10))) +
     guides(fill = guide_legend(title = ""), 
            col = "none")
+graph
+saving_plot(graph, "77", 12, 9)
 ```
 
 ## Réponses au questionnaires des personnes interrogées
@@ -2925,7 +3094,7 @@ graph <- table |>
       geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T)
 graph
-saving_plot(graph, "4", 7, 5)
+saving_plot(graph, "4_retravaille", 7, 5)
 ```
 
 ```{r fig.6}
@@ -2976,7 +3145,7 @@ ggplot(aes(x = rowname, y = V1)) +
   geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
         color = "#333333", size = 5, check_overlap = T) 
 graph
-saving_plot(graph, "6", 7, 5)
+saving_plot(graph, "6_retravaille", 7, 5)
 ```
 
 ```{r}
@@ -3017,7 +3186,7 @@ graph <- table |>
       geom_text(aes(y = V1 + 0.13*max(V1), x = rowname, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T)
 graph
-saving_plot(graph, "16", 7, 5)
+saving_plot(graph, "16_retravaille", 7, 5)
 ```
 
 ```{r}
@@ -3037,7 +3206,7 @@ graph <- table |> ggplot(aes(label = col, size = n)) +
       custom_theme() +
       theme(plot.subtitle = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))
 graph
-saving_plot(graph, "25", 7, 5)
+saving_plot(graph, "25_retravaille", 7, 5)
 ```
 
 ```{r}
@@ -3055,7 +3224,7 @@ graph <- data |>
       geom_text(aes(x = 0, y = 0, label = sum(Freq)), col = "#333333", alpha=0.8, size=14, fontface="bold", inherit.aes = FALSE) +
       scale_fill_manual(values = c('#bbc5e5','#5770BE')) +
       coord_polar(theta="y") +
-      labs(title = stringr::str_wrap("Politique des données dans les établissements / organismes, 57% des répondants déclarent que leur structure a formalisé un document de gouvernance", width = 45),
+      labs(title = stringr::str_wrap("Politique des données dans les établissements / organismes, 57% des répondant(e)s déclarent que leur structure a formalisé un document de gouvernance", width = 45),
            tag = "Fig. 29", 
            caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ? - ", data |> filter(!is.na(`Votre établissement/organisme a-t-il formalisé une organisation des activités ou des rôles sur les données à l'échelle de l'établissement ou de différentes structures ?`)) |> nrow(), " réponses"), width = 65)) +
       xlim(c(0, 4)) +   
@@ -3070,7 +3239,7 @@ graph <- data |>
             legend.background = element_rect(fill = "white", colour = "white"))+
       guides(fill = guide_legend(title = ""))
 graph
-saving_plot(graph, "29", 7, 5)
+saving_plot(graph, "29_retravaille", 7, 5)
 ```
 
 ```{r fig.width=15, fig.height=8}
@@ -3110,7 +3279,7 @@ graph <- ggcorrplot(matrix, hc.order = T, type = "lower", show.diag = TRUE, lege
                fill = "white", label.size = NA) +
     coord_fixed(clip = 'off')   
 graph
-saving_plot(graph, "matrice_generale", 15, 8)
+saving_plot(graph, "matrice_generale_retravaille", 15, 8)
 ```
 
 <br>
@@ -3246,7 +3415,7 @@ graph <- cycle_lieux |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
   guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 3), col = "none", alpha = "none")
 graph
-saving_plot(graph, "48", 12, 9)
+saving_plot(graph, "48_retravaille", 12, 9)
 ```
 
 
@@ -3296,7 +3465,7 @@ graph <- table |>
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE)) +
       geom_vline(xintercept = 2.5, linetype = 2, color = "#333333")
 graph
-saving_plot(graph, "50_A", 8, 8)
+saving_plot(graph, "50_A_retravaille", 8, 8)
 ```
 
 ## Graphiques pertinents
@@ -3314,8 +3483,8 @@ graph <- table |>
       geom_bar(stat = "identity", width = .6, 
                fill = ifelse(table$col == c("Bac+5", "Bac+8"), "#5770BE", "#bbc5e5")) +
       coord_flip() +
-      labs(x = "", y = "Nombre de personnes",  tag = "Fig. 12",
-       title = stringr::str_wrap("9/10 des personnes ont un niveau BAC+5 ou plus", width = 55),
+      labs(x = "", y = "Nombre de répondant(e)s",  tag = "Fig. 12",
+       title = stringr::str_wrap("9/10 des répondant(e)s ont un niveau BAC+5 ou plus", width = 55),
        subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 55),
        caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Quel est votre niveau de diplôme ? - ", data |> filter(!is.na(`Quel est votre niveau de diplôme ?`)) |> nrow(), " réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -3328,7 +3497,7 @@ graph <- table |>
       geom_text(aes(y = n + 0.1*max(n), x = col, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T)
 graph
-saving_plot(graph, "12", 7, 5)
+saving_plot(graph, "12_retravaille", 7, 5)
 ```
 
 ```{r}
@@ -3344,7 +3513,7 @@ graph <- table |>
       geom_bar(stat = "identity", width = .6,
                fill = ifelse(table$col == "Catégorie A", "#5770BE", "#bbc5e5")) +
       coord_flip() +
-      labs(x = "", y = "Nombre de personnes",  tag = "Fig. 23.1",
+      labs(x = "", y = "Nombre de répondant(e)s",  tag = "Fig. 23.1",
        title = stringr::str_wrap("Parmi le personnel d'appui / soutiens à la recherche, une écrasante majorité de catégorie A", width = 55),
        subtitle = stringr::str_wrap("La gestion des données de recherche est investie par du personnel hautement diplômé", width = 55),
        caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie 2`)) |> nrow(), " réponses"), width = 65)) +
@@ -3360,7 +3529,7 @@ graph <- table |>
                 color = "#333333", size = 3, check_overlap = T)
 
 graph
-saving_plot(graph, "23.1", 7, 5)
+saving_plot(graph, "23.1_retravaille", 7, 5)
 ```
 
 ```{r}
@@ -3376,8 +3545,8 @@ graph <- table |>
       geom_bar(stat = "identity", width = .6,
                fill = ifelse(table$col == "Maître de Conférences / Chargé(e) de recherche ou assimilé", "#5770BE", "#bbc5e5")) +
       coord_flip() +
-      labs(x = "", y = "Nombre de personnes",  tag = "Fig. 23.2",
-       title = stringr::str_wrap("45% des personnes de la catégorie des chercheurs et enseignants-chercheurs sont MCU ou CR", width = 55),
+      labs(x = "", y = "Nombre de répondant(e)s",  tag = "Fig. 23.2",
+       title = stringr::str_wrap("45% des répondant(e)s de la catégorie des chercheur(se)s et enseignant(e)s-chercheur(se)s sont MCU ou CR", width = 55),
        subtitle = stringr::str_wrap("Près d'un quart de ces personnes sont doctorants ou post-doctorants", width = 55),
        caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre catégorie - ", data |> filter(!is.na(`Précisez votre catégorie`)) |> nrow(), " réponses"), width = 65)) +
    
@@ -3391,24 +3560,52 @@ graph <- table |>
       geom_text(aes(y = n + 0.13*max(n), x = col, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 3, check_overlap = T)
 graph
-saving_plot(graph, "23.2", 7, 5)
+saving_plot(graph, "23.2_retravaille", 7, 5)
 ```
 
 
 ```{r fig.width = 12, fig.height=7}
 plot_plus <- barplot_qs_multiples2(data, 96, 110, 1, 5, "#169B62", "", "", 
                       "Top 5 des besoins de formation", "Fig. 26") +
-    ylim(0, 650)
+    ylim(0, 650) +
+    theme(plot.title = element_blank(),
+          plot.subtitle = element_blank())
+    
 
 plot_moins <- barplot_qs_multiples2(data, 96, 110, 11, 15, "#ffe725", "", "", 
-                      "Bottom 5 des besoins de formation", "")
+                      "Bottom 5 des besoins de formation", "") +
+    theme(plot.title = element_blank(),
+          plot.subtitle = element_blank())
 
 graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, 
              top = textGrob("Les besoins de formation les plus fortement exprimés couvrent un large spectre du cycle de vie de la donnée", 
                             gp = gpar(fontsize = 15, font = 2)),
              bottom = textGrob("Question posée dans le questionnaire : Sur quelles activités auriez-vous besoin d'une formation ?", 
                             gp = gpar(fontsize = 11, font = 3)))
-saving_plot(graph, "26", 12, 7)
+saving_plot(graph, "26_retravaille", 12, 7)
+```
+
+```{r fig 26 sans num figure, fig.width = 12, fig.height=7}
+plot_plus <- barplot_qs_multiples2(data, 96, 110, 1, 5, "#169B62", "", "", 
+                      "Top 5 des besoins de formation", NA) +
+    ylim(0, 650) +
+    theme(plot.tag = element_blank(),
+          plot.title = element_blank(),
+          plot.subtitle = element_blank())
+    
+
+plot_moins <- barplot_qs_multiples2(data, 96, 110, 11, 15, "#ffe725", "", "", 
+                      "Bottom 5 des besoins de formation", NA) +
+    theme(plot.tag = element_blank(),
+          plot.title = element_blank(),
+          plot.subtitle = element_blank())
+
+graph <- grid.arrange(plot_plus, plot_moins, ncol = 2, 
+             top = textGrob("Les besoins de formation les plus fortement exprimés couvrent un large spectre du cycle de vie de la donnée", 
+                            gp = gpar(fontsize = 15, font = 2)),
+             bottom = textGrob("Question posée dans le questionnaire : Sur quelles activités auriez-vous besoin d'une formation ?", 
+                            gp = gpar(fontsize = 11, font = 3)))
+saving_plot(graph, "26_retravaille_sans_num_figure", 12, 7)
 ```
 
 <br>
@@ -3432,7 +3629,7 @@ graph <- table |>
   ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
     geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de personnes", tag = "Fig. 42", 
+    labs(x = "", y = "Nombre de répondant(e)s", tag = "Fig. 42", 
          title = stringr::str_wrap("Répartition disciplinaire de l'activité", width = 55),
          subtitle = stringr::str_wrap("Quatre disciplines principalement impliquées dans l'analyse et le traitement ", width = 65),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 65)) + 
@@ -3454,7 +3651,7 @@ graph <- table |>
               position = position_dodge(width = .9))
 
 graph
-saving_plot(graph, "42", 8, 7)
+saving_plot(graph, "42_retravaille", 8, 7)
 ```
 
 ```{r fig.height=6}
@@ -3476,7 +3673,7 @@ graph <- table |>
   ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
     geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de personnes", tag = "Fig. 43", 
+    labs(x = "", y = "Nombre de répondant(e)s", tag = "Fig. 43", 
          title = stringr::str_wrap("Prise en charge de l'activité 'Analyse, traitement, calcul'", width = 59),
          subtitle = stringr::str_wrap("Prédominance des BAP E", width = 55),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 65)) + 
@@ -3497,7 +3694,7 @@ graph <- table |>
               position = position_dodge(width = .9))
 
 graph
-saving_plot(graph, "43", 7, 6)
+saving_plot(graph, "43_retravaille", 7, 6)
 ```
 
 
@@ -3540,8 +3737,8 @@ graph <- table |>
     geom_bar(aes(x = col, y = n, fill = is_cycle, group = is_cycle), 
              stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de personnes", tag = "Fig. 45", 
-         title = stringr::str_wrap("Quatre disciplines concentrent 52% des personnes impliquées dans la collecte, la création, le stockage", width = 55),
+    labs(x = "", y = "Nombre de répondant(e)s", tag = "Fig. 45", 
+         title = stringr::str_wrap("Quatre disciplines concentrent 52% des répondant(e)s impliquées dans la collecte, la création, le stockage", width = 55),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - ", sum(table$n), " réponses"), width = 65)) + 
     theme_classic() +
     custom_theme() +
@@ -3564,7 +3761,7 @@ graph <- table |>
     geom_bar(aes(x = col, y = barre_grise, group = is_cycle), fill = "#666666",
              stat="identity", position = "dodge", width=.9, col = "white", size = .5) 
 graph
-saving_plot(graph, "45", 8, 7)
+saving_plot(graph, "45_retravaille", 8, 7)
 ```
 
 ```{r fig.height=7, fig.width=10}
@@ -3586,7 +3783,7 @@ graph <- table |>
   ggplot(aes(x = col, y = n, fill = is_cycle, group = is_cycle))+
     geom_bar(stat="identity", position = "dodge", width=.9, col = "white", size = .5) +
     coord_flip() +
-    labs(x = "", y = "Nombre de personnes", tag = "Fig. 46", 
+    labs(x = "", y = "Nombre de répondant(e)s", tag = "Fig. 46", 
          title = stringr::str_wrap("Prise en charge de l'activité 'Collecte, création, stockage'", width = 60),
          subtitle = stringr::str_wrap("Prédominance des BAP E", width = 55),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", sum(table$n), " réponses"), width = 65)) + 
@@ -3607,7 +3804,7 @@ graph <- table |>
               color = "#333333", size=3, check_overlap = T, hjust = 0,
               position = position_dodge(width = .9))
 graph
-saving_plot(graph, "46", 10, 7)
+saving_plot(graph, "46_retravaille", 10, 7)
 ```
 
 ## Graphiques à retravailler
@@ -3678,7 +3875,7 @@ graph <- table_disciplines |>
          title = stringr::str_wrap("", width = 50),
          # Les spécialistes de la donnée. La façon de se déclarer pluridisciplinaire dépend 
          subtitle = stringr::str_wrap("Comparaison de la répartition des enseignants-chercheurs et <br>chercheurs dans les 
-                                      disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <br><span style='color: #5770BE;'>les personnes</span> ayant répondu au questionnaire", width = 55),
+                                      disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <br><span style='color: #5770BE;'>les répondant(e)s</span>", width = 55),
          caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 710 réponses", width = 70)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 30)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.22)) +
@@ -3691,8 +3888,8 @@ graph <- table_disciplines |>
             panel.grid.major.y = ggplot2::element_blank())
 graph
 #title : Les sciences du numérique et mathématiques sur-représentées parmi les enseignants-chercheurs ayant répondu au questionnaire
-#subtitle : Comparaison de la répartition des enseignants-chercheurs dans les <br>disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <span style='color: #5770BE;'>les répondants</span>
-saving_plot(graph, "5.1", 8, 7)
+#subtitle : Comparaison de la répartition des enseignants-chercheurs dans les <br>disciplines à <span style='color: #cbcbcb;'>l'échelle nationale</span> et parmi <span style='color: #5770BE;'>les répondant(e)s</span>
+saving_plot(graph, "5.1_retravaille", 8, 7)
 ```
 
 ```{r fig.height=8.5}
@@ -3708,9 +3905,9 @@ graph <- data |>
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       scale_alpha_manual(values = c(1, .6)) +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", tag = "Fig. 5.2", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", tag = "Fig. 5.2", 
          title = stringr::str_wrap("Des personnels d'appui / soutiens à la recherche pluridisciplinaires", width = 55),
-         subtitle = stringr::str_wrap("Répartition des <span style='color: #5770BE;'>personnel d'appui / soutien à la recherche</span> et <br><span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> dans les disciplines", width = 55),
+         subtitle = stringr::str_wrap("Répartition des <span style='color: #5770BE;'>personnel d'appui / soutien à la recherche</span> et <br><span style='color: #ffe725;'>chercheur(se)s / enseignant(e)s-chercheur(se)s</span> dans les disciplines", width = 55),
          caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quel domaine thématique réalisez-vous votre activité sur les données ? - 1565 réponses", width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 30)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.25)) +
@@ -3721,7 +3918,7 @@ graph <- data |>
             panel.grid.major.x = ggplot2::element_line(color = "#cbcbcb"),
             panel.grid.major.y = ggplot2::element_blank())
 graph
-saving_plot(graph, "5.2", 8, 8.5)
+saving_plot(graph, "5.2_retravaille", 8, 8.5)
 ```
 
 
@@ -3744,9 +3941,9 @@ graph <- table |>
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
       labs(x = "", y = "Nombre de réponses", tag = "Fig. 10.1", 
-           title = stringr::str_wrap("Données avec lesquelles les personnes travaillent", width = 55),
+           title = stringr::str_wrap("Données avec lesquelles les répondant(e)s travaillent", width = 55),
          subtitle = stringr::str_wrap("", width = 55),
-         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quels types de données travaillez-vous ? - ", sum(table$V1), " réponses pour 1565 personnes"), width = 65)) +
+         caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quels types de données travaillez-vous ? - ", sum(table$V1), " réponses pour 1565 répondant(e)s"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       theme_classic() +
       ylim(0, 1300) +
@@ -3759,7 +3956,7 @@ graph <- table |>
       geom_text(aes(y = V1 + 0.07*max(V1), x = rowname, hjust = 0, label = paste(percent, "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T)
 graph
-saving_plot(graph, "10.1", 8, 5)
+saving_plot(graph, "10.1_retravaille", 8, 5)
 ```
 
 ```{r fig.width=12, fig.height=10}
@@ -3863,8 +4060,8 @@ graph <- domaine_donnees |>
   scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
   scale_y_continuous(labels = scales::percent, limits = c(0,.3)) + # pourcentages
   labs(x = "", y = "Pourcentage des réponses", tag = "Fig. 10.2",
-       title = "Les données d'observation utilisées par au moins 10% des personnes dans les 4 familles \nde disciplines", 
-       subtitle = "Part de données utilisées dans le travail des personnes selon leur discipline regroupée en 4 grandes familles",
+       title = "Les données d'observation utilisées par au moins 10% des répondant(e)s dans les 4 familles \nde disciplines", 
+       subtitle = "Part de données utilisées dans le travail des répondant(e)s selon leur discipline regroupée en 4 grandes familles",
        caption = paste0("Question posée dans le questionnaire : Sur quels types de données travaillez-vous ? - ", 
                                           sum(domaine_donnees$V1), " réponses")) +
   theme_classic() +
@@ -3877,7 +4074,7 @@ graph <- domaine_donnees |>
         axis.title.y = element_text(margin = margin(t = 0, r = 25, b = 0, l = 0))) +
   guides(fill = guide_legend(title = "", reverse = TRUE, nrow = 2), col = "none", alpha = "none")
 graph
-saving_plot(graph, "10.2", 13, 10)
+saving_plot(graph, "10.2_retravaille", 13, 10)
 ```
 
 
@@ -3923,7 +4120,7 @@ mat1 <- ggcorrplot(matrix_chercheurs, hc.order = T, type = "lower", show.diag = 
            colors = c("#BB4444", "white", "#4477AA")) +
     labs(title = stringr::str_wrap("Chercheurs / Enseignants-chercheurs", width = 55), 
          subtitle = stringr::str_wrap("Décorrelation entre la phase 'Collecte, création, stockage' et les autres phases du cycle de vie", width = 55),
-         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 710 personnes", width = 65)) +
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 710 répondant(e)s", width = 65)) +
     theme(axis.text.y = element_blank(),
           panel.grid = element_blank(),
           plot.subtitle = element_text(size = 15),
@@ -3949,7 +4146,7 @@ mat2 <- ggcorrplot(matrix_personnel, hc.order = T, type = "lower", show.diag = T
            colors = c("#BB4444", "white", "#4477AA")) +
     labs(title = stringr::str_wrap("Personnels d'appui / soutiens à la recherche", width = 55), 
          subtitle = stringr::str_wrap("Décorrelation entre les phases de collecte et d'analyse, et les autres phases du cycle de vie", width = 55),
-         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 855 personnes", width = 65)) +
+         caption = stringr::str_wrap("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - 855 répondant(e)s", width = 65)) +
     theme(axis.text.y = element_blank(),
           panel.grid = element_blank(),
           plot.subtitle = element_text(size = 15, hjust = 0),
@@ -4008,8 +4205,8 @@ graph <- table |>
       scale_fill_manual(values = c("#ffe725", "#5770BE")) +
       scale_alpha_manual(values = c(1, .4)) +
       labs(x = "", y = "Pourcentage de réponses",  tag = "Fig. 50",
-           title = stringr::str_wrap("Les <span style='color: #ffe725;'>chercheurs / enseignants-chercheurs</span> davantage <br>dans l'analyse \nque les <span style='color: #5770BE;'>personnels d'appui / <br>soutiens à la recherches</span>", width = 55), 
-         subtitle = stringr::str_wrap("Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des personnes", width = 55),
+           title = stringr::str_wrap("Les <span style='color: #ffe725;'>chercheur(se)s / enseignant(e)s-chercheur(se)s</span> <br>davantage dans l'analyse \nque les <span style='color: #5770BE;'>personnels <br>d'appui / soutien à la recherche</span>", width = 55), 
+         subtitle = stringr::str_wrap("Répartition de l'intervention dans le cycle de vie de la données selon la catégorie d'emploi des répondant(e)s", width = 55),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Sur quelle(s) partie(s) du cycle de vie des données intervenez-vous ? - ", sum(table$V1), " réponses"), width = 65)) +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.3)) + # pourcentages
@@ -4025,7 +4222,7 @@ graph <- table |>
                 position = position_dodge(width = .85)) +
       guides(fill = guide_legend(title = "", nrow = 2, reverse = TRUE))
 graph
-saving_plot(graph, "50_B", 7, 6)
+saving_plot(graph, "50_B_retravaille", 7, 6)
 ```
 
 
@@ -4040,7 +4237,7 @@ graph <- data |>
     ggplot(aes(x = col, y = n, fill = col), fill = "#5770BE") +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Nombre de personnes", tag = "Fig. 22.2", 
+      labs(x = "", y = "Nombre de répondant(e)s", tag = "Fig. 22.2", 
            title = stringr::str_wrap("Parmi les personnels d'appui à la recherche qui ont répondu à l'enquête, plus d'1/3 travaille dans la branche informatique, calcul scientifique et statistique", width = 65), 
          subtitle = stringr::str_wrap("Environ 1/4 de ces personnels sont dans le domaine de la documentation, information, médiation, édition et bibliothèque ", width = 65),
          caption = stringr::str_wrap(paste0("Question posée dans le questionnaire : Précisez votre branche d'activité - ", 
@@ -4066,18 +4263,18 @@ graph <- data |>
                 color = "#333333", size = 4, check_overlap = T) +
       guides(fill = guide_legend(title = "", nrow = 2, byrow = TRUE))
 graph
-saving_plot(graph, "22.2", 7, 6)
+saving_plot(graph, "22.2_retravaille", 7, 6)
 ```
 
 
 ```{r}
 graph <- wordcloud_autre(data, `Précisez votre branche d'activité. [Autre]`, "Précisez votre branche d'activité. [Autre]", 30, 10, "Fig. 24") +
-    labs(title = stringr::str_wrap("La biologie, l'instrumentation et les archives sont les principales branche d'activité déclarées parmi les personnes exerçant des fonctions supports", width = 55),
+    labs(title = stringr::str_wrap("La biologie, l'instrumentation et les archives sont les principales branche d'activité déclarées parmi les répondant(e)s exerçant des fonctions supports", width = 55),
          subtitle = stringr::str_wrap("La catégorie 'Archives' était à priori attendue dans les catégories proposées ('Documentation et personnels des bibliothèques'). Une centaine d'autres branches ressortent dans une moindre mesure, telle que les sciences du vivant. ", width = 60),
          caption = stringr::str_wrap("Question posée dans le questionnaire : Précisez votre branche d'activité. [Autre] - 154 réponses", width = 70)) +
     custom_theme()
 graph
-saving_plot(graph, "24", 7, 5)
+saving_plot(graph, "24_retravaille", 7, 5)
 ```
 
 
@@ -4104,9 +4301,9 @@ p1 <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#ffe725") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 52.1",
-           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
-           subtitle = "Chercheur / Enseignant-chercheur",
+      labs(x = "", y = "Pourcentage des répondant(e)s",  tag = "Fig. 52.1",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des répondant(e)s",
+           subtitle = "Chercheur(se) / Enseignant(e)-chercheur(se)",
            caption = "Top 5 des activités - 3862 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.2)) + # pourcentages
@@ -4118,7 +4315,7 @@ p1 <- table |> ungroup() |>
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       geom_text(aes(y  = percent + 0.15*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
                 color = "#333333", size = 4, check_overlap = T) +
-      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondant(e)s")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
 p2 <- table |> ungroup() |> 
     filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
@@ -4127,7 +4324,7 @@ p2 <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Personnel d'appui / soutien à la recherche",
            caption = "Top 5 des activités - 5113 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4140,16 +4337,16 @@ p2 <- table |> ungroup() |>
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T) +
-      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondant(e)s")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
 #plot_grid(p1, p2, align = 'vh', nrow = 1, label_y = 1, rel_heights = c(.65,.35), 
- #         labels = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes")
+ #         labels = "Répartition des activités dédiées aux données selon la catégorie d'emploi des répondant(e)s")
 graph <- grid.arrange(p1, p2, nrow = 1, 
-             top = grid::textGrob("Répartition des activités les plus courantes selon la catégorie d'emploi des personnes", 
+             top = grid::textGrob("Répartition des activités les plus courantes selon la catégorie d'emploi des répondant(e)s", 
                                   gp = grid::gpar(fontsize = 18, font = 2)), 
              bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nQuelle est votre catégorie d'emploi actuel ?", 
                                   gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
-saving_plot(graph, "52.1", 15, 7)
+saving_plot(graph, "52.1_retravaille", 15, 7)
 ```
 
 
@@ -4177,8 +4374,8 @@ shs <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 52.2",
-           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
+      labs(x = "", y = "Pourcentage des répondant(e)s",  tag = "Fig. 52.2",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des répondant(e)s",
            subtitle = "Sciences humaines et sociales",
            caption = "Top 5 des activités - 980 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4199,7 +4396,7 @@ biblio <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Personnels des bibliothèques",
            caption = "Top 5 des activités - 350 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4220,7 +4417,7 @@ info <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Informatique, Statistiques et Calcul Scientifique",
            caption = "Top 5 des activités - 1946 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4241,7 +4438,7 @@ edition <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Information, Documentation, Médiation, Edition",
            caption = "Top 5 des activités - 745 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4262,7 +4459,7 @@ gestion <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Gestion et pilotage, Partenariat, Affaires juridiques",
            caption = "Top 5 des activités - 142 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4283,7 +4480,7 @@ autre <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Autre",
            caption = "Top 5 des activités - 950 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4300,11 +4497,11 @@ autre <- table |> ungroup() |>
 # Tout ensemble
 test <- plot_grid(shs, biblio, edition, info, gestion, autre, ncol = 2, align = 'vh')
 graph <- grid.arrange(test, ncol = 1, 
-             top = grid::textGrob("Répartition des activités les plus courantes selon la branche d'activité des personnes", 
+             top = grid::textGrob("Répartition des activités les plus courantes selon la branche d'activité des répondant(e)s", 
                                   gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
              bottom = grid::textGrob("Question posée dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nPrécisez votre branche d'activité.", 
                                   gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font, hjust = 1)))
-saving_plot(graph, "52.2", 15, 15)
+saving_plot(graph, "52.2_retravaille", 15, 15)
 ```
 
 
@@ -4327,7 +4524,7 @@ labo <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", tag = "Fig. 52.3",
+      labs(x = "", y = "Pourcentage des répondant(e)s", tag = "Fig. 52.3",
            subtitle = "Laboratoire / unité / équipe de recherche",
            caption = "Top 5 des activités - 7144 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4357,7 +4554,7 @@ infra <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Infrastructure de recherche",
            caption = "Top 5 des activités - 1621 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4387,7 +4584,7 @@ central <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Service central d'appui",
            caption = "Top 5 des activités - 1199 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4417,7 +4614,7 @@ decon <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Service déconcentré d'appui",
            caption = "Top 5 des activités - 142 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4447,7 +4644,7 @@ dir <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Direction de l'établissement",
            caption = "Top 5 des activités - 249 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4466,12 +4663,12 @@ dir <- data |>
 # Tout ensemble
 test <- plot_grid(labo, infra, central, decon, dir, ncol = 2, align = 'vh')
 graph <- grid.arrange(test, ncol = 1, 
-             top = grid::textGrob("Répartition des activités les plus courantes selon le lieu d'activité des personnes", 
+             top = grid::textGrob("Répartition des activités les plus courantes selon le lieu d'activité des répondant(e)s", 
                                   gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
              bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nOù réalisez-vous votre activité en lien avec les données de recherche ?", 
                                   gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
 
-saving_plot(graph, "52.3", 15, 15)
+saving_plot(graph, "52.3_retravaille", 15, 15)
 ```
 
 
@@ -4499,9 +4696,9 @@ p1 <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#ffe725") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 53.1",
-           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
-           subtitle = "Chercheur / Enseignant-chercheur",
+      labs(x = "", y = "Pourcentage des répondant(e)s",  tag = "Fig. 53.1",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des répondant(e)s",
+           subtitle = "Chercheur(se) / Enseignant(e)-chercheur(se)",
            caption = "Bottom 5  des activités - 3862 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
@@ -4513,7 +4710,7 @@ p1 <- table |> ungroup() |>
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       geom_text(aes(y  = percent + 0.16*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T) +
-      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondant(e)s")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
 p2 <- table |> ungroup() |> 
     filter(`Quelle est votre catégorie d'emploi actuel ?` == "Personnel d'appui / soutien à la recherche") |> 
@@ -4522,7 +4719,7 @@ p2 <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Personnel d'appui / soutien à la recherche",
            caption = "Bottom 5  des activités - 5113 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4535,16 +4732,16 @@ p2 <- table |> ungroup() |>
             axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0))) +
       geom_text(aes(y  = percent + 0.13*max(percent), x = rowname, label = paste(round(percent*100, 0), "%", sep = "")), 
                 color = "#333333", size = 5, check_overlap = T) +
-      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "personnes")), 
+      geom_text(aes(y  = .25, x = rowname, label = paste(V1, "répondant(e)s")), 
                 color = "#CCCCCC", size = 5, check_overlap = T, hjust = 0)
 #plot_grid(p1, p2, align = 'vh', nrow = 1, label_y = 1, rel_heights = c(.65,.35), 
- #         labels = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes")
+ #         labels = "Répartition des activités dédiées aux données selon la catégorie d'emploi des répondant(e)s")
 graph <- grid.arrange(p1, p2, nrow = 1, 
-             top = grid::textGrob("Répartition des activités les moins courantes selon la catégorie d'emploi des personnes", 
+             top = grid::textGrob("Répartition des activités les moins courantes selon la catégorie d'emploi des répondant(e)s", 
                                   gp = grid::gpar(fontsize = 18, font = 2)), 
              bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nQuelle est votre catégorie d'emploi actuel ?", 
                                   gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
-saving_plot(graph, "53.1", 15, 7)
+saving_plot(graph, "53.1_retravaille", 15, 7)
 ```
 
 
@@ -4573,8 +4770,8 @@ shs <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 53.2",
-           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des personnes",
+      labs(x = "", y = "Pourcentage des répondant(e)s",  tag = "Fig. 53.2",
+           #title = "Répartition des activités dédiées aux données selon la catégorie d'emploi des répondant(e)s",
            subtitle = "Sciences humaines et sociales",
            caption = "Bottom 5 des activités - 980 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4595,7 +4792,7 @@ biblio <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Personnels des bibliothèques",
            caption = "Bottom 5 des activités - 350 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4616,7 +4813,7 @@ info <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Informatique, Statistiques et Calcul Scientifique",
            caption = "Bottom 5 des activités - 1946 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4637,7 +4834,7 @@ edition <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Information, Documentation, Médiation, Edition",
            caption = "Bottom 5 des activités - 745 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4658,7 +4855,7 @@ gestion <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Gestion et pilotage, Partenariat, Affaires juridiques",
            caption = "Bottom 5 des activités - 142 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4679,7 +4876,7 @@ autre <- table |> ungroup() |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Autre",
            caption = "Bottom 5 des activités - 950 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4696,11 +4893,11 @@ autre <- table |> ungroup() |>
 # Tout ensemble
 test <- plot_grid(shs, biblio, edition, info, gestion, autre, ncol = 2, align = 'vh')
 graph <- grid.arrange(test, ncol = 1, 
-             top = grid::textGrob("Répartition des activités les moins courantes selon la branche d'activité des personnes", 
+             top = grid::textGrob("Répartition des activités les moins courantes selon la branche d'activité des répondant(e)s", 
                                   gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
              bottom = grid::textGrob("Question posée dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nPrécisez votre branche d'activité.", 
                                   gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font, hjust = 1)))
-saving_plot(graph, "53.2", 15, 15)
+saving_plot(graph, "53.2_retravaille", 15, 15)
 ```
 
 
@@ -4723,7 +4920,7 @@ labo <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", tag = "Fig. 53.3",
+      labs(x = "", y = "Pourcentage des répondant(e)s", tag = "Fig. 53.3",
            subtitle = "Laboratoire / unité / équipe de recherche",
            caption = "Bottom 5 des activités - 7144 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4753,7 +4950,7 @@ infra <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Infrastructure de recherche",
            caption = "Bottom 5 des activités - 1621 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4783,7 +4980,7 @@ central <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Service central d'appui",
            caption = "Bottom 5 des activités - 1199 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4813,7 +5010,7 @@ decon <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Service déconcentré d'appui",
            caption = "Bottom 5 des activités - 142 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4843,7 +5040,7 @@ dir <- data |>
     ggplot(aes(x = rowname, y  = percent)) +
       geom_bar(stat = "identity", width = .6, fill = "#5770BE") +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes", 
+      labs(x = "", y = "Pourcentage des répondant(e)s", 
            subtitle = "Direction de l'établissement",
            caption = "Bottom 5 des activités - 249 réponses") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
@@ -4862,12 +5059,12 @@ dir <- data |>
 # Tout ensemble
 test <- plot_grid(labo, infra, central, decon, dir, ncol = 2, align = 'vh')
 graph <- grid.arrange(test, ncol = 1, 
-             top = grid::textGrob("Répartition des activités les moins courantes selon le lieu d'activité des personnes", 
+             top = grid::textGrob("Répartition des activités les moins courantes selon le lieu d'activité des répondant(e)s", 
                                   gp = grid::gpar(fontsize = 20, font = 2, fontfamily = font, col = "#222222")), 
              bottom = grid::textGrob("Questions posées dans le questionnaire : Quelles sont les activités qu'implique votre travail sur les données ?, \nOù réalisez-vous votre activité en lien avec les données de recherche ?", 
                                   gp = grid::gpar(fontsize = 18, font = 3, col = "#cbcbcb", fontfamily = font)))
 
-saving_plot(graph, "53.3", 15, 15)
+saving_plot(graph, "53.3_retravaille", 15, 15)
 ```
 
 
@@ -4910,8 +5107,8 @@ graph <- table |>
                group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Pourcentage de personnes",  tag = "Fig. 59",
-           title = "Répartition des activités les plus courantes selon le type d'établissement d'affiliation des personnes",
+      labs(x = "", y = "Pourcentage de répondant(e)s",  tag = "Fig. 59",
+           title = "Répartition des activités les plus courantes selon le type d'établissement d'affiliation des répondant(e)s",
            caption = "Top 5 des activités - 8975 réponses \nQuestions posées dans le questionnaire : Dans quel type d'établissement exercez-vous votre activité ?,\nQuelles sont les activités qu'implique votre travail sur les données ?") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
@@ -4929,7 +5126,7 @@ graph <- table |>
                                    "Université \n(39% des établissements)" = "#169B62", 
                                    "Autre \n(4% des établissements)" = "#666666"))
 graph
-saving_plot(graph, "59", 15, 10)
+saving_plot(graph, "59_retravaille", 15, 10)
 ```
 
 
@@ -4954,8 +5151,8 @@ graph <- table |>
                group = `Dans quel type d'établissement exercez-vous votre activité ?`)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Pourcentage de personnes",  tag = "Fig. 60",
-           title = "Répartition des activités les moins courantes selon le type d'établissement d'affiliation des personnes",
+      labs(x = "", y = "Pourcentage de répondant(e)s",  tag = "Fig. 60",
+           title = "Répartition des activités les moins courantes selon le type d'établissement d'affiliation des répondant(e)s",
            caption = "Bottom 5 des activités - 8975 réponses \nQuestions posées dans le questionnaire : Dans quel type d'établissement exercez-vous votre activité ?,\nQuelles sont les activités qu'implique votre travail sur les données ?") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
@@ -4973,7 +5170,7 @@ graph <- table |>
                                    "Université \n(39% des établissements)" = "#169B62", 
                                    "Autre \n(4% des établissements)" = "#666666"))
 graph
-saving_plot(graph, "60", 15, 10)
+saving_plot(graph, "60_retravaille", 15, 10)
 ```
 
 
@@ -5018,8 +5215,8 @@ graph <- table |>
     ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 63",
-           title = "Répartition des besoins de formation les plus courants selon la catégorie d'emploi des personnes",
+      labs(x = "", y = "Pourcentage des répondant(e)s",  tag = "Fig. 63",
+           title = "Répartition des besoins de formation les plus courants selon la catégorie d'emploi des répondant(e)s",
            caption = "Top 5 des besoins de formation - 4820 réponses\nQuestions posées dans le questionnaire : Quelle est votre catégorie d'emploi actuel ?, Sur quelles activités auriez-vous besoin d'une formation ?") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.15)) + # pourcentages
@@ -5034,7 +5231,7 @@ graph <- table |>
       facet_wrap(~cat, scales = "free") +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 graph
-saving_plot(graph, "63", 15, 10)
+saving_plot(graph, "63_retravaille", 15, 10)
 ```
 
 
@@ -5045,8 +5242,8 @@ graph <- table |>
     ggplot(aes(x = rowname, y  = percent, fill = cat, group = cat)) +
       geom_bar(stat = "identity", width = .6) +
       coord_flip() +
-      labs(x = "", y = "Pourcentage des personnes",  tag = "Fig. 64",
-           title = "Répartition des besoins de formation les moins courants selon la catégorie d'emploi des personnes",
+      labs(x = "", y = "Pourcentage des répondant(e)s",  tag = "Fig. 64",
+           title = "Répartition des besoins de formation les moins courants selon la catégorie d'emploi des répondant(e)s",
            caption = "Bottom 5 des besoins de formation - 4820 réponses\nQuestions posées dans le questionnaire : Quelle est votre catégorie d'emploi actuel ?, Sur quelles activités auriez-vous besoin d'une formation ?") +
       scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) + 
       scale_y_continuous(labels = scales::percent, limits = c(0,.08)) + # pourcentages
@@ -5061,7 +5258,7 @@ graph <- table |>
       facet_wrap(~cat, scales = "free") +
       scale_fill_manual(values = c(c("#ffe725", "#5770BE")))
 graph
-saving_plot(graph, "64", 15, 8)
+saving_plot(graph, "64_retravaille", 15, 8)
 ```
 
 
@@ -5120,7 +5317,7 @@ fviz_contrib(res.mca, choice = "var", axes = 1, top = 10)
 fviz_contrib(res.mca, choice = "var", axes = 2, top = 10)
 
 fviz_mca_ind(res.mca,
-             label = "none", # masquer le texte des individus
+             label = "none", # masquer le texte des répondant(e)s
              habillage = "Analyse, traitement, calcul", # colorer par groupes
              palette = c ("#00AFBB", "#E7B800"),
              addEllipses = TRUE, ellipse.type = "confidence",

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='576.00pt' height='360.00pt' viewBox='0 0 576.00 360.00'>
 <defs>
   <style type='text/css'><![CDATA[
     .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
@@ -16,47 +16,47 @@
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
 <defs>
-  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
-    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='360.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
-<rect x='0.00' y='0.00' width='504.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='0.00' y='0.00' width='576.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
 <defs>
-  <clipPath id='cpMzE1LjQ0fDQ5OC41Mnw5Ny4zOXwyNTEuMDU='>
-    <rect x='315.44' y='97.39' width='183.09' height='153.66' />
+  <clipPath id='cpMjM0Ljg5fDU3MC41Mnw1NS4zNnwzMTkuMDI='>
+    <rect x='234.89' y='55.36' width='335.64' height='263.66' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMzE1LjQ0fDQ5OC41Mnw5Ny4zOXwyNTEuMDU=)'>
-<polyline points='323.76,251.05 323.76,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='370.37,251.05 370.37,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='416.98,251.05 416.98,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='463.59,251.05 463.59,97.39 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<rect x='323.76' y='207.84' width='75.51' height='28.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<rect x='323.76' y='111.80' width='147.29' height='28.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
-<rect x='323.76' y='159.82' width='108.14' height='28.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<text x='418.42' y='225.29' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>23%</text>
-<text x='490.20' y='129.25' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>45%</text>
-<text x='451.04' y='177.27' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>33%</text>
+<g clip-path='url(#cpMjM0Ljg5fDU3MC41Mnw1NS4zNnwzMTkuMDI=)'>
+<rect x='234.89' y='55.36' width='335.64' height='263.66' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='250.14' y='244.87' width='138.43' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='250.14' y='80.08' width='270.02' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='250.14' y='162.47' width='198.24' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='423.67' y='272.63' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>23%</text>
+<text x='555.26' y='107.85' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>45%</text>
+<text x='483.49' y='190.24' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>33%</text>
+<rect x='250.14' y='244.87' width='138.43' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='250.14' y='80.08' width='270.02' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='250.14' y='162.47' width='198.24' height='49.44' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
 </g>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
-<text x='310.50' y='227.34' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='197.66px' lengthAdjust='spacingAndGlyphs'>Doctorant(e) / Post-doctorant(e)</text>
-<text x='310.50' y='171.76' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='208.53px' lengthAdjust='spacingAndGlyphs'>Professeur(e) / Directeur(trice) de</text>
-<text x='310.50' y='186.88' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='141.60px' lengthAdjust='spacingAndGlyphs'>Recherche ou assimilé</text>
-<text x='310.50' y='123.74' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='236.58px' lengthAdjust='spacingAndGlyphs'>Maître de Conférences / Chargé(e) de</text>
-<text x='310.50' y='138.86' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='136.16px' lengthAdjust='spacingAndGlyphs'>recherche ou assimilé</text>
-<text x='323.76' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='7.78px' lengthAdjust='spacingAndGlyphs'>0</text>
-<text x='370.37' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>100</text>
-<text x='416.98' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>200</text>
-<text x='463.59' y='268.98' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>300</text>
-<text x='406.98' y='302.90' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='148.37px' lengthAdjust='spacingAndGlyphs'>Nombre de personnes</text>
-<text x='56.97' y='68.95' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='351.35px' lengthAdjust='spacingAndGlyphs'>Près d'un quart de ces personnes sont doctorants ou</text>
-<text x='56.97' y='85.15' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='103.37px' lengthAdjust='spacingAndGlyphs'>post-doctorants</text>
-<text x='56.97' y='30.46' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='432.76px' lengthAdjust='spacingAndGlyphs'>45% des personnes de la catégorie des chercheurs et</text>
-<text x='56.97' y='48.82' style='font-size: 17.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='335.35px' lengthAdjust='spacingAndGlyphs'>enseignants-chercheurs sont MCU ou CR</text>
-<text x='498.52' y='326.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='434.34px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Précisez votre catégorie -</text>
-<text x='498.52' y='342.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='90.87px' lengthAdjust='spacingAndGlyphs'>710 réponses</text>
-<text x='31.23' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='51.49px' lengthAdjust='spacingAndGlyphs'>Fig. 23.2</text>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='229.95' y='273.01' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='143.38px' lengthAdjust='spacingAndGlyphs'>Doctorant(e) / Post-doctorant(e)</text>
+<text x='229.95' y='185.43' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='150.21px' lengthAdjust='spacingAndGlyphs'>Professeur(e) / Directeur(trice) de</text>
+<text x='229.95' y='195.80' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='100.34px' lengthAdjust='spacingAndGlyphs'>Recherche ou assimilé</text>
+<text x='229.95' y='103.04' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='168.29px' lengthAdjust='spacingAndGlyphs'>Maître de Conférences / Chargé(e) de</text>
+<text x='229.95' y='113.41' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='98.33px' lengthAdjust='spacingAndGlyphs'>recherche ou assimilé</text>
+<polyline points='250.14,321.76 250.14,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='335.59,321.76 335.59,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='421.04,321.76 421.04,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='506.49,321.76 506.49,319.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='250.14' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='335.59' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='421.04' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='506.49' y='330.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>300</text>
+<text x='402.70' y='351.64' text-anchor='middle' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='146.43px' lengthAdjust='spacingAndGlyphs'>Nombre de répondant(e)s</text>
+<text x='234.89' y='47.00' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='234.80px' lengthAdjust='spacingAndGlyphs'>710 réponses, soit 45% des répondant(e)s</text>
+<text x='570.52' y='29.50' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='356.46px' lengthAdjust='spacingAndGlyphs'>Catégorie des chercheurs, enseignant-chercheurs</text>
+<text x='33.57' y='17.49' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='56.18px' lengthAdjust='spacingAndGlyphs'>Fig. 23.2</text>
 </g>
 </svg>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='432.00pt' viewBox='0 0 504.00 432.00'>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='504.00pt' height='360.00pt' viewBox='0 0 504.00 360.00'>
 <defs>
   <style type='text/css'><![CDATA[
     .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
@@ -16,58 +16,64 @@
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
 <defs>
-  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA='>
-    <rect x='0.00' y='0.00' width='504.00' height='432.00' />
+  <clipPath id='cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA='>
+    <rect x='0.00' y='0.00' width='504.00' height='360.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
-<rect x='0.00' y='0.000000000000057' width='504.00' height='432.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<rect x='0.00' y='0.00' width='504.00' height='360.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
 <defs>
-  <clipPath id='cpMjcwLjgwfDQ5OC41MnwxMDIuMzd8MzI1Ljkw'>
-    <rect x='270.80' y='102.37' width='227.72' height='223.52' />
+  <clipPath id='cpMjQ5LjI3fDQ5OC41Mnw1NS4zNnwyNTYuNTY='>
+    <rect x='249.27' y='55.36' width='249.25' height='201.20' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMjcwLjgwfDQ5OC41MnwxMDIuMzd8MzI1Ljkw)'>
-<polyline points='281.15,325.90 281.15,102.37 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='341.22,325.90 341.22,102.37 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='401.28,325.90 401.28,102.37 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='461.35,325.90 461.35,102.37 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<rect x='281.15' y='149.24' width='103.91' height='21.63' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<rect x='281.15' y='293.45' width='27.03' height='21.63' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<rect x='281.15' y='221.35' width='78.09' height='21.63' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
-<rect x='281.15' y='113.19' width='183.20' height='21.63' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
-<rect x='281.15' y='257.40' width='42.65' height='21.63' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
-<rect x='281.15' y='185.29' width='78.69' height='21.63' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #BBC5E5;' />
-<text x='408.88' y='164.12' text-anchor='middle' style='font-size: 11.38px;fill: #333333; font-family: "Arial";' textLength='22.47px' lengthAdjust='spacingAndGlyphs'>20%</text>
-<text x='332.00' y='308.33' text-anchor='middle' style='font-size: 11.38px;fill: #333333; font-family: "Arial";' textLength='15.96px' lengthAdjust='spacingAndGlyphs'>5%</text>
-<text x='383.05' y='236.23' text-anchor='middle' style='font-size: 11.38px;fill: #333333; font-family: "Arial";' textLength='22.47px' lengthAdjust='spacingAndGlyphs'>15%</text>
-<text x='488.17' y='128.07' text-anchor='middle' style='font-size: 11.38px;fill: #333333; font-family: "Arial";' textLength='22.47px' lengthAdjust='spacingAndGlyphs'>36%</text>
-<text x='347.62' y='272.28' text-anchor='middle' style='font-size: 11.38px;fill: #333333; font-family: "Arial";' textLength='15.96px' lengthAdjust='spacingAndGlyphs'>8%</text>
-<text x='383.66' y='200.17' text-anchor='middle' style='font-size: 11.38px;fill: #333333; font-family: "Arial";' textLength='22.47px' lengthAdjust='spacingAndGlyphs'>15%</text>
+<g clip-path='url(#cpMjQ5LjI3fDQ5OC41Mnw1NS4zNnwyNTYuNTY=)'>
+<rect x='249.27' y='55.36' width='249.25' height='201.20' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='260.60' y='63.75' width='200.52' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='260.60' y='119.63' width='48.86' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='260.60' y='231.41' width='12.71' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='260.60' y='175.52' width='36.72' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='260.60' y='91.69' width='86.14' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='260.60' y='203.47' width='20.05' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='260.60' y='147.58' width='37.00' height='16.77' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='487.19' y='75.18' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>45%</text>
+<text x='335.53' y='131.07' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>11%</text>
+<text x='299.38' y='242.85' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>3%</text>
+<text x='323.38' y='186.96' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>8%</text>
+<text x='372.81' y='103.12' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>19%</text>
+<text x='306.72' y='214.90' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>5%</text>
+<text x='323.67' y='159.01' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>8%</text>
 </g>
-<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHw0MzIuMDA=)'>
-<text x='265.87' y='302.34' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='154.67px' lengthAdjust='spacingAndGlyphs'>Gestion et pilotage, Partenariat,</text>
-<text x='265.87' y='314.22' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='87.40px' lengthAdjust='spacingAndGlyphs'>Affaires juridiques</text>
-<text x='265.87' y='272.22' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='143.64px' lengthAdjust='spacingAndGlyphs'>Personnels des bibliothèques</text>
-<text x='265.87' y='230.23' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='191.94px' lengthAdjust='spacingAndGlyphs'>Information, Documentation, Médiation,</text>
-<text x='265.87' y='242.11' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='33.62px' lengthAdjust='spacingAndGlyphs'>Edition</text>
-<text x='265.87' y='200.12' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='150.36px' lengthAdjust='spacingAndGlyphs'>Sciences humaines et sociales</text>
-<text x='265.87' y='164.07' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='26.29px' lengthAdjust='spacingAndGlyphs'>Autre</text>
-<text x='265.87' y='122.07' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='169.94px' lengthAdjust='spacingAndGlyphs'>Informatique, Statistiques et Calcul</text>
-<text x='265.87' y='133.95' text-anchor='end' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='56.84px' lengthAdjust='spacingAndGlyphs'>Scientifique</text>
-<text x='281.15' y='341.64' text-anchor='middle' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='6.11px' lengthAdjust='spacingAndGlyphs'>0</text>
-<text x='341.22' y='341.64' text-anchor='middle' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='18.34px' lengthAdjust='spacingAndGlyphs'>100</text>
-<text x='401.28' y='341.64' text-anchor='middle' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='18.34px' lengthAdjust='spacingAndGlyphs'>200</text>
-<text x='461.35' y='341.64' text-anchor='middle' style='font-size: 11.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='18.34px' lengthAdjust='spacingAndGlyphs'>300</text>
-<text x='384.66' y='374.90' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='148.37px' lengthAdjust='spacingAndGlyphs'>Nombre de personnes</text>
-<text x='56.97' y='76.52' style='font-size: 13.00px; font-family: "Nimbus Sans";' textLength='333.88px' lengthAdjust='spacingAndGlyphs'>Environ 1/4 de ces personnels sont dans le domaine de la</text>
-<text x='56.97' y='90.56' style='font-size: 13.00px; font-family: "Nimbus Sans";' textLength='354.11px' lengthAdjust='spacingAndGlyphs'>documentation, information, médiation, édition et bibliothèque</text>
-<text x='56.97' y='28.27' style='font-size: 14.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='414.16px' lengthAdjust='spacingAndGlyphs'>Parmi les personnels d'appui à la recherche qui ont répondu à</text>
-<text x='56.97' y='43.39' style='font-size: 14.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='392.62px' lengthAdjust='spacingAndGlyphs'>l'enquête, plus d'1/3 travaille dans la branche informatique,</text>
-<text x='56.97' y='58.51' style='font-size: 14.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='211.67px' lengthAdjust='spacingAndGlyphs'>calcul scientifique et statistique</text>
-<text x='498.52' y='398.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='417.67px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Précisez votre branche</text>
-<text x='498.52' y='414.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='162.09px' lengthAdjust='spacingAndGlyphs'>d'activité - 855 réponses</text>
-<text x='31.23' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='51.49px' lengthAdjust='spacingAndGlyphs'>Fig. 22.2</text>
+<g clip-path='url(#cpMC4wMHw1MDQuMDB8MC4wMHwzNjAuMDA=)'>
+<text x='244.34' y='238.04' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='143.59px' lengthAdjust='spacingAndGlyphs'>Gestion et pilotage, Partenariat,</text>
+<text x='244.34' y='248.41' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='82.09px' lengthAdjust='spacingAndGlyphs'>Affaires juridiques</text>
+<text x='244.34' y='215.28' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='132.46px' lengthAdjust='spacingAndGlyphs'>Personnels des bibliothèques</text>
+<text x='244.34' y='182.15' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='182.68px' lengthAdjust='spacingAndGlyphs'>Information, Documentation, Médiation,</text>
+<text x='244.34' y='192.52' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='31.38px' lengthAdjust='spacingAndGlyphs'>Edition</text>
+<text x='244.34' y='159.39' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='134.63px' lengthAdjust='spacingAndGlyphs'>Sciences humaines et sociales</text>
+<text x='244.34' y='131.45' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='24.89px' lengthAdjust='spacingAndGlyphs'>Autre</text>
+<text x='244.34' y='98.32' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='158.05px' lengthAdjust='spacingAndGlyphs'>Informatique, Statistiques et Calcul</text>
+<text x='244.34' y='108.68' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='52.65px' lengthAdjust='spacingAndGlyphs'>Scientifique</text>
+<text x='244.34' y='75.56' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='154.92px' lengthAdjust='spacingAndGlyphs'>Chercheur / Enseignant-chercheur</text>
+<polyline points='260.60,259.30 260.60,256.56 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='317.09,259.30 317.09,256.56 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='373.57,259.30 373.57,256.56 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='430.06,259.30 430.06,256.56 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='486.54,259.30 486.54,256.56 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='260.60' y='268.35' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='317.09' y='268.35' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='373.57' y='268.35' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>400</text>
+<text x='430.06' y='268.35' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>600</text>
+<text x='486.54' y='268.35' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>800</text>
+<text x='373.90' y='289.19' text-anchor='middle' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='146.43px' lengthAdjust='spacingAndGlyphs'>Nombre de répondant(e)s</text>
+<rect x='259.02' y='303.02' width='229.75' height='51.50' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='271.19' y='309.21' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='271.19' y='332.47' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='293.74' y='320.57' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='157.41px' lengthAdjust='spacingAndGlyphs'>Chercheur / Enseignant-chercheur </text>
+<text x='293.74' y='343.83' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='189.55px' lengthAdjust='spacingAndGlyphs'>Personnel d'appui / soutien à la recherche</text>
+<text x='249.27' y='47.00' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='248.52px' lengthAdjust='spacingAndGlyphs'>1565 réponses, soit 100% des répondant(e)s</text>
+<text x='498.52' y='29.50' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='264.08px' lengthAdjust='spacingAndGlyphs'>Branche d'activité des répondant(e)s</text>
+<text x='33.57' y='17.49' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='56.18px' lengthAdjust='spacingAndGlyphs'>Fig. 22.2</text>
 </g>
 </svg>

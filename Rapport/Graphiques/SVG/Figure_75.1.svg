@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='576.00pt' height='432.00pt' viewBox='0 0 576.00 432.00'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='432.00' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA=)'>
+<rect x='0.00' y='0.000000000000057' width='576.00' height='432.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpMTE5LjIwfDU3MC41Mnw1NS4zNnwzOTEuMDI='>
+    <rect x='119.20' y='55.36' width='451.32' height='335.66' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMTE5LjIwfDU3MC41Mnw1NS4zNnwzOTEuMDI=)'>
+<rect x='119.20' y='55.36' width='451.32' height='335.66' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='139.71' y='86.83' width='363.09' height='62.94' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='139.71' y='191.72' width='72.62' height='62.94' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<rect x='139.71' y='296.62' width='36.31' height='62.94' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #5770BE;' />
+<text x='550.01' y='121.35' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>77%</text>
+<text x='259.53' y='226.24' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>15%</text>
+<text x='223.22' y='331.13' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>8%</text>
+</g>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHw0MzIuMDA=)'>
+<text x='114.26' y='331.51' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='52.43px' lengthAdjust='spacingAndGlyphs'>Catégorie C</text>
+<text x='114.26' y='226.62' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='52.60px' lengthAdjust='spacingAndGlyphs'>Catégorie B</text>
+<text x='114.26' y='121.72' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='52.50px' lengthAdjust='spacingAndGlyphs'>Catégorie A</text>
+<polyline points='139.71,393.76 139.71,391.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='248.64,393.76 248.64,391.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='357.57,393.76 357.57,391.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='466.49,393.76 466.49,391.02 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='139.71' y='402.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='248.64' y='402.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>3</text>
+<text x='357.57' y='402.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>6</text>
+<text x='466.49' y='402.81' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>9</text>
+<text x='344.86' y='423.64' text-anchor='middle' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='146.43px' lengthAdjust='spacingAndGlyphs'>Nombre de répondant(e)s</text>
+<text x='570.52' y='47.00' text-anchor='end' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='302.62px' lengthAdjust='spacingAndGlyphs'>Répartition des 27 volontaires interrogés en entretien</text>
+<text x='570.52' y='29.50' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='413.24px' lengthAdjust='spacingAndGlyphs'>Catégorie des personnels d'appui, soutiens à la recherche</text>
+<text x='33.57' y='17.49' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='56.18px' lengthAdjust='spacingAndGlyphs'>Fig. 75.1</text>
+</g>
+</svg>

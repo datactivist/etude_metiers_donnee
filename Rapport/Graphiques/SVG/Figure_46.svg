@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='720.00pt' height='504.00pt' viewBox='0 0 720.00 504.00'>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='576.00pt' height='504.00pt' viewBox='0 0 576.00 504.00'>
 <defs>
   <style type='text/css'><![CDATA[
     .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
@@ -16,70 +16,77 @@
 </defs>
 <rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
 <defs>
-  <clipPath id='cpMC4wMHw3MjAuMDB8MC4wMHw1MDQuMDA='>
-    <rect x='0.00' y='0.00' width='720.00' height='504.00' />
+  <clipPath id='cpMC4wMHw1NzYuMDB8MC4wMHw1MDQuMDA='>
+    <rect x='0.00' y='0.00' width='576.00' height='504.00' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1MDQuMDA=)'>
-<rect x='0.00' y='-0.000000000000057' width='720.00' height='504.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHw1MDQuMDA=)'>
+<rect x='0.000000000000096' y='-0.000000000000057' width='576.00' height='504.00' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
 <defs>
-  <clipPath id='cpMzA5LjQxfDcxNC41MnwxMTguMzZ8NDE3LjIy'>
-    <rect x='309.41' y='118.36' width='405.12' height='298.86' />
+  <clipPath id='cpMjQ4LjYzfDU3MC41Mnw4OS4zM3w0MzMuMjQ='>
+    <rect x='248.63' y='89.33' width='321.89' height='343.91' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMzA5LjQxfDcxNC41MnwxMTguMzZ8NDE3LjIy)'>
-<polyline points='327.82,417.22 327.82,118.36 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='403.60,417.22 403.60,118.36 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='479.38,417.22 479.38,118.36 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='555.16,417.22 555.16,118.36 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='630.94,417.22 630.94,118.36 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<polyline points='706.72,417.22 706.72,118.36 ' style='stroke-width: 1.07; stroke: #CBCBCB; stroke-linecap: butt;' />
-<rect x='327.82' y='382.74' width='36.37' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
-<rect x='327.82' y='267.79' width='84.87' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
-<rect x='327.82' y='152.84' width='107.61' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
-<rect x='327.82' y='325.26' width='62.14' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
-<rect x='327.82' y='210.32' width='30.31' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
-<rect x='327.82' y='356.87' width='31.83' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
-<rect x='327.82' y='241.93' width='112.15' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
-<rect x='327.82' y='126.98' width='354.65' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
-<rect x='327.82' y='299.40' width='45.47' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
-<rect x='327.82' y='184.45' width='168.23' height='25.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
-<text x='377.83' y='398.72' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>4%</text>
-<text x='426.33' y='283.77' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>8%</text>
-<text x='449.07' y='168.82' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>10%</text>
-<text x='403.60' y='341.24' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>6%</text>
-<text x='371.77' y='226.30' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>3%</text>
-<text x='373.29' y='372.85' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>3%</text>
-<text x='453.61' y='257.91' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>11%</text>
-<text x='696.11' y='142.96' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>34%</text>
-<text x='386.93' y='315.38' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>4%</text>
-<text x='509.69' y='200.43' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>16%</text>
+<g clip-path='url(#cpMjQ4LjYzfDU3MC41Mnw4OS4zM3w0MzMuMjQ=)'>
+<rect x='248.63' y='89.33' width='321.89' height='343.91' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='263.26' y='393.56' width='29.39' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='263.26' y='261.28' width='68.57' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='263.26' y='129.01' width='86.93' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='263.26' y='327.42' width='50.20' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='263.26' y='195.15' width='24.49' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<rect x='263.26' y='363.79' width='25.71' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
+<rect x='263.26' y='231.52' width='90.60' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
+<rect x='263.26' y='99.25' width='286.51' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
+<rect x='263.26' y='297.66' width='36.73' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
+<rect x='263.26' y='165.39' width='135.91' height='29.76' style='stroke-width: 4.27; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
+<text x='298.77' y='411.49' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>4%</text>
+<text x='337.95' y='279.21' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>8%</text>
+<text x='356.31' y='146.94' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>10%</text>
+<text x='319.58' y='345.35' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>6%</text>
+<text x='293.87' y='213.08' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>3%</text>
+<text x='295.10' y='381.72' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>3%</text>
+<text x='359.99' y='249.45' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>11%</text>
+<text x='555.89' y='117.18' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>34%</text>
+<text x='306.11' y='315.59' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='11.97px' lengthAdjust='spacingAndGlyphs'>4%</text>
+<text x='405.29' y='183.32' text-anchor='middle' style='font-size: 8.54px;fill: #333333; font-family: "Arial";' textLength='16.86px' lengthAdjust='spacingAndGlyphs'>16%</text>
 </g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1MDQuMDA=)'>
-<text x='304.47' y='380.28' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='196.92px' lengthAdjust='spacingAndGlyphs'>Gestion et pilotage, Partenariat,</text>
-<text x='304.47' y='395.40' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='111.28px' lengthAdjust='spacingAndGlyphs'>Affaires juridiques</text>
-<text x='304.47' y='330.36' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='182.87px' lengthAdjust='spacingAndGlyphs'>Personnels des bibliothèques</text>
-<text x='304.47' y='265.33' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='244.37px' lengthAdjust='spacingAndGlyphs'>Information, Documentation, Médiation,</text>
-<text x='304.47' y='280.45' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='42.80px' lengthAdjust='spacingAndGlyphs'>Edition</text>
-<text x='304.47' y='215.42' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='191.41px' lengthAdjust='spacingAndGlyphs'>Sciences humaines et sociales</text>
-<text x='304.47' y='150.38' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='216.35px' lengthAdjust='spacingAndGlyphs'>Informatique, Statistiques et Calcul</text>
-<text x='304.47' y='165.50' text-anchor='end' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='72.37px' lengthAdjust='spacingAndGlyphs'>Scientifique</text>
-<text x='327.82' y='430.16' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='7.78px' lengthAdjust='spacingAndGlyphs'>0</text>
-<text x='403.60' y='430.16' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='15.57px' lengthAdjust='spacingAndGlyphs'>50</text>
-<text x='479.38' y='430.16' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>100</text>
-<text x='555.16' y='430.16' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>150</text>
-<text x='630.94' y='430.16' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>200</text>
-<text x='706.72' y='430.16' text-anchor='middle' style='font-size: 14.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='23.35px' lengthAdjust='spacingAndGlyphs'>250</text>
-<text x='511.96' y='446.90' text-anchor='middle' style='font-size: 15.00px;fill: #222222; font-family: "Nimbus Sans";' textLength='148.37px' lengthAdjust='spacingAndGlyphs'>Nombre de personnes</text>
-<rect x='430.34' y='68.07' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
-<rect x='430.34' y='85.35' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
-<text x='454.38' y='80.37' style='font-size: 12.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='147.39px' lengthAdjust='spacingAndGlyphs'>Collecte, création, stockage</text>
-<text x='454.38' y='97.65' style='font-size: 12.00px;fill: #333333; font-family: "Nimbus Sans";' textLength='121.38px' lengthAdjust='spacingAndGlyphs'>Autres parties du cycle</text>
-<text x='45.89' y='49.64' style='font-size: 15.00px; font-family: "Nimbus Sans";' textLength='173.41px' lengthAdjust='spacingAndGlyphs'>Prédominance des BAP E</text>
-<text x='45.89' y='29.73' style='font-size: 16.00px; font-weight: bold;fill: #222222; font-family: "Nimbus Sans";' textLength='433.92px' lengthAdjust='spacingAndGlyphs'>Prise en charge de l'activité 'Collecte, création, stockage'</text>
-<text x='714.52' y='470.08' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='417.67px' lengthAdjust='spacingAndGlyphs'>Question posée dans le questionnaire : Précisez votre branche</text>
-<text x='714.52' y='486.28' text-anchor='end' style='font-size: 15.00px; font-style: italic;fill: #CBCBCB; font-family: "Nimbus Sans";' textLength='162.09px' lengthAdjust='spacingAndGlyphs'>d'activité - 682 réponses</text>
-<text x='25.69' y='16.48' text-anchor='middle' style='font-size: 13.20px; font-family: "Arial";' textLength='40.41px' lengthAdjust='spacingAndGlyphs'>Fig. 46</text>
+<g clip-path='url(#cpMC4wMHw1NzYuMDB8MC4wMHw1MDQuMDA=)'>
+<text x='243.70' y='391.80' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='143.59px' lengthAdjust='spacingAndGlyphs'>Gestion et pilotage, Partenariat,</text>
+<text x='243.70' y='402.17' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='82.09px' lengthAdjust='spacingAndGlyphs'>Affaires juridiques</text>
+<text x='243.70' y='330.85' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='132.46px' lengthAdjust='spacingAndGlyphs'>Personnels des bibliothèques</text>
+<text x='243.70' y='259.53' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='182.68px' lengthAdjust='spacingAndGlyphs'>Information, Documentation, Médiation,</text>
+<text x='243.70' y='269.90' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='31.38px' lengthAdjust='spacingAndGlyphs'>Edition</text>
+<text x='243.70' y='198.58' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='134.63px' lengthAdjust='spacingAndGlyphs'>Sciences humaines et sociales</text>
+<text x='243.70' y='127.26' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='158.05px' lengthAdjust='spacingAndGlyphs'>Informatique, Statistiques et Calcul</text>
+<text x='243.70' y='137.62' text-anchor='end' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='52.65px' lengthAdjust='spacingAndGlyphs'>Scientifique</text>
+<polyline points='245.89,393.56 248.63,393.56 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='245.89,327.42 248.63,327.42 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='245.89,261.28 248.63,261.28 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='245.89,195.15 248.63,195.15 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='245.89,129.01 248.63,129.01 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='263.26,435.98 263.26,433.24 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='324.48,435.98 324.48,433.24 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='385.70,435.98 385.70,433.24 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='446.92,435.98 446.92,433.24 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='508.14,435.98 508.14,433.24 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<polyline points='569.36,435.98 569.36,433.24 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
+<text x='263.26' y='442.83' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='5.49px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='324.48' y='442.83' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='10.97px' lengthAdjust='spacingAndGlyphs'>50</text>
+<text x='385.70' y='442.83' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>100</text>
+<text x='446.92' y='442.83' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>150</text>
+<text x='508.14' y='442.83' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>200</text>
+<text x='569.36' y='442.83' text-anchor='middle' style='font-size: 9.60px;fill: #4D4D4D; font-family: "Noto Sans";' textLength='16.46px' lengthAdjust='spacingAndGlyphs'>250</text>
+<text x='409.58' y='456.44' text-anchor='middle' style='font-size: 12.00px; font-family: "Noto Sans";' textLength='146.43px' lengthAdjust='spacingAndGlyphs'>Nombre de répondant(e)s</text>
+<rect x='262.29' y='470.28' width='294.57' height='28.24' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
+<rect x='275.91' y='477.92' width='12.96' height='12.96' style='stroke-width: 3.25; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #169B62;' />
+<rect x='428.31' y='477.92' width='12.96' height='12.96' style='stroke-width: 3.25; stroke: #FFFFFF; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFE725;' />
+<text x='297.00' y='487.83' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='123.17px' lengthAdjust='spacingAndGlyphs'>Collecte, création, stockage</text>
+<text x='449.41' y='487.83' style='font-size: 9.60px; font-family: "Noto Sans";' textLength='101.97px' lengthAdjust='spacingAndGlyphs'>Autres parties du cycle</text>
+<text x='248.63' y='80.25' style='font-size: 15.00px; font-style: italic; font-family: "Noto Sans";' textLength='275.62px' lengthAdjust='spacingAndGlyphs'>682 réponses, soit 44% des répondant(e)s</text>
+<text x='570.52' y='29.50' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='357.22px' lengthAdjust='spacingAndGlyphs'>Branche d'activité des répondant(e)s intervenant </text>
+<text x='570.52' y='45.05' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='322.85px' lengthAdjust='spacingAndGlyphs'>sur la partie 'Collecte, création, stockage' du </text>
+<text x='570.52' y='60.60' text-anchor='end' style='font-size: 14.40px; font-weight: bold; font-family: "Noto Sans";' textLength='177.90px' lengthAdjust='spacingAndGlyphs'>cycle de vie de la donnée</text>
+<text x='27.53' y='17.49' text-anchor='middle' style='font-size: 14.40px; font-family: "Noto Sans";' textLength='44.09px' lengthAdjust='spacingAndGlyphs'>Fig. 46</text>
 </g>
 </svg>
